@@ -23,11 +23,11 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        email = findViewById(R.id.et_Email)
-        password = findViewById(R.id.et_Pwd)
-        password_Confirm = findViewById(R.id.et_Pwd2)
-        btnRegister = findViewById(R.id.btnRegisterFinish)
-        btnCheck = findViewById(R.id.btn_Check_Email)
+        email = findViewById(R.id.et_regi_email)
+        password = findViewById(R.id.et_regi_pwd)
+        password_Confirm = findViewById(R.id.et_regi_pwdConfirm)
+        btnRegister = findViewById(R.id.btn_RegisterFinish)
+        btnCheck = findViewById(R.id.btn_checkEmail)
         auth = FirebaseAuth.getInstance()
         var idCheck = 0
 

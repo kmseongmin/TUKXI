@@ -22,10 +22,10 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         firebaseAuth = FirebaseAuth.getInstance()
-        loginBtn = findViewById<Button>(R.id.btnLogin)
-        registerBtn = findViewById<Button>(R.id.btnRegister)
-        emailEt = findViewById<EditText>(R.id.et_email)
-        passwordEt = findViewById<EditText>(R.id.et_password)
+        loginBtn = findViewById(R.id.btnLogin)
+        registerBtn = findViewById(R.id.btnRegister)
+        emailEt = findViewById(R.id.et_email)
+        passwordEt = findViewById(R.id.et_password)
 
 
         loginBtn.setOnClickListener {
@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
                             startActivity(intent)
                         } else {
                             // 이메일 확인이 완료되지 않은 사용자
-                            Toast.makeText(this, "이메일 인증을 완료해야 증그인할 수 있습니다.", Toast.LENGTH_SHORT)
+                            Toast.makeText(this, "이메일 인증이 완료되어야 로그인할 수 있습니다.", Toast.LENGTH_SHORT)
                                 .show()
                             // 로그인 막는 처리
                         }
