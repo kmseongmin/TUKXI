@@ -80,8 +80,9 @@ class RegisterActivity : AppCompatActivity() {
                             user?.sendEmailVerification()
                                 ?.addOnCompleteListener { verificationTask ->
                                     if (verificationTask.isSuccessful) {
-                                        Toast.makeText(this, "이메일 인증 완료.", Toast.LENGTH_SHORT)
+                                        Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT)
                                             .show()
+                                        Toast.makeText(this, "입력한 이메일로 인증메일이 전송되었습니다. 확인해주세요",Toast.LENGTH_LONG).show()
                                         finish()
                                     } else
                                         Toast.makeText(this, "이메일 인증 실패.", Toast.LENGTH_SHORT)
