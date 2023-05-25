@@ -1,62 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    android:id="@+id/Password"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="LOGIN"
+        android:fontFamily="@font/bold"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="20sp">
+
+    </TextView>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="@null"
+        android:src="@drawable/taxi1_icon">
+
+    </ImageView>
 
     <EditText
-        android:id="@+id/et_email"
-        android:layout_width="400dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="100dp"
-        android:ems="10"
-        android:hint="아이디를 입력해주세요"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/edit1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/bold"
+        android:hint="Email">
+
+    </EditText>
 
     <EditText
-        android:id="@+id/et_pw"
-        android:layout_width="400dp"
-        android:layout_height="85dp"
-        android:ems="10"
-        android:hint="비밀번호를 입력해주세요"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_email" />
+        android:id="@+id/edit2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/bold"
+        android:hint="Password">
+
+    </EditText>
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="135dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:text="로그인"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pw" />
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bin_orange"
+        android:drawableLeft="@drawable/face"
+        android:gravity="center"
+        android:text="로그인          "
+        android:textAlignment="center"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/bold">
+
+    </Button>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="#FFFFFFFF"
+        android:gravity="center"
+        android:text="또는"
+        android:textStyle="bold"
+        android:textSize="17dp"
+        android:fontFamily="@font/bold">
+
+    </TextView>
 
     <Button
         android:id="@+id/btnRegister"
-        android:layout_width="135dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bin_lightorange"
+        android:drawableLeft="@drawable/register"
         android:text="회원가입"
-        app:layout_constraintEnd_toStartOf="@+id/btnFindIdPw"
-        app:layout_constraintHorizontal_bias="0.514"
-        app:layout_constraintStart_toEndOf="@+id/btnLogin"
-        app:layout_constraintTop_toBottomOf="@+id/et_pw" />
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:fontFamily="@font/bold">
 
-    <Button
-        android:id="@+id/btnFindIdPw"
-        android:layout_width="135dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:text="ID/PW찾기"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pw" />
+    </Button>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/findId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:text="아이디 찾기"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:fontFamily="@font/bold">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/findPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:text="비밀번호 찾기"
+            android:textSize="18dp"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textStyle="bold"
+            android:fontFamily="@font/bold">
+
+        </TextView>
+
+    </LinearLayout>
+</LinearLayout>
+
