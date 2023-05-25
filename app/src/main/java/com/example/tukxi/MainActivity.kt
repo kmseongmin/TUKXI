@@ -1,6 +1,7 @@
 package com.example.tukxi
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +29,11 @@ class MainActivity : AppCompatActivity() {
         var databaseset = Firebase.database
         val myRef = databaseset.getReference("message") // 키값 설정
         myRef.setValue("Hello, my world") // 저장될 값 설정
+
+        binding.button.setOnClickListener {
+            var intent = Intent(applicationContext, MainRoomActivity::class.java)
+            startActivity(intent)
+        }
 
         fun childEventListenerRecycler() {
             val context = this

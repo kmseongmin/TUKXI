@@ -94,7 +94,6 @@
             android:id="@+id/Nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_minHeight="48dp"
             android:ems="10"
             android:fontFamily="@font/bold"
             android:hint="닉네임"
@@ -102,7 +101,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/Name"
-            app:layout_constraintTop_toBottomOf="@+id/Name" />
+            app:layout_constraintTop_toBottomOf="@+id/Name"
+             />
 
         <Button
             android:id="@+id/btnCheck2"
@@ -237,7 +237,8 @@
         android:layout_marginRight="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        >
 
         <Button
             android:id="@+id/btnTerms"

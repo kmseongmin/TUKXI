@@ -50,7 +50,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/email_icon" />
+         />
 
     <TextView
         android:id="@+id/textView2"
@@ -81,7 +81,6 @@
         android:id="@+id/btnCheck3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bin_blue"
         android:text="인증하기"
         android:textColor="@android:color/holo_blue_dark"
         android:textStyle="bold"
