@@ -43,6 +43,7 @@ class RegisterActivity : AppCompatActivity() {
                                 .show()
                         } else {
                             // 이메일 중복 검사 통과
+                            Toast.makeText(this,"해당 이메일은 사용 가능합니다.",Toast.LENGTH_SHORT).show()
                             idCheck = 1
                         }
                     } else {
