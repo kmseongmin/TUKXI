@@ -2,54 +2,61 @@ package com.example.tukxi
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.tukxi.databinding.ActivityMainBinding.inflate
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
-    private var mFirebaseAuth: FirebaseAuthException? = null
-    private var mDatabaseRef: DatabaseReference? = null
-    private var etId: EditText? = null
-    private  var etPwd:EditText? = null
-    private var btnRegister: Button? = null
-    private  var btnLogin:android.widget.Button? = null
-    private  var btnFindIdPw:android.widget.Button? = null
+    private lateinit var loginBtn: Button
+    private lateinit var registerBtn: Button
+    private lateinit var emailEt: EditText
+    private lateinit var passwordEt: EditText
+    private lateinit var firebaseAuth: FirebaseAuth
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        val binding = inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_login)
 
-        etId = findViewById(R.id.et_email)
-        etPwd = findViewById(R.id.et_pw)
-        btnLogin = findViewById(R.id.btnLogin)
-        btnRegister = findViewById(R.id.btnRegister)
-        btnFindIdPw = findViewById(R.id.btnFindIdPw)
-        mFirebaseAuth = FirebaseAuth.getInstance()
-        mDatabaseRef = FirebaseDatabase.getInstance().reference
+        firebaseAuth = FirebaseAuth.getInstance()
+        loginBtn = findViewById<Button>(R.id.btnLogin)
+        registerBtn = findViewById<Button>(R.id.btnRegister)
+        emailEt = findViewById<EditText>(R.id.et_email)
+        passwordEt = findViewById<EditText>(R.id.et_password)
 
-        btnLogin.setOnClickListener(View.OnClickListener {
-            val strId = etId.getText().toString()
-            val strPw = etPwd.getText().toString()
-            mFirebaseAuth.signInWithEmailAndPassword(strId, strPw)
-                .addOnCompleteListener(this@LoginActivity,
-                    OnCompleteListener<Any?> { task ->
-                        if (task.isSuccessful) {
-                            //로그인 성공
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+
+        loginBtn.setOnClickListener {
+            val email = emailEt.text.toString()
+            val password = passwordEt.text.toString()
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        val user = firebaseAuth.currentUser
+                        if (user != null && user.isEmailVerified) {
+                            // 이메일 확인 완료된 사용자
+                            // 로그인 성공 처리
+                            Toast.makeText(this,"로그인 성공",Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)
-                            finish()
                         } else {
-                            Toast.makeText(this@LoginActivity, "로그인 실패", Toast.LENGTH_SHORT).show()
+                            // 이메일 확인이 완료되지 않은 사용자
+                            Toast.makeText(this, "이메일 인증을 완료해야 증그인할 수 있습니다.", Toast.LENGTH_SHORT)
+                                .show()
+                            // 로그인 막는 처리
                         }
-                    })
-        })
+                    } else {
+                        // 로그인 실패 처리
+                        Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
+        registerBtn.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }

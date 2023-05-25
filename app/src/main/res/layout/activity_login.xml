@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
-    android:id="@+id/Password"
+    android:id="@+id/et_Pwd"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -34,7 +34,7 @@
     </ImageView>
 
     <EditText
-        android:id="@+id/edit1"
+        android:id="@+id/et_email"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
@@ -44,12 +44,13 @@
     </EditText>
 
     <EditText
-        android:id="@+id/edit2"
+        android:id="@+id/et_password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/bold"
-        android:hint="Password">
+        android:hint="Password"
+        android:inputType="textPassword">
 
     </EditText>
 
