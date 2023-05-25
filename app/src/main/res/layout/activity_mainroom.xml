@@ -1,42 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainRoomActivity"
-    android:id="@+id/mainRoom"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
+    tools:context=".MainRoomActivity"
     >
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_nav"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
-    <Button
-        android:id="@+id/btnmap"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="bottom"
-        android:text="구글맵" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"
+        app:itemIconTint="@color/selector_btm_nav"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconSize="33dp"/>
 
-    <Button
-        android:id="@+id/btnview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="bottom"
-        android:text="방 조회" />
-    <Button
-        android:id="@+id/btnin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="bottom"
-        android:text="방 내부" />
-    <Button
-        android:id="@+id/btnmy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="bottom"
-        android:text="내 정보" />
-</LinearLayout>
+</RelativeLayout>
