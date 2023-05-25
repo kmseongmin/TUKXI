@@ -3,22 +3,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp">
 
     <Button
         android:id="@+id/btnFindId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/bin_lightorange"
         android:text="아이디 찾기"
+        android:textStyle="bold"
+        android:fontFamily="@font/bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnFindPassword"
+        android:id="@+id/btnFindPw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="비밀번호찾기"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bin_lightorange"
+        android:text="비밀번호 찾기"
+        android:textStyle="bold"
+        android:fontFamily="@font/bold"
         app:layout_constraintStart_toEndOf="@+id/btnFindId"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/bold"
+        android:text="ID 찾기를 위한 본인확인 방법을 선택해주세요."
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="@+id/btnFindId"
+        app:layout_constraintTop_toBottomOf="@+id/btnFindId" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="76dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+         />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/bold"
+        android:text="이메일 인증"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="사용자님 명의의 이메일로 인증"
+        android:fontFamily="@font/bold"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Button
+        android:id="@+id/btnCheck3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="인증하기"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

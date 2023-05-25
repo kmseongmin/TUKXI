@@ -31,7 +31,7 @@
         android:paddingRight="16dp">
 
         <EditText
-            android:id="@+id/et_Email"
+            android:id="@+id/RId"
             android:layout_width="264dp"
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"
@@ -43,7 +43,7 @@
         </EditText>
 
         <Button
-            android:id="@+id/btn_Check_Email"
+            android:id="@+id/btnCheck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bin_lightorange"
@@ -64,7 +64,7 @@
         android:paddingRight="16dp">
 
         <EditText
-            android:id="@+id/et_Pwd"
+            android:id="@+id/Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bold"
@@ -78,45 +78,31 @@
         </EditText>
 
         <EditText
-            android:id="@+id/et_Pwd2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bold"
-            android:hint="비밀번호 재입력"
-            android:inputType="textPassword"
-            android:minHeight="48dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_Pwd">
-
-        </EditText>
-
-        <EditText
-            android:id="@+id/et_Name"
+            android:id="@+id/Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:hint="이름"
             android:fontFamily="@font/bold"
-            app:layout_constraintEnd_toEndOf="@+id/et_Pwd2"
+            app:layout_constraintEnd_toEndOf="@+id/Password"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/et_Pwd2"
-            app:layout_constraintTop_toBottomOf="@+id/et_Pwd2" />
+            app:layout_constraintStart_toStartOf="@+id/Password"
+            app:layout_constraintTop_toBottomOf="@+id/Password" />
 
         <EditText
-            android:id="@+id/et_Nickname"
+            android:id="@+id/Nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:ems="10"
             android:fontFamily="@font/bold"
             android:hint="닉네임"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/et_Name"
-            app:layout_constraintTop_toBottomOf="@+id/et_Name" />
+            app:layout_constraintStart_toStartOf="@+id/Name"
+            app:layout_constraintTop_toBottomOf="@+id/Name"
+             />
 
         <Button
             android:id="@+id/btnCheck2"
@@ -149,7 +135,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/et_AccountNum"
+            android:id="@+id/AccountNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -180,7 +166,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/et_FNum"
+            android:id="@+id/FNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
@@ -199,7 +185,7 @@
             android:text="-" />
 
         <EditText
-            android:id="@+id/et_BNum"
+            android:id="@+id/BNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
@@ -231,7 +217,7 @@
         </TextView>
 
         <EditText
-            android:id="@+id/et_PhoneNum"
+            android:id="@+id/PhoneNum"
             android:layout_width="285dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bold"
@@ -251,7 +237,8 @@
         android:layout_marginRight="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        >
 
         <Button
             android:id="@+id/btnTerms"
@@ -266,7 +253,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/btnRegisterFinish"
+            android:id="@+id/btnRegister1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
