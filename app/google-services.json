@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1086660048898",
+    "project_id": "tukxi-59597",
+    "storage_bucket": "tukxi-59597.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086660048898:android:e9c79fe3af2f708dc54f1b",
+        "android_client_info": {
+          "package_name": "com.example.tukxi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086660048898-9f8p5ptcr1knp1497qkmh2jkujm9u5du.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt6BuABlw37-pL-SxpQO9yaNOtAguRozE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086660048898-9f8p5ptcr1knp1497qkmh2jkujm9u5du.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
