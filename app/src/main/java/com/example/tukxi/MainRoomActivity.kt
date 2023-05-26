@@ -17,9 +17,9 @@ class MainRoomActivity : AppCompatActivity() {
         binding = ActivityMainroomBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        setUpNavigation()
     }
-    private fun onSetUpNavigation(){
+    private fun setUpNavigation(){
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
 
         val navController = navHostFragment.navController
