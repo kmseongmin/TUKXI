@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mapFragment"
+        android:enabled="true"
+        android:title="구글맵" />
+
+    <item
+        android:id="@+id/viewFragment"
+        android:enabled="true"
+        android:title="방 조회" />
+
+    <item
+        android:id="@+id/innerFragment"
+        android:enabled="true"
+        android:title="방 내부" />
+    <item
+        android:id="@+id/myFragment"
+        android:enabled="true"
+        android:title="내 정보" />
+</menu>
