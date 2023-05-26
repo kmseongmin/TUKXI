@@ -17,6 +17,7 @@ class MainRoomActivity : AppCompatActivity() {
         binding = ActivityMainroomBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
     }
     private fun onSetUpNavigation(){
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
@@ -24,7 +25,6 @@ class MainRoomActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener{ _, destination, _ ->
-
         }
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
     }
