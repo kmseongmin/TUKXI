@@ -49,6 +49,7 @@
             android:background="@drawable/bin_lightorange"
             android:text="중복확인"
             android:fontFamily="@font/bold"
+            android:textSize="15sp"
             android:textStyle="bold">
 
 
@@ -97,7 +98,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/bold"
             android:hint="이름"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="@+id/et_regi_pwd"
             app:layout_constraintHorizontal_bias="0.0"
@@ -111,21 +112,22 @@
             android:ems="10"
             android:fontFamily="@font/bold"
             android:hint="닉네임"
+            android:inputType="text"
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/et_Name"
-            app:layout_constraintTop_toBottomOf="@+id/et_Name"
-             />
+            app:layout_constraintTop_toBottomOf="@+id/et_Name" />
 
         <Button
-            android:id="@+id/btnCheck2"
+            android:id="@+id/btn_NicknameCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="중복확인"
             android:textStyle="bold"
             android:background="@drawable/bin_lightorange"
             android:fontFamily="@font/bold"
+            android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -144,7 +146,7 @@
             android:layout_weight="0"
             android:background="@color/lightorange"
             android:fontFamily="@font/bold"
-            android:text="계좌번호:"
+            android:text="계좌번호"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -175,41 +177,58 @@
             android:layout_weight="0"
             android:background="@color/lightorange"
             android:fontFamily="@font/bold"
-            android:text="주민번호:"
+            android:text="생년월일"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/et_FNum"
-            android:layout_width="wrap_content"
+            android:id="@+id/et_Birth"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:fontFamily="@font/bold"
             android:gravity="center"
-            android:hint="앞자리"
+            android:hint="YYMMDD"
             android:inputType="number"
             android:maxLength="6"
             android:minHeight="48dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="14dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:text="-" />
-
-        <EditText
-            android:id="@+id/et_BNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="1"
+            android:background="@color/lightorange"
             android:fontFamily="@font/bold"
             android:gravity="center"
-            android:hint="뒷자리"
-            android:inputType="number"
-            android:maxLength="7"
-            android:minHeight="48dp" />
+            android:text="성별"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
+        <RadioGroup
+            android:id="@+id/rdg_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btnGenderMale"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/bold"
+                android:text="남자"
+                android:textSize="15dp" />
+
+            <RadioButton
+                android:id="@+id/btnGenderFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/bold"
+                android:text="여자"
+                android:textSize="15dp" />
+        </RadioGroup>
     </LinearLayout>
 
     <LinearLayout
@@ -224,7 +243,7 @@
             android:layout_height="wrap_content"
             android:background="@color/lightorange"
             android:fontFamily="@font/bold"
-            android:text="전화번호:"
+            android:text="전화번호"
             android:textSize="18dp"
             android:textStyle="bold">
 
