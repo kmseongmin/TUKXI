@@ -1,13 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
+    <EditText
+        android:id="@+id/editTextStart"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="출발지를 입력하세요"
+        app:layout_constraintBottom_toTopOf="@+id/editTextFinish"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextFinish"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="도착지를 입력하세요"
+        app:layout_constraintBottom_toTopOf="@+id/mapFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextStart" />
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/quickMatchingbtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="빠른매칭"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/searchRoombtn"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/searchRoombtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="방 조회"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/makeRoombtn"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/quickMatchingbtn"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/makeRoombtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="방만들기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/searchRoombtn"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
