@@ -139,6 +139,7 @@ class RegisterActivity : AppCompatActivity() {
             val passwordConfirm = password_Confirm.text.toString()
             val name = name.text.toString()
             val nickname = nickname.text.toString()
+            val bank = btnBank.text.toString()
             val accountNum = accountNum.text.toString()
             val birth = birth.text.toString()
             val phoneNum = phoneNum.text.toString()
@@ -156,7 +157,7 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             else{
-                saveUserData(email,password,name,nickname,accountNum,phoneNum,birth,Gender)
+                saveUserData(email,password,name,nickname,bank,accountNum,phoneNum,birth,Gender)
                 createUserWithEmailAndPassword(email,password)
             }
         }
@@ -202,13 +203,14 @@ class RegisterActivity : AppCompatActivity() {
             }
 
     // 회원 정보 저장
-    fun saveUserData(Email : String, Password: String, Name : String, Nickname : String, AccountNum : String, PhoneNum : String,Birth : String,Gender : String){
+    fun saveUserData(Email : String, Password: String, Name : String, Nickname : String, Bank : String, AccountNum : String, PhoneNum : String,Birth : String,Gender : String){
         val db = FirebaseFirestore.getInstance()
         val user = hashMapOf(
             "Email" to Email,
             "Password" to Password,
             "Name" to Name,
             "Nickname" to Nickname,
+            "Bank" to Bank,
             "AccountNum" to AccountNum,
             "PhoneNum" to PhoneNum,
             "Birth" to Birth,
