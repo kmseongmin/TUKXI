@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.provider.MediaStore.Audio.Radio
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -34,10 +33,11 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var btnRegister: Button
     private lateinit var btnEmailCheck: Button
     private lateinit var btnNicknameCheck : Button
+    private lateinit var btnBank : Button
 
     private lateinit var auth: FirebaseAuth
 
-
+    val bankList = arrayOf("은행선택","국민은행", "신한은행","농협은행","기업은행")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +60,8 @@ class RegisterActivity : AppCompatActivity() {
         btnFemale = findViewById(R.id.btnGenderFemale)
         btnNicknameCheck = findViewById(R.id.btn_NicknameCheck)
         radiogroup_gender = findViewById(R.id.rdg_gender)
+        btnBank = findViewById(R.id.btn_Bank)
+
         //Firebase 변수
         auth = FirebaseAuth.getInstance()
 
@@ -67,6 +69,7 @@ class RegisterActivity : AppCompatActivity() {
         var idCheck : Boolean = false
         var Gender : String = "None"
         var NicknameCheck : Boolean = false
+
 
         // 이메일 중복 검사 버튼
         btnEmailCheck.setOnClickListener {
@@ -104,8 +107,20 @@ class RegisterActivity : AppCompatActivity() {
             }
 
         }
-
-
+        // 은행 선택
+        btnBank.setOnClickListener{
+            val dlg = AlertDialog.Builder(this@RegisterActivity)
+            dlg.setTitle("은행 선택")
+            val bankList = bankList
+            dlg.setIcon(R.drawable.taxi1_icon)
+            dlg.setSingleChoiceItems(bankList, 0){dialog, which->
+                btnBank.text = bankList[which]
+            }
+            dlg.setPositiveButton("확인"){dialog,which->
+                Toast.makeText(this@RegisterActivity,"확인",Toast.LENGTH_SHORT).show()
+            }
+            dlg.show()
+        }
         // 성별 라디오버튼
         radiogroup_gender.setOnCheckedChangeListener{group,checkedGender->
             when(checkedGender){
@@ -202,16 +217,16 @@ class RegisterActivity : AppCompatActivity() {
             .add(user)
     }
     // 닉네임 중복 검사
-    fun checkNickNameAvailability(Nickname: String, callback:(Boolean)->Unit){
+    fun checkNickNameAvailability(Nickname: String, callback:(Boolean)->Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("UserInformation")
-            .whereEqualTo("Nickname",Nickname)
+            .whereEqualTo("Nickname", Nickname)
             .get()
-            .addOnSuccessListener{querySnapshot->
+            .addOnSuccessListener { querySnapshot ->
                 val isAvailable = querySnapshot.isEmpty
                 callback(isAvailable)
             }
-            .addOnFailureListener{ e->
+            .addOnFailureListener { e ->
                 callback(false)
             }
     }
