@@ -55,17 +55,17 @@
 
     <Button
         android:id="@+id/btnLogin"
+        android:text="로그인        "
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/bold"
+
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/bin_orange"
         android:drawableLeft="@drawable/face"
-        android:gravity="center"
-        android:text="로그인"
-        android:textAlignment="center"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:fontFamily="@font/bold">
+        >
 
     </Button>
 
