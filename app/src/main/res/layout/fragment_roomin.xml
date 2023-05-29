@@ -2,13 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <TextView
-        android:id="@+id/textView4"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <EditText
+        android:id="@+id/editTextTextPersonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="채팅방생성" />
+    <EditText
+        android:id="@+id/messages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add TextView" />
+    <TextView
+        android:id="@+id/textVieww"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:inputType="textMultiLine"
+        />
+
+    <LinearLayout
+        android:id="@+id/textViewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        />
+    </LinearLayout>
+
+
 </LinearLayout>

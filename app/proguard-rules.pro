@@ -20,6 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepclassmembers class com.example.tukxi.RoomViewFragment$ChatRoom {
+-keepclassmembers class com.example.tukxi.RoomInFragment$ChatMessage {
     public <init>();
 }

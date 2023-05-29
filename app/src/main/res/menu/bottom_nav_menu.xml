@@ -14,7 +14,7 @@
     <item
         android:id="@+id/roomInFragment"
         android:enabled="true"
-        android:title="방 내부" />
+        android:title="방 생성" />
     <item
         android:id="@+id/myFragment"
         android:enabled="true"
