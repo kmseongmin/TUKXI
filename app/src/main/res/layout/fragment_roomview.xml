@@ -4,11 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Roomview"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="303dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
