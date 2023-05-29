@@ -145,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:background="@color/lightorange"
+            android:background="@drawable/bin_lightorange2"
             android:fontFamily="@font/bold"
             android:text="계좌번호"
             android:textSize="18sp"
@@ -251,7 +251,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/lightorange"
+            android:background="@drawable/bin_lightorange2"
             android:fontFamily="@font/bold"
             android:text="전화번호"
             android:textSize="18dp"
