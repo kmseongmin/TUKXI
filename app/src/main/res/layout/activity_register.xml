@@ -292,6 +292,7 @@
             android:fontFamily="@font/bold"
             android:text="이용약관"
             android:textStyle="bold"
+            android:background="@drawable/bin_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -304,6 +305,7 @@
             android:text="가입하기"
             android:textStyle="bold"
             android:fontFamily="@font/bold"
+            android:background="@drawable/bin_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
