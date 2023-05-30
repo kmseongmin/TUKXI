@@ -41,7 +41,7 @@
         android:ems="10"
         android:inputType="text"
         android:minHeight="48dp"
-        android:hint="어디에서출발할까요?"
+        android:hint="어디에서 출발할까요?"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/textDep"
         app:layout_constraintTop_toTopOf="parent" />
