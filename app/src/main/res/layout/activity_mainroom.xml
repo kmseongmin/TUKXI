@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout 
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="16dp"
-    android:paddingLeft="16dp"
-    android:paddingTop="16dp"
+    android:orientation="vertical"
     tools:context=".MainRoomActivity"
     >
 
@@ -20,12 +18,22 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="50dp"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" 
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="-141dp"/>
-    
+        app:navGraph="@navigation/nav_graph" />
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bin_yellow"
+        android:fontFamily="@font/bold"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:itemIconTint="@color/selector_btm_nav"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconSize="33dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
 
-   
