@@ -20,18 +20,19 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 
 class MapActivity : Fragment(), OnMapReadyCallback {
     private var _binding: ActivityMapBinding? = null
     private val binding get() = _binding!!
+    private var googleMap: GoogleMap? = null
 
     private lateinit var mapView: MapView
-    private lateinit var edtStart: EditText
-    private lateinit var edtFinish: EditText
     private lateinit var quickMatchingbtn: Button
     private lateinit var searchRoombtn: Button
     private lateinit var makeRoombtn: Button
-    private lateinit var googleMap: GoogleMap
+    private lateinit var startmapSearch:AutocompleteSupportFragment
+    private lateinit var endmapSearch:AutocompleteSupportFragment
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
 
     override fun onCreateView(
@@ -40,26 +41,28 @@ class MapActivity : Fragment(), OnMapReadyCallback {
     ): View? {
         _binding = ActivityMapBinding.inflate(inflater, container, false)
 
-        edtStart = binding.editTextStart
-        edtFinish = binding.editTextFinish
         quickMatchingbtn = binding.quickMatchingbtn
         searchRoombtn = binding.searchRoombtn
         makeRoombtn = binding.makeRoombtn
         mapView = binding.mapFragment
-
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
+        startmapSearch = childFragmentManager.findFragmentById(R.id.start_autocomplete_fragment) as AutocompleteSupportFragment
+        startmapSearch.setHint("출발지")
+        endmapSearch = childFragmentManager.findFragmentById(R.id.end_autocomplete_fragment) as AutocompleteSupportFragment
+        endmapSearch.setHint("도착지")
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkLocationPermission()
     }
 
     private fun checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 requireActivity(),
@@ -67,34 +70,48 @@ class MapActivity : Fragment(), OnMapReadyCallback {
                 LOCATION_PERMISSION_REQUEST_CODE
             )
         } else {
-            // 권한이 허용되었거나 이미 허용된 경우
-            googleMap.isMyLocationEnabled = true // 위치 정보 활성화
+            initializeMap()
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun getCurrentLocation() {
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            location?.let {
-                val currentLocation = LatLng(location.latitude, location.longitude)
-                googleMap.let {
-                    it.addMarker(MarkerOptions().position(currentLocation).title("현재 위치"))
-                    it.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
-                }
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun initializeMap() {
+        mapView.onCreate(Bundle())
+        mapView.getMapAsync(this)
     }
 
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
-        checkLocationPermission()
-        getCurrentLocation()
+        enableMyLocation()
+    }
+
+    private fun enableMyLocation() {
+        if (googleMap != null) {
+            try {
+                googleMap?.isMyLocationEnabled = true
+                getCurrentLocation()
+            } catch (e: SecurityException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun getCurrentLocation() {
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        try {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                location?.let {
+                    val currentLocation = LatLng(location.latitude, location.longitude)
+                    googleMap?.addMarker(MarkerOptions().position(currentLocation).title("현재 위치"))
+                    googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
+                }
+            }
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+        }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onStart() {
