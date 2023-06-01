@@ -53,7 +53,7 @@
             app:srcCompat="@drawable/peopleface_icon" />
 
         <TextView
-            android:id="@+id/textView26"
+            android:id="@+id/tv_UserNickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="140dp"
@@ -98,7 +98,7 @@
             android:layout_gravity="right|bottom"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/bold"
-            android:background="@drawable/bin_yellow2"
+            android:background="@drawable/bin_yellow"
             android:text="출발시간"
             android:textSize="15sp"
             android:textColor="@color/black"/>
@@ -121,10 +121,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
+            android:background="@drawable/bin_blue"
             android:fontFamily="@font/bold"
             android:text="방만들기"
             android:textSize="20sp"
-            android:background="@drawable/bin_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

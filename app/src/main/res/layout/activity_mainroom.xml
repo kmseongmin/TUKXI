@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/bin_yellow"
+        android:background="@drawable/bin_lightorange2"
         android:fontFamily="@font/bold"
         android:textSize="15sp"
         android:textStyle="bold"
