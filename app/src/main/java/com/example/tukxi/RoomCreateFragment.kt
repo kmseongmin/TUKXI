@@ -26,7 +26,7 @@ class RoomCreateFragment : Fragment(){
         binding.button2.setOnClickListener{
             val fragment = RoomInFragment() // 이동하고자 하는 Fragment의 인스턴스 생성
             val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.roomCreateFragment, fragment) // R.id.container는 Fragment가 표시될 레이아웃의 ID입니다.
+            transaction.replace(R.id.roomInFragment, fragment) // R.id.container는 Fragment가 표시될 레이아웃의 ID입니다.
             transaction.addToBackStack(null) // Back 버튼을 눌렀을 때 이전 Fragment로 돌아갈 수 있도록 백스택에 추가합니다.
             transaction.commit()
         }

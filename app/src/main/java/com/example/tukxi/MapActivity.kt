@@ -65,6 +65,13 @@ class MapActivity : Fragment(), OnMapReadyCallback {
         makeRoombtn = binding.makeRoombtn
         mapView = binding.mapFragment
 
+        makeRoombtn.setOnClickListener{
+            val fragment = RoomCreateFragment() // 이동하고자 하는 Fragment의 인스턴스 생성
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.roomCreateFragment, fragment) // R.id.container는 Fragment가 표시될 레이아웃의 ID입니다.
+            transaction.addToBackStack(null) // Back 버튼을 눌렀을 때 이전 Fragment로 돌아갈 수 있도록 백스택에 추가합니다.
+            transaction.commit()
+        }
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), "AIzaSyAdHvlLbQv5ykMeeoCph3ZFAK11X-bIKDA") // 여기서 "YOUR_API_KEY"를 실제 API 키로 대체해야 합니다.
         }
