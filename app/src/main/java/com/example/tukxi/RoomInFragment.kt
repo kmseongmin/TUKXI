@@ -97,9 +97,6 @@ class RoomInFragment() : Fragment(), Parcelable {
     constructor(parcel: Parcel) : this() {
         chatRoomId = parcel.readString()
     }
-    private fun addTextViewWithChatHistory(chatHistory: String) {
-        binding.textVieww.text = chatHistory
-    }
 
     private var message : String? = null
     private fun addTextView(name : String?) {

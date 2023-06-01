@@ -9,7 +9,11 @@
         android:name="com.example.tukxi.MapActivity"
         android:label="MapActivity"
         tools:layout="@layout/activity_map"
-        />
+        >
+        <action
+            android:id="@+id/action_mapActivity_to_roomCreateFragment"
+            app:destination="@id/roomCreateFragment" />
+    </fragment>
     <fragment
         android:id="@+id/roomInFragment"
         android:name="com.example.tukxi.RoomInFragment"
@@ -28,5 +32,13 @@
         android:label="MyFragment"
         tools:layout="@layout/fragment_my"
         />
+    <fragment
+        android:id="@+id/roomCreateFragment"
+        android:name="com.example.tukxi.RoomCreateFragment"
+        android:label="RoomCreateFragment" >
+        <action
+            android:id="@+id/action_roomCreateFragment_to_roomInFragment"
+            app:destination="@id/roomInFragment" />
+    </fragment>
 
 </navigation>
