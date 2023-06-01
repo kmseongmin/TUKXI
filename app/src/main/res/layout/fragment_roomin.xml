@@ -5,18 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <EditText
-        android:id="@+id/editTextTextPersonName"
+    <TextView
+        android:id="@+id/roomnames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="채팅방생성" />
+        android:ems="10" />
+
     <EditText
         android:id="@+id/messages"
         android:layout_width="wrap_content"

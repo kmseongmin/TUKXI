@@ -14,31 +14,31 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.tukxi.databinding.ActivityMainBinding
-import com.example.tukxi.databinding.ActivityMapBinding
-
 import com.example.tukxi.databinding.FragmentRoominBinding
 import com.google.firebase.database.*
+import org.checkerframework.checker.units.qual.min
 
 
 class RoomInFragment() : Fragment(), Parcelable {
     private var _binding: FragmentRoominBinding? = null
     private val binding get() = _binding!!
     private var chatRoomId: String? = null
+    private var myhour : Int? = null
+    private var mymin : Int? = null
+    private var roomname : String? = null
 
-    fun createChatRoom(name: String, description: String) {
+    fun createChatRoom(roomname: String, hour:Int, min:Int) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val chatRoomsRef = database.child("chatRooms") // 채팅방 이름
 
-        val chatRoom = ChatRoom(name, description)
+        val chatRoom = ChatRoom(roomname,hour,min)
         val chatRoomRef = chatRoomsRef.push()
         binding.textViewContainer.removeAllViews()
         chatRoomRef.setValue(chatRoom)
             .addOnSuccessListener {
                 // 채팅방 생성 성공 시 처리할 로직
                 println("채팅방이 생성되었습니다.")
-                println("채팅방 이름: $name")
-                println("채팅방 설명: $description")
+                println("채팅방 이름: $roomname")
             }
             .addOnFailureListener { e ->
                 // 채팅방 생성 실패 시 처리할 로직
@@ -48,7 +48,7 @@ class RoomInFragment() : Fragment(), Parcelable {
         println("생성된 채팅방 ID: $chatRoomId")
     }
 
-    class ChatRoom(val name: String, val description: String)
+    class ChatRoom(val roomname: String, val hour: Int, val min: Int)
 
     private fun getChatRoomName(chatRoomId: String) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
@@ -57,7 +57,7 @@ class RoomInFragment() : Fragment(), Parcelable {
         chatRoomRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val chatRoom = dataSnapshot.getValue(ChatRoom::class.java)
-                val chatRoomName = chatRoom?.name
+                val chatRoomName = chatRoom?.roomname
 
                 if (chatRoomName != null) {
                     println("채팅방 이름: $chatRoomName")
@@ -154,12 +154,18 @@ class RoomInFragment() : Fragment(), Parcelable {
     ): View? {
         _binding = FragmentRoominBinding.inflate(inflater, container, false)
         val view = binding.root
-
-
-        binding.button.setOnClickListener { // 채팅방 생성
-            val chatnames = binding.editTextTextPersonName.text.toString()
-            createChatRoom(chatnames, "학교에서 정왕역까지 구합니다")
+        arguments?.let { bundle ->
+            roomname = bundle.getString("roomname")
         }
+        arguments?.let { bundle ->
+            myhour = bundle.getInt("hour")
+        }
+        arguments?.let { bundle ->
+            mymin = bundle.getInt("min")
+        }
+
+        binding.roomnames.text = roomname
+
         binding.button3.setOnClickListener { // 메시지 전송
             val chatname = "$chatRoomId"
             val senderId = "jyk1234567"

@@ -19,7 +19,6 @@ class ClockFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,7 +26,7 @@ class ClockFragment: Fragment() {
     ): View? {
         _binding = FragmentClockBinding.inflate(inflater, container, false)
         val view = binding.root
-
+        val bundle = Bundle()
         //time_picker = findViewById<TimePicker>(R.id.time_picker)
         time_picker = binding.timePicker
         //tv_time = findViewById<TextView>(R.id.tv_time)
@@ -41,16 +40,20 @@ class ClockFragment: Fragment() {
             } else {
                 tv_time!!.text = "AM" + hour + "시" + min + "분 선택"
             }
-
+            val myhour = hour
+            bundle.putInt("hour",myhour)
+            bundle.putInt("min",min)
         }
 
+        binding.setButton.setOnClickListener{
+            val navController = findNavController()
+            navController.navigate(R.id.roomCreateFragment, bundle)
+        }
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // 프래그먼트가 실행 된 이후에 보일 화면
         super.onViewCreated(view, savedInstanceState)
-
-
     }
 
     override fun onDestroyView() {
