@@ -6,30 +6,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/start_autocomplete_fragment"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/startEdittext"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:hint="출발지를 입력하세요"
+        app:layout_constraintEnd_toStartOf="@+id/startButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/autocompleteContainer"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/start_autocomplete_fragment"
+        android:text="검색"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/startEdittext" />
+
+    <EditText
+        android:id="@+id/endEdittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="도착지를 입력하세요"
+        app:layout_constraintEnd_toStartOf="@+id/endButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/startEdittext" />
 
-        <fragment
-            android:id="@+id/end_autocomplete_fragment"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </FrameLayout>
+    <Button
+        android:id="@+id/endButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="검색"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/endEdittext" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapFragment"
@@ -37,8 +46,9 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/autocompleteContainer" />
+        app:layout_constraintTop_toBottomOf="@+id/endEdittext" />
 
     <Button
         android:id="@+id/quickMatchingbtn"
