@@ -13,11 +13,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.tukxi.databinding.FragmentRoominBinding
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-//import kotlinx.coroutines.NonCancellable.message
+import com.google.firebase.firestore.FirebaseFirestore
 import org.checkerframework.checker.units.qual.min
 
 
@@ -29,7 +32,69 @@ class RoomInFragment() : Fragment(), Parcelable {
     private var mymin : Int? = null
     private var roomname : String? = null
 
+    private var user = FirebaseAuth.getInstance()
+    private var uid = user.uid
+
+    fun getUserNickname(uid: String): String? {
+        val db = FirebaseFirestore.getInstance()
+        val usersCollection = db.collection("users")
+
+        val documentSnapshot = Tasks.await(usersCollection.document(uid).get())
+
+        return if (documentSnapshot.exists()) {
+            documentSnapshot.getString("Nickname")
+        } else {
+            null
+        }
+    }
+
+        fun createChatRoom(roomname: String, hour:Int, min:Int) {
+        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+        val chatRoomsRef = database.child("chatRooms") // 채팅방 이름
+
+        val chatRoom = ChatRoom(roomname,hour,min)
+        val chatRoomRef = chatRoomsRef.push()
+        binding.textViewContainer.removeAllViews()
+        chatRoomRef.setValue(chatRoom)
+            .addOnSuccessListener {
+                // 채팅방 생성 성공 시 처리할 로직
+                println("채팅방이 생성되었습니다.")
+                println("채팅방 이름: $roomname")
+            }
+            .addOnFailureListener { e ->
+                // 채팅방 생성 실패 시 처리할 로직
+                println("채팅방 생성에 실패했습니다: ${e.message}")
+            }
+        chatRoomId = chatRoomRef.key
+        println("생성된 채팅방 ID: $chatRoomId")
+    }
+
+    class ChatRoom(val roomname: String, val hour: Int, val min: Int)
+
+    private fun getChatRoomName(chatRoomId: String) {
+        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+        val chatRoomRef = database.child("chatRooms").child(chatRoomId)
+
+        chatRoomRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val chatRoom = dataSnapshot.getValue(ChatRoom::class.java)
+                val chatRoomName = chatRoom?.roomname
+
+                if (chatRoomName != null) {
+                    println("채팅방 이름: $chatRoomName")
+                } else {
+                    println("채팅방 이름을 가져오지 못했습니다.")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("채팅방 이름을 가져오는데 실패했습니다: ${error.message}")
+            }
+        })
+    }
+
     data class ChatMessage(val senderId: String = "", val message: String = "")
+
 
     // 채팅 메시지 전송
     fun sendMessage(chatRoomId: String, senderId: String, message: String) {
@@ -164,6 +229,7 @@ class RoomInFragment() : Fragment(), Parcelable {
         val senderId = "jyk1234567"
 
         binding.button3.setOnClickListener { // 메시지 전송
+            val chatname = "$chatRoomId"
             val message = binding.messages.text.toString()
             if(mode == 0){
                 getChatRoomMessages(chatRoomClickId.toString())
@@ -174,6 +240,11 @@ class RoomInFragment() : Fragment(), Parcelable {
                 sendMessage(chatroomid, senderId, message)
                 receiveMessage(chatroomid)
             }
+            val senderId = uid?.let { it1 -> getUserNickname(it1) }
+            if (senderId != null) {
+                sendMessage(chatname, senderId, message)
+            }
+            receiveMessage("$chatRoomId")
         }
         // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
 

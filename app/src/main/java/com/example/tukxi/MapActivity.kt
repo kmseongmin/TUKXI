@@ -29,11 +29,20 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.gms.common.api.Status
 import android.content.Context
+import android.location.Geocoder
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.Marker
 
+class MapViewModel : ViewModel() {
+    var startLatLng: LatLng? = null
+    var endLatLng: LatLng? = null
+}
 class MapActivity : Fragment(), OnMapReadyCallback {
     private var _binding: ActivityMapBinding? = null
     private val binding get() = _binding!!
@@ -43,16 +52,32 @@ class MapActivity : Fragment(), OnMapReadyCallback {
     private lateinit var quickMatchingbtn: Button
     private lateinit var searchRoombtn: Button
     private lateinit var makeRoombtn: Button
-    private lateinit var startmapSearch: AutocompleteSupportFragment
-    private lateinit var endmapSearch: AutocompleteSupportFragment
-    private lateinit var startplaceName: String
-    private lateinit var startplaceAddress: String
-    private lateinit var startplaceId: String
-    private lateinit var endplaceName: String
-    private lateinit var endplaceAddress: String
-    private lateinit var endplaceId: String
+    private lateinit var startedt:EditText
+    private lateinit var endedt:EditText
+    private lateinit var startbtn:Button
+    private lateinit var endbtn:Button
+    // 출발지와 도착지 마커 변수
+    private var startMarker: Marker? = null
+    private var endMarker: Marker? = null
+    // 출발지와 도착지 위치 저장하는 변수
+    private var startLatLng: LatLng? = null
+    private var endLatLng: LatLng? = null
+    private var savedCameraPosition: CameraPosition? = null
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
+    private lateinit var mapViewModel: MapViewModel
+
+    private fun showStartMarker() {
+        if (mapViewModel.startLatLng != null) {
+            startMarker = googleMap?.addMarker(MarkerOptions().position(mapViewModel.startLatLng!!).title("출발지"))
+        }
+    }
+
+    private fun showEndMarker() {
+        if (mapViewModel.endLatLng != null) {
+            endMarker = googleMap?.addMarker(MarkerOptions().position(mapViewModel.endLatLng!!).title("도착지"))
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -65,6 +90,12 @@ class MapActivity : Fragment(), OnMapReadyCallback {
         searchRoombtn = binding.searchRoombtn
         makeRoombtn = binding.makeRoombtn
         mapView = binding.mapFragment
+        startedt = binding.startEdittext
+        endedt = binding.endEdittext
+        startbtn = binding.startButton
+        endbtn = binding.endButton
+
+        mapViewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
 
         searchRoombtn.setOnClickListener{
             val navController = findNavController()
@@ -78,39 +109,70 @@ class MapActivity : Fragment(), OnMapReadyCallback {
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), "AIzaSyAdHvlLbQv5ykMeeoCph3ZFAK11X-bIKDA") // 여기서 "YOUR_API_KEY"를 실제 API 키로 대체해야 합니다.
         }
-        // 출발지 검색 관련 코드
-        startmapSearch = childFragmentManager.findFragmentById(R.id.start_autocomplete_fragment) as AutocompleteSupportFragment
-        startmapSearch.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS))
-        startmapSearch.setHint("출발지")
-        startmapSearch.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                startplaceName = place.name as String
-                startplaceAddress = place.address as String
-                startplaceId = place.id as String
-                // 선택된 장소를 처리하는 로직을 추가하세요.
-            }
 
-            override fun onError(status: Status) {
-                // 오류 처리
-            }
-        })
+// 출발지 검색 관련 코드
+        startbtn.setOnClickListener {
+            val location = startedt.text.toString()
+            if (location.isNotEmpty()) {
+                val geocoder = Geocoder(requireContext())
+                try {
+                    val addresses = geocoder.getFromLocationName(location, 1)
+                    if (addresses != null) {
+                        if (addresses.isNotEmpty()) {
+                            val address = addresses[0]
+                            val latLng = LatLng(address.latitude, address.longitude)
+                            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
 
-        // 도착지 검색 관련 코드
-        endmapSearch = childFragmentManager.findFragmentById(R.id.end_autocomplete_fragment) as AutocompleteSupportFragment
-        endmapSearch.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS))
-        endmapSearch.setHint("도착지")
-        endmapSearch.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                endplaceName = place.name as String
-                endplaceAddress = place.address as String
-                endplaceId = place.id as String
-                // 선택된 장소를 처리하는 로직을 추가하세요.
+                            if (startMarker != null) {
+                                startMarker?.position = latLng
+                                startLatLng = latLng
+                            } else {
+                                startMarker = googleMap?.addMarker(MarkerOptions().position(latLng).title("출발지"))
+                                startLatLng = latLng
+                            }
+                        } else {
+                            // 주소를 찾을 수 없음
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } else {
+                // 검색어를 입력해주세요.
             }
+        }
 
-            override fun onError(status: Status) {
-                // 오류 처리
+// 도착지 검색 관련 코드
+        endbtn.setOnClickListener {
+            val location = endedt.text.toString()
+            if (location.isNotEmpty()) {
+                val geocoder = Geocoder(requireContext())
+                try {
+                    val addresses = geocoder.getFromLocationName(location, 1)
+                    if (addresses != null) {
+                        if (addresses.isNotEmpty()) {
+                            val address = addresses[0]
+                            val latLng = LatLng(address.latitude, address.longitude)
+                            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+
+                            if (endMarker != null) {
+                                endMarker?.position = latLng
+                                endLatLng = latLng
+                            } else {
+                                endMarker = googleMap?.addMarker(MarkerOptions().position(latLng).title("도착지"))
+                                endLatLng = latLng
+                            }
+                        } else {
+                            // 주소를 찾을 수 없음
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } else {
+                // 검색어를 입력해주세요.
             }
-        })
+        }
 
         return binding.root
     }
@@ -144,7 +206,11 @@ class MapActivity : Fragment(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
         enableMyLocation()
+
+        showStartMarker()
+        showEndMarker()
     }
+
 
     private fun enableMyLocation() {
         if (googleMap != null) {
@@ -163,7 +229,6 @@ class MapActivity : Fragment(), OnMapReadyCallback {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 location?.let {
                     val currentLocation = LatLng(location.latitude, location.longitude)
-                    googleMap?.addMarker(MarkerOptions().position(currentLocation).title("현재 위치"))
                     googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
                 }
             }
@@ -174,6 +239,8 @@ class MapActivity : Fragment(), OnMapReadyCallback {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        mapViewModel.startLatLng = startLatLng
+        mapViewModel.endLatLng = endLatLng
     }
 
     override fun onStart() {
@@ -189,11 +256,27 @@ class MapActivity : Fragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         mapView.onResume()
+        savedCameraPosition?.let {
+            googleMap?.moveCamera(CameraUpdateFactory.newCameraPosition(it))
+        }
+        // 마커 다시 생성
+        if (startLatLng != null) {
+            startMarker = googleMap?.addMarker(MarkerOptions().position(startLatLng!!).title("출발지"))
+        }
+        if (endLatLng != null) {
+            endMarker = googleMap?.addMarker(MarkerOptions().position(endLatLng!!).title("도착지"))
+        }
     }
 
     override fun onPause() {
         super.onPause()
         mapView.onPause()
+        savedCameraPosition = googleMap?.cameraPosition
+        // 마커 제거
+        startMarker?.remove()
+        endMarker?.remove()
+        startMarker = null
+        endMarker = null
     }
 
     override fun onLowMemory() {
