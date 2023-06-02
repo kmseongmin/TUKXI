@@ -12,10 +12,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.tukxi.databinding.FragmentRoominBinding
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import org.checkerframework.checker.units.qual.min
 
 
@@ -27,7 +31,23 @@ class RoomInFragment() : Fragment(), Parcelable {
     private var mymin : Int? = null
     private var roomname : String? = null
 
-    fun createChatRoom(roomname: String, hour:Int, min:Int) {
+    private var user = FirebaseAuth.getInstance()
+    private var uid = user.uid
+
+    fun getUserNickname(uid: String): String? {
+        val db = FirebaseFirestore.getInstance()
+        val usersCollection = db.collection("users")
+
+        val documentSnapshot = Tasks.await(usersCollection.document(uid).get())
+
+        return if (documentSnapshot.exists()) {
+            documentSnapshot.getString("Nickname")
+        } else {
+            null
+        }
+    }
+
+        fun createChatRoom(roomname: String, hour:Int, min:Int) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val chatRoomsRef = database.child("chatRooms") // 채팅방 이름
 
@@ -168,9 +188,11 @@ class RoomInFragment() : Fragment(), Parcelable {
 
         binding.button3.setOnClickListener { // 메시지 전송
             val chatname = "$chatRoomId"
-            val senderId = "jyk1234567"
             val message = binding.messages.text.toString()
-            sendMessage(chatname, senderId, message)
+            val senderId = uid?.let { it1 -> getUserNickname(it1) }
+            if (senderId != null) {
+                sendMessage(chatname, senderId, message)
+            }
             receiveMessage("$chatRoomId")
         }
         // 채팅방 생성 : 이름과 채팅방설명을 저장한다
