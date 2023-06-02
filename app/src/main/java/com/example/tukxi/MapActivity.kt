@@ -33,10 +33,16 @@ import android.location.Geocoder
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Marker
 
+class MapViewModel : ViewModel() {
+    var startLatLng: LatLng? = null
+    var endLatLng: LatLng? = null
+}
 class MapActivity : Fragment(), OnMapReadyCallback {
     private var _binding: ActivityMapBinding? = null
     private val binding get() = _binding!!
@@ -59,6 +65,19 @@ class MapActivity : Fragment(), OnMapReadyCallback {
     private var savedCameraPosition: CameraPosition? = null
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
+    private lateinit var mapViewModel: MapViewModel
+
+    private fun showStartMarker() {
+        if (mapViewModel.startLatLng != null) {
+            startMarker = googleMap?.addMarker(MarkerOptions().position(mapViewModel.startLatLng!!).title("출발지"))
+        }
+    }
+
+    private fun showEndMarker() {
+        if (mapViewModel.endLatLng != null) {
+            endMarker = googleMap?.addMarker(MarkerOptions().position(mapViewModel.endLatLng!!).title("도착지"))
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -75,6 +94,8 @@ class MapActivity : Fragment(), OnMapReadyCallback {
         endedt = binding.endEdittext
         startbtn = binding.startButton
         endbtn = binding.endButton
+
+        mapViewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
 
         makeRoombtn.setOnClickListener{
             val navController = findNavController()
@@ -180,6 +201,9 @@ class MapActivity : Fragment(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
         enableMyLocation()
+
+        showStartMarker()
+        showEndMarker()
     }
 
 
@@ -200,7 +224,6 @@ class MapActivity : Fragment(), OnMapReadyCallback {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 location?.let {
                     val currentLocation = LatLng(location.latitude, location.longitude)
-                    googleMap?.addMarker(MarkerOptions().position(currentLocation).title("현재 위치"))
                     googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
                 }
             }
@@ -211,6 +234,8 @@ class MapActivity : Fragment(), OnMapReadyCallback {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        mapViewModel.startLatLng = startLatLng
+        mapViewModel.endLatLng = endLatLng
     }
 
     override fun onStart() {
