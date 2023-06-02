@@ -91,7 +91,7 @@
             android:text="도착지"
             android:textSize="20sp" />
 
-        textView4textView4<Button
+        <Button
             android:id="@+id/btnTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -136,18 +136,11 @@
             android:layout_marginTop="50dp"
             android:ems="10"
             android:inputType="text"
+            android:text="방 이름"
             tools:ignore="MissingConstraints" />
 
 
-        <LinearLayout
-            android:id="@+id/textViewContainer"
-            android:layout_width="402dp"
-            android:layout_height="217dp"
-            android:orientation="vertical"
-            tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="110dp">
-            />
-        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

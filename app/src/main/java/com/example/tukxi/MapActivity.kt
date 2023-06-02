@@ -66,6 +66,11 @@ class MapActivity : Fragment(), OnMapReadyCallback {
         makeRoombtn = binding.makeRoombtn
         mapView = binding.mapFragment
 
+        searchRoombtn.setOnClickListener{
+            val navController = findNavController()
+            navController.navigate(R.id.roomViewFragment)
+        }
+
         makeRoombtn.setOnClickListener{
             val navController = findNavController()
             navController.navigate(R.id.roomCreateFragment)

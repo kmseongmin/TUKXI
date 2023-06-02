@@ -13,6 +13,12 @@
         <action
             android:id="@+id/action_mapActivity_to_roomCreateFragment"
             app:destination="@id/roomCreateFragment" />
+        <action
+            android:id="@+id/action_mapActivity_to_roomViewFragment"
+            app:destination="@id/roomViewFragment" />
+        <action
+            android:id="@+id/action_mapActivity_to_roomInFragment"
+            app:destination="@id/roomInFragment" />
     </fragment>
     <fragment
         android:id="@+id/roomInFragment"
@@ -22,13 +28,26 @@
         <argument
             android:name="myhour"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_roomInFragment_to_roomViewFragment"
+            app:destination="@id/roomViewFragment" />
+        <action
+            android:id="@+id/action_roomInFragment_to_roomCreateFragment"
+            app:destination="@id/roomCreateFragment" />
     </fragment>
     <fragment
         android:id="@+id/roomViewFragment"
         android:name="com.example.tukxi.RoomViewFragment"
         android:label="RoomViewFragment"
         tools:layout="@layout/fragment_roomview"
-        />
+        >
+        <action
+            android:id="@+id/action_roomViewFragment_to_roomInFragment"
+            app:destination="@id/roomInFragment" />
+        <action
+            android:id="@+id/action_roomViewFragment_to_mapActivity"
+            app:destination="@id/mapActivity" />
+    </fragment>
     <fragment
         android:id="@+id/myFragment"
         android:name="com.example.tukxi.MyFragment"

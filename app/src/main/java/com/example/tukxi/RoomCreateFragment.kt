@@ -19,16 +19,16 @@ class RoomCreateFragment : Fragment(){
     private val binding get() = _binding!!
 
     private var chatRoomId: String? = null
-    private var roomname : String? = null
     private var myhour : Int? = null
     private var mymin : Int? = null
+
     fun createChatRoom(roomname: String, hour:Int, min:Int) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val chatRoomsRef = database.child("chatRooms") // 채팅방 이름
 
         val chatRoom = ChatRoom(roomname,hour,min)
         val chatRoomRef = chatRoomsRef.push()
-        binding.textViewContainer.removeAllViews()
+
         chatRoomRef.setValue(chatRoom)
             .addOnSuccessListener {
                 // 채팅방 생성 성공 시 처리할 로직
@@ -67,13 +67,15 @@ class RoomCreateFragment : Fragment(){
                 // 토스트 메시지 등으로 유효성 검사를 추가하고, 적절한 조치를 취할 수 있습니다. 토스트 아직 미구현
                 return@setOnClickListener
             }
-            val chatnames = roomname.toString()
+            val chatnames = roomname
             createChatRoom(chatnames,myhour!!.toInt(),mymin!!.toInt())
 
            val bundle = Bundle().apply {
                 putString("roomname", roomname) // roomname 값을 Bundle에 담기
                 putInt("hour",myhour!!.toInt())
                 putInt("min",mymin!!.toInt())
+                putString("chatroomid",chatRoomId)
+                putInt("mode", 1)
             }
            val navController = findNavController()
             navController.navigate(R.id.roomInFragment,bundle)

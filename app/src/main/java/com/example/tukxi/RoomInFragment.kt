@@ -1,5 +1,6 @@
 package com.example.tukxi
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcel
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.tukxi.databinding.FragmentRoominBinding
 import com.google.firebase.database.*
+//import kotlinx.coroutines.NonCancellable.message
 import org.checkerframework.checker.units.qual.min
 
 
@@ -27,53 +29,7 @@ class RoomInFragment() : Fragment(), Parcelable {
     private var mymin : Int? = null
     private var roomname : String? = null
 
-    fun createChatRoom(roomname: String, hour:Int, min:Int) {
-        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-        val chatRoomsRef = database.child("chatRooms") // 채팅방 이름
-
-        val chatRoom = ChatRoom(roomname,hour,min)
-        val chatRoomRef = chatRoomsRef.push()
-        binding.textViewContainer.removeAllViews()
-        chatRoomRef.setValue(chatRoom)
-            .addOnSuccessListener {
-                // 채팅방 생성 성공 시 처리할 로직
-                println("채팅방이 생성되었습니다.")
-                println("채팅방 이름: $roomname")
-            }
-            .addOnFailureListener { e ->
-                // 채팅방 생성 실패 시 처리할 로직
-                println("채팅방 생성에 실패했습니다: ${e.message}")
-            }
-        chatRoomId = chatRoomRef.key
-        println("생성된 채팅방 ID: $chatRoomId")
-    }
-
-    class ChatRoom(val roomname: String, val hour: Int, val min: Int)
-
-    private fun getChatRoomName(chatRoomId: String) {
-        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-        val chatRoomRef = database.child("chatRooms").child(chatRoomId)
-
-        chatRoomRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val chatRoom = dataSnapshot.getValue(ChatRoom::class.java)
-                val chatRoomName = chatRoom?.roomname
-
-                if (chatRoomName != null) {
-                    println("채팅방 이름: $chatRoomName")
-                } else {
-                    println("채팅방 이름을 가져오지 못했습니다.")
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                println("채팅방 이름을 가져오는데 실패했습니다: ${error.message}")
-            }
-        })
-    }
-
     data class ChatMessage(val senderId: String = "", val message: String = "")
-
 
     // 채팅 메시지 전송
     fun sendMessage(chatRoomId: String, senderId: String, message: String) {
@@ -81,7 +37,7 @@ class RoomInFragment() : Fragment(), Parcelable {
         val chatRoomRef = database.child("chatRooms").child(chatRoomId).child("messages")
         val messageRef = chatRoomRef.push()
 
-        val chatMessage = RoomInFragment.ChatMessage(senderId, message)
+        val chatMessage = ChatMessage(senderId, message)
         messageRef.setValue(chatMessage)
             .addOnSuccessListener {
                 println("메시지가 전송되었습니다.")
@@ -99,17 +55,32 @@ class RoomInFragment() : Fragment(), Parcelable {
     }
 
     private var message : String? = null
-    private fun addTextView(name : String?) {
+    private var fragmentContext : Context? = null
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        fragmentContext = context
+    }
+    private fun addTextView(name : String?, senderId: String) {
+        val newTextView = TextView(fragmentContext)
 
-        val newTextView = TextView(requireContext())
-        newTextView.text = "$name"
-        textViews.add(newTextView)
+        newTextView.text = senderId + " : " + name
+        val layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        newTextView.layoutParams = layoutParams
+        //textViews.add(newTextView)
+        //binding.textViewContainer.addView(newTextView)
+
+
+        //val containerLayout = view?.findViewById<LinearLayout>(R.id.textViewContainer)
+
         binding.textViewContainer.addView(newTextView)
 
-        if (textViews.size > maxTextViewCount) {
-            val textViewToRemove = textViews.removeFirstOrNull()
-            binding.textViewContainer.removeView(textViewToRemove)
-        } //최신 10개의 텍스트만 보여줌
+        //if (textViews.size > maxTextViewCount) {
+          //  val textViewToRemove = textViews.removeFirstOrNull()
+          //  binding.textViewContainer.removeView(textViewToRemove)
+        //} //최신 10개의 텍스트만 보여줌
     }
     // 채팅 메시지 수신
     fun receiveMessage(chatRoomId: String) {
@@ -122,14 +93,14 @@ class RoomInFragment() : Fragment(), Parcelable {
                 textViews.clear()
 
                 for (messageSnapshot in dataSnapshot.children) {
-                    val chatMessage = messageSnapshot.getValue(ChatMessage::class.java)
+                    val chatMessage = messageSnapshot.getValue(RoomInFragment.ChatMessage::class.java)
                     val senderId = chatMessage?.senderId
                     message = chatMessage?.message
 
                     if (senderId != null && message != null) {
                         println("발신자 ID: $senderId")
                         println("메시지 내용: $message")
-                        addTextView(message)
+                        addTextView(message, senderId)
                     }
                 }
             }
@@ -140,10 +111,32 @@ class RoomInFragment() : Fragment(), Parcelable {
         })
     }
 
+    private fun getChatRoomMessages(chatRoomClickId: String) {
+        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+        val chatRoomRef = database.child("chatRooms").child("message")
 
+
+        chatRoomRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // 채팅 내역을 가져와 처리하는 로직을 여기에 구현하세요.
+                for (messageSnapshot in dataSnapshot.children) {
+                    // 각 메시지의 데이터를 가져오기
+                    val senderId = messageSnapshot.child("senderId").getValue(String::class.java)
+                    val message = messageSnapshot.child("chatRooms").child("message").getValue(String::class.java)
+                    sendMessage(chatRoomClickId, senderId.toString(), message.toString())
+                    receiveMessage(chatRoomClickId)
+                    // 채팅 내역을 화면에 표시하는 로직을 구현하세요.
+                    // ...
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("ChatRoomFragment", "채팅 내역 가져오기 실패: ${error.message}")
+            }
+        })
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
 
@@ -154,42 +147,49 @@ class RoomInFragment() : Fragment(), Parcelable {
     ): View? {
         _binding = FragmentRoominBinding.inflate(inflater, container, false)
         val view = binding.root
+        var chatRoomClickId : String? = null
+        var mode : Int? = null
         arguments?.let { bundle ->
             roomname = bundle.getString("roomname")
-        }
-        arguments?.let { bundle ->
             myhour = bundle.getInt("hour")
-        }
-        arguments?.let { bundle ->
             mymin = bundle.getInt("min")
+            chatRoomId= bundle.getString("chatroomid")
+            chatRoomClickId = bundle.getString("chatRoomClickId") // 방 조회에서 받은 id
+            mode = bundle.getInt("mode")
         }
-
-        binding.roomnames.text = roomname
+        if(mode==0){
+            receiveMessage(chatRoomClickId.toString())
+        }
+        val chatroomid = chatRoomId.toString() // 방생성에서 넘어온 Id
+        val senderId = "jyk1234567"
 
         binding.button3.setOnClickListener { // 메시지 전송
-            val chatname = "$chatRoomId"
-            val senderId = "jyk1234567"
             val message = binding.messages.text.toString()
-            sendMessage(chatname, senderId, message)
-            receiveMessage("$chatRoomId")
+            if(mode == 0){
+                getChatRoomMessages(chatRoomClickId.toString())
+                sendMessage(chatRoomClickId.toString(), senderId, message)
+                receiveMessage(chatRoomClickId.toString())
+            }
+            else if(mode == 1) {
+                sendMessage(chatroomid, senderId, message)
+                receiveMessage(chatroomid)
+            }
         }
-        // 채팅방 생성 : 이름과 채팅방설명을 저장한다
-        //getChatRoomName("$chatRoomId")
-        // 채팅방 이름을 ID를 통해 가져온다
-
         // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
 
         return view
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // 프래그먼트가 실행 된 이후에 보일 화면
         super.onViewCreated(view, savedInstanceState)
-
+        val chatRoomClickId = arguments?.getString("chatRoomClickId")
+        val mode = arguments?.getInt("mode")
+        if (mode == 0) {
+            receiveMessage(chatRoomClickId.toString())
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
