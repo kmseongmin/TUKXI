@@ -5,10 +5,12 @@ import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.example.tukxi.databinding.FragmentRoomcreateBinding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,6 +24,20 @@ class RoomCreateFragment : Fragment(){
     private var roomname : String? = null
     private var myhour : Int? = null
     private var mymin : Int? = null
+    //출발지 도착지 경위도 저장 변수
+    private lateinit var startLatLng: LatLng
+    private lateinit var endLatLng: LatLng
+    //출발지 도착지 저장 변수
+    private var startname: String? = null
+    private var endname: String? = null
+    //출발지 도착지 각각의 경위도 정보 따로
+    private var startLatitude: Double = 0.0
+    private var startLongitude: Double = 0.0
+    private var endLatitude: Double = 0.0
+    private var endLongitude: Double = 0.0
+    //출발지 도착지 TextView
+    private lateinit var startnameTextview:TextView
+    private lateinit var endnameTextview:TextView
     fun createChatRoom(roomname: String, hour:Int, min:Int) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val chatRoomsRef = database.child("chatRooms") // 채팅방 이름
@@ -59,7 +75,24 @@ class RoomCreateFragment : Fragment(){
         arguments?.let { bundle ->
             myhour = bundle.getInt("hour")
             mymin = bundle.getInt("min")
+            // MapActivity로부터 출발지 도착지의 정보를 받음
+            startLatitude = bundle.getDouble("startLatitude")
+            startLongitude = bundle.getDouble("startLongitude")
+            endLatitude = bundle.getDouble("endLatitude")
+            endLongitude = bundle.getDouble("endLongitude")
+            startname = bundle.getString("startname")
+            endname = bundle.getString("endname")
         }
+        //경위도값 저장
+        startLatLng = LatLng(startLatitude, startLongitude)
+        endLatLng = LatLng(endLatitude, endLongitude)
+
+        //출발지 도착지 이름 입력
+        startnameTextview = binding.startnametextView
+        endnameTextview = binding.endnametextView
+        startnameTextview.setText("출발지 : " + startname)
+        endnameTextview.setText("도착지 : " + endname)
+
 
         binding.button2.setOnClickListener{
             val roomname = binding.editTextText.text.toString() // 만약 채팅방 이름이 2글자 이하이면 다시 생성하도록 토스트메시지 출력 구현해야함
