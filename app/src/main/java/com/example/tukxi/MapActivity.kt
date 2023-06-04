@@ -33,29 +33,27 @@ import android.location.Geocoder
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Marker
 
-class MapViewModel : ViewModel() {
-    var startLatLng: LatLng? = null
-    var endLatLng: LatLng? = null
-}
 class MapActivity : Fragment(), OnMapReadyCallback {
     private var _binding: ActivityMapBinding? = null
     private val binding get() = _binding!!
     private var googleMap: GoogleMap? = null
 
     private lateinit var mapView: MapView
-    private lateinit var quickMatchingbtn: Button
     private lateinit var searchRoombtn: Button
     private lateinit var makeRoombtn: Button
     private lateinit var startedt:EditText
     private lateinit var endedt:EditText
     private lateinit var startbtn:Button
     private lateinit var endbtn:Button
+    private lateinit var startname:String
+    private lateinit var endname:String
     // 출발지와 도착지 마커 변수
     private var startMarker: Marker? = null
     private var endMarker: Marker? = null
@@ -86,7 +84,6 @@ class MapActivity : Fragment(), OnMapReadyCallback {
     ): View? {
         _binding = ActivityMapBinding.inflate(inflater, container, false)
 
-        quickMatchingbtn = binding.quickMatchingbtn
         searchRoombtn = binding.searchRoombtn
         makeRoombtn = binding.makeRoombtn
         mapView = binding.mapFragment
@@ -97,20 +94,11 @@ class MapActivity : Fragment(), OnMapReadyCallback {
 
         mapViewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
 
-        searchRoombtn.setOnClickListener{
-            val navController = findNavController()
-            navController.navigate(R.id.roomViewFragment)
-        }
-
-        makeRoombtn.setOnClickListener{
-            val navController = findNavController()
-            navController.navigate(R.id.roomCreateFragment)
-        }
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), "AIzaSyAdHvlLbQv5ykMeeoCph3ZFAK11X-bIKDA") // 여기서 "YOUR_API_KEY"를 실제 API 키로 대체해야 합니다.
         }
 
-// 출발지 검색 관련 코드
+        // 출발지 검색 관련 코드
         startbtn.setOnClickListener {
             val location = startedt.text.toString()
             if (location.isNotEmpty()) {
@@ -131,18 +119,18 @@ class MapActivity : Fragment(), OnMapReadyCallback {
                                 startLatLng = latLng
                             }
                         } else {
-                            // 주소를 찾을 수 없음
+                            Toast.makeText(requireContext(), "정확한 주소를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             } else {
-                // 검색어를 입력해주세요.
+                Toast.makeText(requireContext(), "검색어를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
             }
         }
 
-// 도착지 검색 관련 코드
+        // 도착지 검색 관련 코드
         endbtn.setOnClickListener {
             val location = endedt.text.toString()
             if (location.isNotEmpty()) {
@@ -163,14 +151,52 @@ class MapActivity : Fragment(), OnMapReadyCallback {
                                 endLatLng = latLng
                             }
                         } else {
-                            // 주소를 찾을 수 없음
+                            Toast.makeText(requireContext(), "정확한 주소를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             } else {
-                // 검색어를 입력해주세요.
+                Toast.makeText(requireContext(), "검색어를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // 방만들기 버튼 코드
+        searchRoombtn.setOnClickListener{
+            if(startLatLng == null || endLatLng == null){
+                Toast.makeText(requireContext(), "출발지와 도착지를 설정해 주세요!!", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                val searchRoombundle = Bundle().apply {
+                    putDouble("startLatitude", startLatLng!!.latitude)
+                    putDouble("startLongitude",startLatLng!!.longitude)
+                    putDouble("endLatitude", endLatLng!!.latitude)
+                    putDouble("endLongitude",endLatLng!!.longitude)
+                    putString("startname", startedt.text.toString())
+                    putString("endname", endedt.text.toString())
+                }
+                val navController = findNavController()
+                navController.navigate(R.id.roomViewFragment,searchRoombundle)
+            }
+        }
+
+        // 방만들기 버튼 코드
+        makeRoombtn.setOnClickListener{
+            if(startLatLng == null || endLatLng == null){
+                Toast.makeText(requireContext(), "출발지와 도착지를 설정해 주세요!!", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                val makeRoombundle = Bundle().apply {
+                    putDouble("startLatitude", startLatLng!!.latitude)
+                    putDouble("startLongitude",startLatLng!!.longitude)
+                    putDouble("endLatitude", endLatLng!!.latitude)
+                    putDouble("endLongitude",endLatLng!!.longitude)
+                    putString("startname", startedt.text.toString())
+                    putString("endname", endedt.text.toString())
+                }
+                val navController = findNavController()
+                navController.navigate(R.id.roomCreateFragment,makeRoombundle)
             }
         }
 
@@ -288,4 +314,8 @@ class MapActivity : Fragment(), OnMapReadyCallback {
         mapView.onDestroy()
         super.onDestroy()
     }
+}
+class MapViewModel : ViewModel() {
+    var startLatLng: LatLng? = null
+    var endLatLng: LatLng? = null
 }

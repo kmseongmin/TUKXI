@@ -58,21 +58,6 @@
         app:layout_constraintTop_toBottomOf="@+id/endEdittext" />
 
     <Button
-        android:id="@+id/quickMatchingbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/bin_blue2"
-        android:fontFamily="@font/bold"
-        android:text="빠른 매칭"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/searchRoombtn"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/searchRoombtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -85,7 +70,7 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/makeRoombtn"
-        app:layout_constraintStart_toEndOf="@+id/quickMatchingbtn" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/makeRoombtn"
