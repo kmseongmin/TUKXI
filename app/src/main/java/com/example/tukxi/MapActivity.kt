@@ -33,6 +33,7 @@ import android.location.Geocoder
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -97,10 +98,6 @@ class MapActivity : Fragment(), OnMapReadyCallback {
 
         mapViewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
 
-        makeRoombtn.setOnClickListener{
-            val navController = findNavController()
-            navController.navigate(R.id.roomCreateFragment)
-        }
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), "AIzaSyAdHvlLbQv5ykMeeoCph3ZFAK11X-bIKDA") // 여기서 "YOUR_API_KEY"를 실제 API 키로 대체해야 합니다.
         }
@@ -126,14 +123,14 @@ class MapActivity : Fragment(), OnMapReadyCallback {
                                 startLatLng = latLng
                             }
                         } else {
-                            // 주소를 찾을 수 없음
+                            Toast.makeText(requireContext(), "정확한 주소를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             } else {
-                // 검색어를 입력해주세요.
+                Toast.makeText(requireContext(), "검색어를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -158,15 +155,20 @@ class MapActivity : Fragment(), OnMapReadyCallback {
                                 endLatLng = latLng
                             }
                         } else {
-                            // 주소를 찾을 수 없음
+                            Toast.makeText(requireContext(), "정확한 주소를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             } else {
-                // 검색어를 입력해주세요.
+                Toast.makeText(requireContext(), "검색어를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        makeRoombtn.setOnClickListener{
+            val navController = findNavController()
+            navController.navigate(R.id.roomCreateFragment)
         }
 
         return binding.root
