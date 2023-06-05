@@ -44,7 +44,8 @@ class RoomCreateFragment : Fragment(){
 
         val chatRoom = ChatRoom(roomname,hour,min)
         val chatRoomRef = chatRoomsRef.push()
-        binding.textViewContainer.removeAllViews()
+
+
         chatRoomRef.setValue(chatRoom)
             .addOnSuccessListener {
                 // 채팅방 생성 성공 시 처리할 로직

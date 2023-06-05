@@ -113,6 +113,7 @@ class RoomInFragment() : Fragment(), Parcelable {
                 println("메시지 전송에 실패했습니다: ${e.message}")
             }
     }
+
     private val textViews = mutableListOf<TextView>()
     private val maxTextViewCount = 10
     constructor(parcel: Parcel) : this() {
@@ -222,9 +223,7 @@ class RoomInFragment() : Fragment(), Parcelable {
             chatRoomClickId = bundle.getString("chatRoomClickId") // 방 조회에서 받은 id
             mode = bundle.getInt("mode")
         }
-        if(mode==0){
-            receiveMessage(chatRoomClickId.toString())
-        }
+
         val chatroomid = chatRoomId.toString() // 방생성에서 넘어온 Id
         val senderId = "jyk1234567"
 
@@ -240,11 +239,11 @@ class RoomInFragment() : Fragment(), Parcelable {
                 sendMessage(chatroomid, senderId, message)
                 receiveMessage(chatroomid)
             }
-            val senderId = uid?.let { it1 -> getUserNickname(it1) }
-            if (senderId != null) {
-                sendMessage(chatname, senderId, message)
-            }
-            receiveMessage("$chatRoomId")
+            //val senderId = uid?.let { it1 -> getUserNickname(it1) }
+            //if (senderId != null) {
+             //   sendMessage(chatname, senderId, message)
+            //}
+            //receiveMessage("$chatRoomId")
         }
         // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
 
