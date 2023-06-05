@@ -31,7 +31,7 @@ class RoomInFragment() : Fragment(), Parcelable {
     private var myhour : Int? = null
     private var mymin : Int? = null
     private var roomname : String? = null
-
+    private var roomid : String? = null
     private var user = FirebaseAuth.getInstance()
     private var uid = user.uid
 
@@ -48,7 +48,7 @@ class RoomInFragment() : Fragment(), Parcelable {
         }
     }
 
-        fun createChatRoom(roomname: String, hour:Int, min:Int) {
+    fun createChatRoom(roomname: String, hour:Int, min:Int) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val chatRoomsRef = database.child("chatRooms") // 채팅방 이름
 
@@ -113,7 +113,6 @@ class RoomInFragment() : Fragment(), Parcelable {
                 println("메시지 전송에 실패했습니다: ${e.message}")
             }
     }
-
     private val textViews = mutableListOf<TextView>()
     private val maxTextViewCount = 10
     constructor(parcel: Parcel) : this() {
@@ -144,8 +143,8 @@ class RoomInFragment() : Fragment(), Parcelable {
         binding.textViewContainer.addView(newTextView)
 
         //if (textViews.size > maxTextViewCount) {
-          //  val textViewToRemove = textViews.removeFirstOrNull()
-          //  binding.textViewContainer.removeView(textViewToRemove)
+        //  val textViewToRemove = textViews.removeFirstOrNull()
+        //  binding.textViewContainer.removeView(textViewToRemove)
         //} //최신 10개의 텍스트만 보여줌
     }
     // 채팅 메시지 수신
@@ -179,7 +178,7 @@ class RoomInFragment() : Fragment(), Parcelable {
 
     private fun getChatRoomMessages(chatRoomClickId: String) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-        val chatRoomRef = database.child("chatRooms").child("message")
+        val chatRoomRef = database.child("chatRooms").child(chatRoomId.toString()).child("message")
 
 
         chatRoomRef.addValueEventListener(object : ValueEventListener {
@@ -219,13 +218,16 @@ class RoomInFragment() : Fragment(), Parcelable {
             roomname = bundle.getString("roomname")
             myhour = bundle.getInt("hour")
             mymin = bundle.getInt("min")
-            chatRoomId= bundle.getString("chatroomid")
+            chatRoomId= bundle.getString("chatRoomId")
             chatRoomClickId = bundle.getString("chatRoomClickId") // 방 조회에서 받은 id
             mode = bundle.getInt("mode")
         }
-
+        //if(mode==0){
+            //receiveMessage(chatRoomClickId.toString())
+        //}
         val chatroomid = chatRoomId.toString() // 방생성에서 넘어온 Id
         val senderId = "jyk1234567"
+
 
         binding.button3.setOnClickListener { // 메시지 전송
             val chatname = "$chatRoomId"
@@ -236,12 +238,13 @@ class RoomInFragment() : Fragment(), Parcelable {
                 receiveMessage(chatRoomClickId.toString())
             }
             else if(mode == 1) {
+                getChatRoomMessages(chatroomid)
                 sendMessage(chatroomid, senderId, message)
                 receiveMessage(chatroomid)
             }
             //val senderId = uid?.let { it1 -> getUserNickname(it1) }
             //if (senderId != null) {
-             //   sendMessage(chatname, senderId, message)
+               // sendMessage(chatname, senderId, message)
             //}
             //receiveMessage("$chatRoomId")
         }
@@ -255,6 +258,9 @@ class RoomInFragment() : Fragment(), Parcelable {
         val mode = arguments?.getInt("mode")
         if (mode == 0) {
             receiveMessage(chatRoomClickId.toString())
+        }
+        else{
+            receiveMessage(chatRoomId.toString())
         }
     }
 

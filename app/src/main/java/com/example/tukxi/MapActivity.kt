@@ -36,6 +36,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Marker
@@ -255,6 +256,7 @@ class MapActivity : Fragment(), OnMapReadyCallback {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 location?.let {
                     val currentLocation = LatLng(location.latitude, location.longitude)
+                    googleMap?.addMarker(MarkerOptions().position(currentLocation).title("현재 위치"))
                     googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
                 }
             }
