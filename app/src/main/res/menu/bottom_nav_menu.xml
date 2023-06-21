@@ -12,7 +12,7 @@
         android:title="방 조회" />
 
     <item
-        android:id="@+id/roomInFragment"
+        android:id="@+id/roomCreateFragment"
         android:enabled="true"
         android:title="방 생성" />
     <item

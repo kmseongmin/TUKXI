@@ -25,6 +25,11 @@
         android:theme="@style/Theme.TukXi"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivity"
+            android:exported="true">
+
+        </activity>
+        <activity
             android:name=".MainRoomActivity"
             android:exported="true">
             <intent-filter>

@@ -55,6 +55,7 @@ class MapActivity : Fragment(), OnMapReadyCallback {
     private lateinit var endbtn:Button
     private lateinit var startname:String
     private lateinit var endname:String
+
     // 출발지와 도착지 마커 변수
     private var startMarker: Marker? = null
     private var endMarker: Marker? = null
@@ -163,13 +164,13 @@ class MapActivity : Fragment(), OnMapReadyCallback {
             }
         }
 
-        // 방만들기 버튼 코드
+        // 방 조회 버튼 코드
         searchRoombtn.setOnClickListener{
             if(startLatLng == null || endLatLng == null){
                 Toast.makeText(requireContext(), "출발지와 도착지를 설정해 주세요!!", Toast.LENGTH_SHORT).show()
             }
             else{
-                val searchRoombundle = Bundle().apply {
+                val bundle = Bundle().apply {
                     putDouble("startLatitude", startLatLng!!.latitude)
                     putDouble("startLongitude",startLatLng!!.longitude)
                     putDouble("endLatitude", endLatLng!!.latitude)
@@ -178,7 +179,7 @@ class MapActivity : Fragment(), OnMapReadyCallback {
                     putString("endname", endedt.text.toString())
                 }
                 val navController = findNavController()
-                navController.navigate(R.id.roomViewFragment,searchRoombundle)
+                navController.navigate(R.id.roomViewFragment,bundle)
             }
         }
 
@@ -188,7 +189,7 @@ class MapActivity : Fragment(), OnMapReadyCallback {
                 Toast.makeText(requireContext(), "출발지와 도착지를 설정해 주세요!!", Toast.LENGTH_SHORT).show()
             }
             else{
-                val makeRoombundle = Bundle().apply {
+                val bundle = Bundle().apply {
                     putDouble("startLatitude", startLatLng!!.latitude)
                     putDouble("startLongitude",startLatLng!!.longitude)
                     putDouble("endLatitude", endLatLng!!.latitude)
@@ -197,7 +198,7 @@ class MapActivity : Fragment(), OnMapReadyCallback {
                     putString("endname", endedt.text.toString())
                 }
                 val navController = findNavController()
-                navController.navigate(R.id.roomCreateFragment,makeRoombundle)
+                navController.navigate(R.id.roomCreateFragment,bundle)
             }
         }
 

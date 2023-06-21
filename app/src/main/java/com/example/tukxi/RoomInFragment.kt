@@ -247,6 +247,7 @@ class RoomInFragment() : Fragment(), Parcelable {
                // sendMessage(chatname, senderId, message)
             //}
             //receiveMessage("$chatRoomId")
+            binding.messages.text.clear()
         }
         // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
 

@@ -13,7 +13,7 @@ import com.example.tukxi.databinding.FragmentRoomviewBinding
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.play.integrity.internal.c
 import com.google.firebase.database.*
-
+import kotlin.math.*
 
 class RoomViewFragment : Fragment() {
     private var _binding: FragmentRoomviewBinding? = null
@@ -30,12 +30,28 @@ class RoomViewFragment : Fragment() {
     private var startLongitude: Double = 0.0
     private var endLatitude: Double = 0.0
     private var endLongitude: Double = 0.0
+
+    data class LatLng(val latitude: Double, val longitude: Double)
+
+    fun calculateDistanceInMeters(location1: LatLng, location2: LatLng): Double {
+        val earthRadius = 6371000.0 // 지구의 반지름 (미터)
+
+        val lat1Rad = Math.toRadians(location1.latitude)
+        val lat2Rad = Math.toRadians(location2.latitude)
+        val latDiffRad = Math.toRadians(location2.latitude - location1.latitude)
+        val lngDiffRad = Math.toRadians(location2.longitude - location1.longitude)
+
+        val a = sin(latDiffRad / 2).pow(2) + cos(lat1Rad) * cos(lat2Rad) * sin(lngDiffRad / 2).pow(2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        return earthRadius * c
+    }
     private fun getChatRoomNames() {
         val chatRoomsRef = database.child("chatRooms")
 
         chatRoomsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val containerLayout = view?.findViewById<LinearLayout>(R.id.roomNamesContainer)
+                val containerLayout = view?.findViewById<LinearLayout>(R.id.roomNamescontainer)
 
                 containerLayout?.removeAllViews()
 
@@ -84,7 +100,7 @@ class RoomViewFragment : Fragment() {
         val view = binding.root
         database = FirebaseDatabase.getInstance().reference
         // 방 이름들을 가져와서 버튼 생성
-        getChatRoomNames()
+
         arguments?.let { bundle ->
             // MapActivity로부터 출발지 도착지의 정보를 받음
             startLatitude = bundle.getDouble("startLatitude")
@@ -98,6 +114,9 @@ class RoomViewFragment : Fragment() {
         startLatLng = LatLng(startLatitude, startLongitude)
         endLatLng = LatLng(endLatitude, endLongitude)
 
+        val distance = calculateDistanceInMeters(startLatLng, endLatLng)
+
+        getChatRoomNames()
         return view
     }
 
