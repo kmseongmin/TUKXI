@@ -16,9 +16,6 @@
         <action
             android:id="@+id/action_mapActivity_to_roomViewFragment"
             app:destination="@id/roomViewFragment" />
-        <action
-            android:id="@+id/action_mapActivity_to_roomInFragment"
-            app:destination="@id/roomInFragment" />
     </fragment>
     <fragment
         android:id="@+id/roomInFragment"
@@ -32,8 +29,11 @@
             android:id="@+id/action_roomInFragment_to_roomViewFragment"
             app:destination="@id/roomViewFragment" />
         <action
-            android:id="@+id/action_roomInFragment_to_roomCreateFragment"
+            android:id="@+id/action_roomInFragment_to_roomCreateFragment2"
             app:destination="@id/roomCreateFragment" />
+        <action
+            android:id="@+id/action_roomInFragment_to_mapActivity"
+            app:destination="@id/mapActivity" />
     </fragment>
     <fragment
         android:id="@+id/roomViewFragment"
@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_roomViewFragment_to_roomInFragment"
             app:destination="@id/roomInFragment" />
+        <action
+            android:id="@+id/action_roomViewFragment_to_roomCreateFragment"
+            app:destination="@id/roomCreateFragment" />
         <action
             android:id="@+id/action_roomViewFragment_to_mapActivity"
             app:destination="@id/mapActivity" />
@@ -62,11 +65,14 @@
             android:name="myhours"
             app:argType="string" />
         <action
+            android:id="@+id/action_roomCreateFragment_to_clockFragment"
+            app:destination="@id/clockFragment" />
+        <action
             android:id="@+id/action_roomCreateFragment_to_roomInFragment"
             app:destination="@id/roomInFragment" />
         <action
-            android:id="@+id/action_roomCreateFragment_to_clockFragment"
-            app:destination="@id/clockFragment" />
+            android:id="@+id/action_roomCreateFragment_to_roomViewFragment"
+            app:destination="@id/roomViewFragment" />
         <action
             android:id="@+id/action_roomCreateFragment_to_mapActivity"
             app:destination="@id/mapActivity" />
@@ -78,9 +84,6 @@
         <action
             android:id="@+id/action_clockFragment_to_roomCreateFragment"
             app:destination="@id/roomCreateFragment" />
-        <action
-            android:id="@+id/action_clockFragment_to_mapActivity"
-            app:destination="@id/mapActivity" />
     </fragment>
     <activity
         android:id="@+id/registerActivity"

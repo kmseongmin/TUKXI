@@ -19,9 +19,12 @@ import androidx.navigation.findNavController
 import com.example.tukxi.databinding.FragmentRoominBinding
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import org.checkerframework.checker.units.qual.min
+import java.util.concurrent.Semaphore
 
 
 class RoomInFragment() : Fragment(), Parcelable {
@@ -34,7 +37,7 @@ class RoomInFragment() : Fragment(), Parcelable {
     private var roomid : String? = null
     private var user = FirebaseAuth.getInstance()
     private var uid = user.uid
-
+    private lateinit var senderId : String
     fun getUserNickname(uid: String): String? {
         val db = FirebaseFirestore.getInstance()
         val usersCollection = db.collection("users")
@@ -134,18 +137,8 @@ class RoomInFragment() : Fragment(), Parcelable {
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         newTextView.layoutParams = layoutParams
-        //textViews.add(newTextView)
-        //binding.textViewContainer.addView(newTextView)
-
-
-        //val containerLayout = view?.findViewById<LinearLayout>(R.id.textViewContainer)
-
         binding.textViewContainer.addView(newTextView)
 
-        //if (textViews.size > maxTextViewCount) {
-        //  val textViewToRemove = textViews.removeFirstOrNull()
-        //  binding.textViewContainer.removeView(textViewToRemove)
-        //} //최신 10개의 텍스트만 보여줌
     }
     // 채팅 메시지 수신
     fun receiveMessage(chatRoomId: String) {
@@ -214,6 +207,31 @@ class RoomInFragment() : Fragment(), Parcelable {
         val view = binding.root
         var chatRoomClickId : String? = null
         var mode : Int? = null
+        val auth = Firebase.auth
+        val currentUser = auth.currentUser
+        var Nickname : String? = null
+        if(currentUser != null) {
+            val Email = currentUser.email
+            val db = FirebaseFirestore.getInstance()
+            val collectionReference = FirebaseFirestore.getInstance().collection("UserInformation")
+            collectionReference
+                .whereEqualTo("Email", Email) // 필드의 값을 지정하여 해당 문서를 찾습니다.
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    for (documentSnapshot in querySnapshot.documents) {
+                        // 문서에 접근하여 데이터를 가져옵니다.
+                        val data = documentSnapshot.data
+                        Nickname = documentSnapshot.get("Nickname").toString()
+                        requireActivity().runOnUiThread {
+                            senderId = Nickname.toString()
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    // 데이터 가져오기 실패 시 처리할 로직
+                }
+
+        }
         arguments?.let { bundle ->
             roomname = bundle.getString("roomname")
             myhour = bundle.getInt("hour")
@@ -226,31 +244,36 @@ class RoomInFragment() : Fragment(), Parcelable {
             //receiveMessage(chatRoomClickId.toString())
         //}
         val chatroomid = chatRoomId.toString() // 방생성에서 넘어온 Id
-        val senderId = "jyk1234567"
 
-
-        binding.button3.setOnClickListener { // 메시지 전송
-            val chatname = "$chatRoomId"
-            val message = binding.messages.text.toString()
-            if(mode == 0){
-                getChatRoomMessages(chatRoomClickId.toString())
-                sendMessage(chatRoomClickId.toString(), senderId, message)
-                receiveMessage(chatRoomClickId.toString())
+        binding.messages.hint = "채팅을 입력하세요"
+        var flag = true
+        while(flag) {
+            getChatRoomMessages(chatRoomClickId.toString())
+            binding.button3.setOnClickListener { // 메시지 전송
+                if (binding.messages.text.length == 0) {
+                    Toast.makeText(requireContext(), "채팅을 입력하세요!", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                val chatname = "$chatRoomId"
+                val message = binding.messages.text.toString()
+                if (mode == 0) {
+                    getChatRoomMessages(chatRoomClickId.toString())
+                    sendMessage(chatRoomClickId.toString(), senderId, message)
+                    receiveMessage(chatRoomClickId.toString())
+                } else if (mode == 1) {
+                    getChatRoomMessages(chatroomid)
+                    sendMessage(chatroomid, senderId, message)
+                    receiveMessage(chatroomid)
+                }
+                //val senderId = uid?.let { it1 -> getUserNickname(it1) }
+                //if (senderId != null) {
+                // sendMessage(chatname, senderId, message)
+                //}
+                //receiveMessage("$chatRoomId")
+                binding.messages.text.clear()
             }
-            else if(mode == 1) {
-                getChatRoomMessages(chatroomid)
-                sendMessage(chatroomid, senderId, message)
-                receiveMessage(chatroomid)
-            }
-            //val senderId = uid?.let { it1 -> getUserNickname(it1) }
-            //if (senderId != null) {
-               // sendMessage(chatname, senderId, message)
-            //}
-            //receiveMessage("$chatRoomId")
-            binding.messages.text.clear()
+            // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
         }
-        // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
-
         return view
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // 프래그먼트가 실행 된 이후에 보일 화면

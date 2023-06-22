@@ -61,7 +61,6 @@
             android:fontFamily="@font/bold"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
-            android:text="사용자 닉네임"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -133,10 +132,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:text="방 이름"
-            tools:ignore="MissingConstraints" />
-
-
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="3dp"
+            tools:layout_editor_absoluteY="11dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

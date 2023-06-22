@@ -51,6 +51,7 @@ class LoginActivity : AppCompatActivity() {
                             // 로그인 성공 처리
                             Toast.makeText(this,"로그인 성공",Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, MainRoomActivity::class.java)
+
                             startActivity(intent)
                         } else {
                             // 이메일 확인이 완료되지 않은 사용자

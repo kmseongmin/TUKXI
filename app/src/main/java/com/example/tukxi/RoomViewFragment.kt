@@ -1,6 +1,7 @@
 package com.example.tukxi
 
 import android.os.Bundle
+import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

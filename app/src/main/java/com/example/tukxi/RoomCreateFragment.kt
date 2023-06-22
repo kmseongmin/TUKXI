@@ -1,10 +1,14 @@
 package com.example.tukxi
 
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.example.tukxi.databinding.FragmentRoomcreateBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,10 +22,18 @@ import com.google.firebase.firestore.FirebaseFirestore
 import org.checkerframework.checker.units.qual.min
 import kotlin.math.*
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.auth.User
+import com.google.firebase.ktx.Firebase
+
 
 class MyViewModel : ViewModel() {
     val startnames: MutableLiveData<String> = MutableLiveData()
     val endnames: MutableLiveData<String> = MutableLiveData()
+    val startLatitudes : MutableLiveData<Double> = MutableLiveData()
+    val startLongtitudes : MutableLiveData<Double> = MutableLiveData()
+    val endLatitudes : MutableLiveData<Double> = MutableLiveData()
+    val endLongtitudes : MutableLiveData<Double> = MutableLiveData()
 }
 
 class RoomCreateFragment : Fragment(){
@@ -47,6 +59,7 @@ class RoomCreateFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+
     }
     fun createChatRoom(roomname: String, hour:Int, min:Int, startLatlng: LatLng, endLatlng : LatLng) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
@@ -92,7 +105,32 @@ class RoomCreateFragment : Fragment(){
     ): View? {
         _binding = FragmentRoomcreateBinding.inflate(inflater, container, false)
         val view = binding.root
+        val auth = Firebase.auth
+        val currentUser = auth.currentUser
+        var Nickname : String? = null
+        if(currentUser != null) {
+            val Email = currentUser.email
+            val db = FirebaseFirestore.getInstance()
+            val collectionReference = FirebaseFirestore.getInstance().collection("UserInformation")
 
+            collectionReference
+                .whereEqualTo("Email", Email) // 필드의 값을 지정하여 해당 문서를 찾습니다.
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    for (documentSnapshot in querySnapshot.documents) {
+                        // 문서에 접근하여 데이터를 가져옵니다.
+                        val data = documentSnapshot.data
+                        Nickname = documentSnapshot.get("Nickname").toString()
+                        binding.tvUserNickname.text = Nickname + "님 안녕하세요"
+                        binding.editTextText.hint = Nickname + "님의 방"
+                            // 가져온 데이터를 활용하는 로직을 작성합니다.
+                    }
+                }
+                .addOnFailureListener { e ->
+                    // 데이터 가져오기 실패 시 처리할 로직
+                }
+
+        }
         arguments?.let { bundle ->
             myhour = bundle.getInt("hour")
             mymin = bundle.getInt("min")
@@ -105,11 +143,8 @@ class RoomCreateFragment : Fragment(){
             endname = bundle.getString("endname").toString()
             typemode = bundle.getInt("typemode")
         }
-        //sharedviewModel.startnames = startname
-        //sharedviewModel.endnames = endname
+
         //경위도값 저장
-        startLatLng = LatLng(startLatitude!!.toDouble(), startLongitude!!.toDouble())
-        endLatLng = LatLng(endLatitude!!.toDouble(), endLongitude!!.toDouble())
 
         //출발지 도착지 이름 입력
         startnameTextview = binding.startnametextView
@@ -118,23 +153,46 @@ class RoomCreateFragment : Fragment(){
         if(typemode == 1) {
             startname = sharedviewModel.startnames.value.toString()
             endname = sharedviewModel.endnames.value.toString()
+            startLatitude = sharedviewModel.startLatitudes.value
+            startLongitude = sharedviewModel.startLongtitudes.value
+            endLatitude = sharedviewModel.endLatitudes.value
+            endLongitude = sharedviewModel.endLongtitudes.value
             startnameTextview.setText("출발지 : " + sharedviewModel.startnames.value.toString())
             endnameTextview.setText("도착지 : $endname")
         }
         else if(typemode == 0) {
             sharedviewModel.startnames.setValue(startname)
             sharedviewModel.endnames.setValue(endname)
+            sharedviewModel.startLatitudes.setValue(startLatitude)
+            sharedviewModel.startLongtitudes.setValue(startLongitude)
+            sharedviewModel.endLatitudes.setValue(endLatitude)
+            sharedviewModel.endLongtitudes.setValue(endLongitude)
             startnameTextview.setText("출발지 : " + startname)
             endnameTextview.setText("도착지 : " + endname)
         }
+        startLatLng = LatLng(startLatitude!!.toDouble(), startLongitude!!.toDouble())
+        endLatLng = LatLng(endLatitude!!.toDouble(), endLongitude!!.toDouble())
         var mode = 1
+        binding.btnTime.setOnClickListener{
+            val navController = findNavController()
+            navController.navigate(R.id.clockFragment)
+        }
         binding.button2.setOnClickListener{
-            val roomname = binding.editTextText.text.toString() // 만약 채팅방 이름이 2글자 이하이면 다시 생성하도록 토스트메시지 출력 구현해야함
-            if (roomname.length < 3) {
+            var roomname = binding.editTextText.text.toString() // 만약 채팅방 이름이 2글자 이하이면 다시 생성하도록 토스트메시지 출력 구현해야함
+            if(roomname.length == 0){
+                roomname = binding.editTextText.hint.toString()
+            }
+            else if (roomname.length < 3 && roomname.length > 0) {
                 // 토스트 메시지 등으로 유효성 검사를 추가하고, 적절한 조치를 취할 수 있습니다. 토스트 아직 미구현
+                Toast.makeText(requireContext(),"방 이름을 세 글자 이상으로 설정해주세요!",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val chatnames = roomname.toString()
+
+            if(mymin == 0 || myhour == 0){
+                Toast.makeText(requireContext(), "출발시간을 꼭 설정해주세요!", Toast.LENGTH_SHORT).show()
+               return@setOnClickListener
+            }
+            val chatnames = roomname
             createChatRoom(chatnames,myhour!!.toInt(),mymin!!.toInt(), startLatLng, endLatLng) // 방생성
 
            val bundle = Bundle().apply {
@@ -154,15 +212,13 @@ class RoomCreateFragment : Fragment(){
            val navController = findNavController()
             navController.navigate(R.id.roomInFragment,bundle)
         }
-        binding.btnTime.setOnClickListener{
-            val navController = findNavController()
-            navController.navigate(R.id.clockFragment)
-        }
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // 프래그먼트가 실행 된 이후에 보일 화면
         super.onViewCreated(view, savedInstanceState)
+
         sharedviewModel.startnames.observe(viewLifecycleOwner) { startname ->
             startnameTextview.text = "출발지 : $startname"
         }
