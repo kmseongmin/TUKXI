@@ -126,11 +126,11 @@ class RoomInFragment() : Fragment(), Parcelable {
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         if(senderId == Nickname) {
-            newTextView.text = name
+            newTextView.text = name + ":" +senderId
             layoutParams.gravity = Gravity.END
         }
         else {
-            newTextView.text = name
+            newTextView.text = name +":" + senderId
             layoutParams.gravity = Gravity.START
         }
         binding.scrollvw.post {
