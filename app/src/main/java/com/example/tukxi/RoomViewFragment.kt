@@ -1,18 +1,22 @@
 package com.example.tukxi
 
+import android.location.Geocoder
 import android.os.Bundle
 import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.tukxi.databinding.FragmentRoomviewBinding
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.Places
 import com.google.android.play.integrity.internal.c
 import com.google.firebase.database.*
 import kotlin.math.*
@@ -41,6 +45,11 @@ class RoomViewFragment : Fragment() {
     private lateinit var fbstartLatLng: LatLng
     private lateinit var fbendLatLng: LatLng
     private var peoplecount : Int? = 0
+    //출발지 도착지 설정 edt텍스트
+    private lateinit var endedt: EditText
+    private lateinit var startedt: EditText
+    private lateinit var searchbtn: Button
+
     data class LatLng(val latitude: Double, val longitude: Double)
 
     //두 위치 사이의 거리
@@ -146,9 +155,51 @@ class RoomViewFragment : Fragment() {
             startname = bundle.getString("startname")
             endname = bundle.getString("endname")
         }
+        startedt = binding.startedt
+        endedt = binding.endedt
+        searchbtn = binding.searchbtn
+        if (!Places.isInitialized()) {
+            Places.initialize(requireContext(), "AIzaSyAdHvlLbQv5ykMeeoCph3ZFAK11X-bIKDA")
+        }
+
+        searchbtn.setOnClickListener {
+            val startlocation = startedt.text.toString()
+            val endlocation = endedt.text.toString()
+            if (startlocation.isNotEmpty() && endlocation.isNotEmpty()) {
+                val geocoder = Geocoder(requireContext())
+                try {
+                    val startaddresses = geocoder.getFromLocationName(startlocation, 1)
+                    val endaddresses = geocoder.getFromLocationName(endlocation, 1)
+                    if (startaddresses != null && endaddresses !=null) {
+                        if (startaddresses.isNotEmpty()&&endaddresses.isNotEmpty()) {
+                            val startaddress = startaddresses[0]
+                            val endaddress = endaddresses[0]
+                            startLatLng = LatLng(
+                                startaddress.latitude,
+                                startaddress.longitude
+                            )
+                            endLatLng = LatLng(
+                                endaddress.latitude,
+                                endaddress.longitude
+                            )
+                        } else {
+                            Toast.makeText(requireContext(), "정확한 주소를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } else {
+                Toast.makeText(requireContext(), "검색어를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
+            }
+            getChatRoomNames()
+        }
+
         //경위도값 저장
+
         startLatLng = LatLng(startLatitude, startLongitude)
         endLatLng = LatLng(endLatitude, endLongitude)
+
 
         getChatRoomNames()
         return view

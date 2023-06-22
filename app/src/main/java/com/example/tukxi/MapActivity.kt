@@ -97,7 +97,7 @@ class MapActivity : Fragment(), OnMapReadyCallback {
         mapViewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
 
         if (!Places.isInitialized()) {
-            Places.initialize(requireContext(), "AIzaSyAdHvlLbQv5ykMeeoCph3ZFAK11X-bIKDA") // 여기서 "YOUR_API_KEY"를 실제 API 키로 대체해야 합니다.
+            Places.initialize(requireContext(), "AIzaSyAdHvlLbQv5ykMeeoCph3ZFAK11X-bIKDA")
         }
 
         // 출발지 검색 관련 코드
