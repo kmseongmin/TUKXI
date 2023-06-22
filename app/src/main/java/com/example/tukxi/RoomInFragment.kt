@@ -7,7 +7,12 @@ import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.provider.ContactsContract
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +52,7 @@ class RoomInFragment() : Fragment(), Parcelable {
     private lateinit var senderId : String
     private var Nickname : String? = null
     private var mode : Int? = null
+    private var peoplecount : Int? = 0
     fun getUserNickname(uid: String): String? {
         val db = FirebaseFirestore.getInstance()
         val usersCollection = db.collection("users")
@@ -126,13 +132,25 @@ class RoomInFragment() : Fragment(), Parcelable {
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         if(senderId == Nickname) {
-            newTextView.text = name
+            val message = "$senderId\n$name"
+            val spannable = SpannableString(message)
+
+            // senderId 부분에 대한 스타일 적용
+            val startIndex = 0
+            val endIndex = senderId.length
+            val span = ForegroundColorSpan(Color.BLUE)
+            val relativeSizeSpan = RelativeSizeSpan(0.7f)
+            spannable.setSpan(span, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannable.setSpan(relativeSizeSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            newTextView.text = spannable
             layoutParams.gravity = Gravity.END
+            newTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
         }
         else {
-            newTextView.text = name
+            newTextView.text = "$senderId :  $name"
             layoutParams.gravity = Gravity.START
         }
+        newTextView.setBackgroundColor(Color.TRANSPARENT)
         binding.scrollvw.post {
             val lastChildIndex = binding.textViewContainer.childCount - 1
             if (lastChildIndex >= 0) {
@@ -140,6 +158,9 @@ class RoomInFragment() : Fragment(), Parcelable {
                 binding.scrollvw.scrollTo(0, lastChild.bottom)
             }
         }
+        val margin = resources.getDimensionPixelSize(R.dimen.text_view_margin)
+        layoutParams.setMargins(margin, margin, margin, margin)
+
         newTextView.textSize = 25f
         newTextView.setTextColor(Color.BLACK)
 
@@ -250,7 +271,7 @@ class RoomInFragment() : Fragment(), Parcelable {
 
         binding.messages.hint = "채팅을 입력하세요"
 
-            Toast.makeText(requireContext(), "채팅 내역을 불러오는 중입니다..." ,Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "채팅 내역을 불러오는 중입니다..." , Toast.LENGTH_LONG).show()
             getChatRoomMessages(chatRoomClickId.toString())
 
             binding.button3.setOnClickListener { // 메시지 전송
@@ -265,6 +286,7 @@ class RoomInFragment() : Fragment(), Parcelable {
                     sendMessage(chatRoomClickId.toString(), senderId, message)
                     receiveMessage(chatRoomClickId.toString())
                 } else if (mode == 1) {
+                    peoplecount = 1
                     getChatRoomMessages(chatroomid)
                     sendMessage(chatroomid, senderId, message)
                     receiveMessage(chatroomid)
@@ -289,10 +311,39 @@ class RoomInFragment() : Fragment(), Parcelable {
             receiveMessage(chatRoomClickId.toString())
         }
         else if(mode == 1){
+            getChatRoomMessages(chatRoomId.toString())
             receiveMessage(chatRoomId.toString())
         }
     }
+    private fun updateFirebaseValue() {
+        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+        val setval = database.child("chatRooms").child(chatRoomId.toString()).child("peoplecount")
 
+        // 변경하고자 하는 데이터의 참조 경로를 지정합니다.
+        setval.runTransaction(object : Transaction.Handler {
+            override fun doTransaction(currentData: MutableData): Transaction.Result {
+                val value = currentData.getValue(Int::class.java) ?: 0
+                currentData.value = value - 1
+                return Transaction.success(currentData)
+            }
+
+            override fun onComplete(
+                error: DatabaseError?,
+                committed: Boolean,
+                currentData: DataSnapshot?
+            ) {
+                if (error != null) {
+                    // 업데이트 중에 오류가 발생한 경우 처리할 코드를 작성합니다.
+                } else {
+                    // 업데이트가 성공적으로 완료된 경우 처리할 코드를 작성합니다.
+                }
+            }
+        })
+    }
+    override fun onPause() {
+        super.onPause()
+        updateFirebaseValue()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
     }

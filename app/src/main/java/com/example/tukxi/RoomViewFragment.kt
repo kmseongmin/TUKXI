@@ -40,7 +40,7 @@ class RoomViewFragment : Fragment() {
     //파이어베이스에서 가져온 출발지 도착지 경위도 저장 변수
     private lateinit var fbstartLatLng: LatLng
     private lateinit var fbendLatLng: LatLng
-
+    private var peoplecount : Int? = 0
     data class LatLng(val latitude: Double, val longitude: Double)
 
     //두 위치 사이의 거리
@@ -77,6 +77,7 @@ class RoomViewFragment : Fragment() {
                     val roomName = roomSnapshot.child("roomname").getValue(String::class.java)
                     val chatRoomId = roomSnapshot.key
                     if (roomName != null) {
+                        peoplecount = roomSnapshot.child("peoplecount").getValue(Int::class.java)
                         fbstartLatitude = roomSnapshot.child("startLatLng").child("latitude").getValue(Double::class.java)
                         fbstartLongitude = roomSnapshot.child("startLatLng").child("longitude").getValue(Double::class.java)
                         fbendLatitude = roomSnapshot.child("endLatlng").child("latitude").getValue(Double::class.java)
@@ -103,14 +104,16 @@ class RoomViewFragment : Fragment() {
         })
     }
     var mode = 0
+
     private fun createButtonForChatRoom(containerLayout: LinearLayout?, roomName: String, chatRoomId : String) {
         if(isAdded) {
             val button = Button(requireActivity())
-            button.text = roomName
+            button.text = roomName + "\n 현재 인원 수 : $peoplecount / 4"
             val bundle = Bundle()
             button.setOnClickListener {
                 bundle.putString("chatRoomClickId", chatRoomId)
                 bundle.putInt("mode", mode)
+
                 // 버튼 클릭 시 방에 접속하는 동작을 구현하세요
                 val navController = findNavController()
                 navController.navigate(R.id.roomInFragment, bundle)

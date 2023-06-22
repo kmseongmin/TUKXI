@@ -53,6 +53,7 @@ class RoomCreateFragment : Fragment(){
     private lateinit var endnameTextview : TextView
     private lateinit var startname : String
     private lateinit var endname : String
+    private var peoplecount : Int = 1
     private val sharedviewModel: MyViewModel by viewModels({requireParentFragment()})
     var typemode = 0
     // 변수 초기화 예시
@@ -61,11 +62,11 @@ class RoomCreateFragment : Fragment(){
         super.onCreate(savedInstanceState)
 
     }
-    fun createChatRoom(roomname: String, hour:Int, min:Int, startLatlng: LatLng, endLatlng : LatLng) {
+    fun createChatRoom(roomname: String, hour:Int, min:Int, startLatlng: LatLng, endLatlng : LatLng, peoplecount : Int) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val chatRoomsRef = database.child("chatRooms") // 채팅방 이름
         val distance = calculateDistanceInMeters(startLatlng, endLatlng)
-        val chatRoom = ChatRoom(roomname,hour,min,distance,startLatlng,endLatlng)
+        val chatRoom = ChatRoom(roomname,hour,min,distance,startLatlng,endLatlng, peoplecount)
         val chatRoomRef = chatRoomsRef.push()
 
         chatRoomRef.setValue(chatRoom)
@@ -97,7 +98,7 @@ class RoomCreateFragment : Fragment(){
         return earthRadius * c
     }
 
-    class ChatRoom(val roomname: String, val hour: Int, val min: Int, val distance : Double, val startLatLng : LatLng, val endLatlng : LatLng)
+    class ChatRoom(val roomname: String, val hour: Int, val min: Int, val distance : Double, val startLatLng : LatLng, val endLatlng : LatLng, var peoplecount: Int)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -193,7 +194,7 @@ class RoomCreateFragment : Fragment(){
                return@setOnClickListener
             }
             val chatnames = roomname
-            createChatRoom(chatnames,myhour!!.toInt(),mymin!!.toInt(), startLatLng, endLatLng) // 방생성
+            createChatRoom(chatnames,myhour!!.toInt(),mymin!!.toInt(), startLatLng, endLatLng, peoplecount) // 방생성
 
            val bundle = Bundle().apply {
                putString("roomname", roomname) // roomname 값을 Bundle에 담기
