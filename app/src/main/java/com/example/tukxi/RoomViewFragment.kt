@@ -1,18 +1,22 @@
 package com.example.tukxi
 
+import android.location.Geocoder
 import android.os.Bundle
 import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.tukxi.databinding.FragmentRoomviewBinding
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.Places
 import com.google.android.play.integrity.internal.c
 import com.google.firebase.database.*
 import kotlin.math.*
@@ -21,9 +25,6 @@ class RoomViewFragment : Fragment() {
     private var _binding: FragmentRoomviewBinding? = null
     private val binding get() = _binding!!
     private lateinit var database: DatabaseReference
-    //출발지 도착지 경위도 저장 변수
-    private lateinit var startLatLng: LatLng
-    private lateinit var endLatLng: LatLng
     //출발지 도착지 저장 변수
     private var startname: String? = null
     private var endname: String? = null
@@ -32,9 +33,26 @@ class RoomViewFragment : Fragment() {
     private var startLongitude: Double = 0.0
     private var endLatitude: Double = 0.0
     private var endLongitude: Double = 0.0
+    //출발지 도착지 경위도 저장 변수
+    private lateinit var startLatLng: LatLng
+    private lateinit var endLatLng: LatLng
+    //파이어베이스에서 가져올 출발지 도착지 경위도 따로 저장 변수
+    private var fbstartLatitude: Double? = 0.0
+    private var fbstartLongitude: Double? = 0.0
+    private var fbendLatitude: Double? = 0.0
+    private var fbendLongitude: Double? = 0.0
+    //파이어베이스에서 가져온 출발지 도착지 경위도 저장 변수
+    private lateinit var fbstartLatLng: LatLng
+    private lateinit var fbendLatLng: LatLng
+    private var peoplecount : Int? = 0
+    //출발지 도착지 설정 edt텍스트
+    private lateinit var endedt: EditText
+    private lateinit var startedt: EditText
+    private lateinit var searchbtn: Button
 
     data class LatLng(val latitude: Double, val longitude: Double)
 
+    //두 위치 사이의 거리
     fun calculateDistanceInMeters(location1: LatLng, location2: LatLng): Double {
         val earthRadius = 6371000.0 // 지구의 반지름 (미터)
 
@@ -48,6 +66,13 @@ class RoomViewFragment : Fragment() {
 
         return earthRadius * c
     }
+
+    //center의 위치와 point 위치 사이의 거리가 radius(m)보다 작다면 true
+    fun isWithinRadius(center: LatLng, point: LatLng, radius: Double): Boolean {
+        val distance = calculateDistanceInMeters(center, point)
+        return distance <= radius
+    }
+
     private fun getChatRoomNames() {
         val chatRoomsRef = database.child("chatRooms")
 
@@ -61,7 +86,22 @@ class RoomViewFragment : Fragment() {
                     val roomName = roomSnapshot.child("roomname").getValue(String::class.java)
                     val chatRoomId = roomSnapshot.key
                     if (roomName != null) {
-                        createButtonForChatRoom(containerLayout, roomName, chatRoomId.toString())
+                        peoplecount = roomSnapshot.child("peoplecount").getValue(Int::class.java)
+                        fbstartLatitude = roomSnapshot.child("startLatLng").child("latitude").getValue(Double::class.java)
+                        fbstartLongitude = roomSnapshot.child("startLatLng").child("longitude").getValue(Double::class.java)
+                        fbendLatitude = roomSnapshot.child("endLatlng").child("latitude").getValue(Double::class.java)
+                        fbendLongitude = roomSnapshot.child("endLatlng").child("longitude").getValue(Double::class.java)
+                        if(fbstartLatitude != null && fbstartLongitude != null &&
+                                fbendLatitude != null && fbendLongitude != null){
+                            fbstartLatLng = LatLng(fbstartLatitude!!, fbstartLongitude!!)
+                            fbendLatLng = LatLng(fbendLatitude!!, fbendLongitude!!)
+                            val radius = 1000.0
+
+                            if(isWithinRadius(startLatLng,fbstartLatLng,radius)&&isWithinRadius(endLatLng,fbendLatLng,radius))
+                            {
+                                createButtonForChatRoom(containerLayout, roomName, chatRoomId.toString())
+                            }
+                        }
                     }
                 }
 
@@ -73,14 +113,16 @@ class RoomViewFragment : Fragment() {
         })
     }
     var mode = 0
+
     private fun createButtonForChatRoom(containerLayout: LinearLayout?, roomName: String, chatRoomId : String) {
         if(isAdded) {
             val button = Button(requireActivity())
-            button.text = roomName
+            button.text = roomName + "\n 현재 인원 수 : $peoplecount / 4"
             val bundle = Bundle()
             button.setOnClickListener {
                 bundle.putString("chatRoomClickId", chatRoomId)
                 bundle.putInt("mode", mode)
+
                 // 버튼 클릭 시 방에 접속하는 동작을 구현하세요
                 val navController = findNavController()
                 navController.navigate(R.id.roomInFragment, bundle)
@@ -113,11 +155,51 @@ class RoomViewFragment : Fragment() {
             startname = bundle.getString("startname")
             endname = bundle.getString("endname")
         }
+        startedt = binding.startedt
+        endedt = binding.endedt
+        searchbtn = binding.searchbtn
+        if (!Places.isInitialized()) {
+            Places.initialize(requireContext(), "AIzaSyAdHvlLbQv5ykMeeoCph3ZFAK11X-bIKDA")
+        }
+
+        searchbtn.setOnClickListener {
+            val startlocation = startedt.text.toString()
+            val endlocation = endedt.text.toString()
+            if (startlocation.isNotEmpty() && endlocation.isNotEmpty()) {
+                val geocoder = Geocoder(requireContext())
+                try {
+                    val startaddresses = geocoder.getFromLocationName(startlocation, 1)
+                    val endaddresses = geocoder.getFromLocationName(endlocation, 1)
+                    if (startaddresses != null && endaddresses !=null) {
+                        if (startaddresses.isNotEmpty()&&endaddresses.isNotEmpty()) {
+                            val startaddress = startaddresses[0]
+                            val endaddress = endaddresses[0]
+                            startLatLng = LatLng(
+                                startaddress.latitude,
+                                startaddress.longitude
+                            )
+                            endLatLng = LatLng(
+                                endaddress.latitude,
+                                endaddress.longitude
+                            )
+                        } else {
+                            Toast.makeText(requireContext(), "정확한 주소를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } else {
+                Toast.makeText(requireContext(), "검색어를 입력해 주세요!!", Toast.LENGTH_SHORT).show()
+            }
+            getChatRoomNames()
+        }
+
         //경위도값 저장
+
         startLatLng = LatLng(startLatitude, startLongitude)
         endLatLng = LatLng(endLatitude, endLongitude)
 
-        val distance = calculateDistanceInMeters(startLatLng, endLatLng)
 
         getChatRoomNames()
         return view
