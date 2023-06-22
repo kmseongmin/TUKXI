@@ -46,6 +46,7 @@ class RoomInFragment() : Fragment(), Parcelable {
     private var uid = user.uid
     private lateinit var senderId : String
     private var Nickname : String? = null
+    private var mode : Int? = null
     fun getUserNickname(uid: String): String? {
         val db = FirebaseFirestore.getInstance()
         val usersCollection = db.collection("users")
@@ -128,6 +129,10 @@ class RoomInFragment() : Fragment(), Parcelable {
             newTextView.text = name
             layoutParams.gravity = Gravity.END
         }
+        else {
+            newTextView.text = name
+            layoutParams.gravity = Gravity.START
+        }
         binding.scrollvw.post {
             val lastChildIndex = binding.textViewContainer.childCount - 1
             if (lastChildIndex >= 0) {
@@ -147,11 +152,12 @@ class RoomInFragment() : Fragment(), Parcelable {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val chatRoomRef = database.child("chatRooms").child(chatRoomId).child("messages")
 
-        chatRoomRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        chatRoomRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                binding.textViewContainer.removeAllViews()
-                textViews.clear()
-
+                if(mode==1) {
+                    binding.textViewContainer.removeAllViews()
+                    textViews.clear()
+                }
                 for (messageSnapshot in dataSnapshot.children) {
                     val chatMessage = messageSnapshot.getValue(RoomInFragment.ChatMessage::class.java)
                     val senderId = chatMessage?.senderId
@@ -208,7 +214,6 @@ class RoomInFragment() : Fragment(), Parcelable {
         _binding = FragmentRoominBinding.inflate(inflater, container, false)
         val view = binding.root
         var chatRoomClickId : String? = null
-        var mode : Int? = null
         val auth = Firebase.auth
         val currentUser = auth.currentUser
 
@@ -246,15 +251,9 @@ class RoomInFragment() : Fragment(), Parcelable {
 
         binding.messages.hint = "채팅을 입력하세요"
 
-        if(mode==0) {
             Toast.makeText(requireContext(), "채팅 내역을 불러오는 중입니다..." ,Toast.LENGTH_LONG).show()
             getChatRoomMessages(chatRoomClickId.toString())
-            receiveMessage(chatRoomClickId.toString())
-        }
-        else if (mode == 1){
-            getChatRoomMessages(chatroomid)
-            receiveMessage(chatroomid)
-        }
+
             binding.button3.setOnClickListener { // 메시지 전송
                 if (binding.messages.text.length == 0) {
                     Toast.makeText(requireContext(), "채팅을 입력하세요!", Toast.LENGTH_SHORT).show()
