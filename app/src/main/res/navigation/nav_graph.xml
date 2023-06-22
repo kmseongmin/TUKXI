@@ -45,9 +45,6 @@
             android:id="@+id/action_roomViewFragment_to_roomInFragment"
             app:destination="@id/roomInFragment" />
         <action
-            android:id="@+id/action_roomViewFragment_to_roomCreateFragment"
-            app:destination="@id/roomCreateFragment" />
-        <action
             android:id="@+id/action_roomViewFragment_to_mapActivity"
             app:destination="@id/mapActivity" />
     </fragment>
@@ -70,9 +67,6 @@
         <action
             android:id="@+id/action_roomCreateFragment_to_roomInFragment"
             app:destination="@id/roomInFragment" />
-        <action
-            android:id="@+id/action_roomCreateFragment_to_roomViewFragment"
-            app:destination="@id/roomViewFragment" />
         <action
             android:id="@+id/action_roomCreateFragment_to_mapActivity"
             app:destination="@id/mapActivity" />

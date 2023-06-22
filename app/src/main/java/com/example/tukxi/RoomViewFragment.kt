@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -61,7 +62,6 @@ class RoomViewFragment : Fragment() {
                     val chatRoomId = roomSnapshot.key
                     if (roomName != null) {
                         createButtonForChatRoom(containerLayout, roomName, chatRoomId.toString())
-
                     }
                 }
 
@@ -101,6 +101,8 @@ class RoomViewFragment : Fragment() {
         val view = binding.root
         database = FirebaseDatabase.getInstance().reference
         // 방 이름들을 가져와서 버튼 생성
+        Toast.makeText(requireContext(), "방 목록을 불러오는 중입니다...\n" +
+                "잠시만 기다려주십시오.." , Toast.LENGTH_SHORT).show()
 
         arguments?.let { bundle ->
             // MapActivity로부터 출발지 도착지의 정보를 받음
