@@ -21,9 +21,6 @@ class RoomViewFragment : Fragment() {
     private var _binding: FragmentRoomviewBinding? = null
     private val binding get() = _binding!!
     private lateinit var database: DatabaseReference
-    //출발지 도착지 경위도 저장 변수
-    private lateinit var startLatLng: LatLng
-    private lateinit var endLatLng: LatLng
     //출발지 도착지 저장 변수
     private var startname: String? = null
     private var endname: String? = null
@@ -32,9 +29,21 @@ class RoomViewFragment : Fragment() {
     private var startLongitude: Double = 0.0
     private var endLatitude: Double = 0.0
     private var endLongitude: Double = 0.0
+    //출발지 도착지 경위도 저장 변수
+    private lateinit var startLatLng: LatLng
+    private lateinit var endLatLng: LatLng
+    //파이어베이스에서 가져올 출발지 도착지 경위도 따로 저장 변수
+    private var fbstartLatitude: Double? = 0.0
+    private var fbstartLongitude: Double? = 0.0
+    private var fbendLatitude: Double? = 0.0
+    private var fbendLongitude: Double? = 0.0
+    //파이어베이스에서 가져온 출발지 도착지 경위도 저장 변수
+    private lateinit var fbstartLatLng: LatLng
+    private lateinit var fbendLatLng: LatLng
 
     data class LatLng(val latitude: Double, val longitude: Double)
 
+    //두 위치 사이의 거리
     fun calculateDistanceInMeters(location1: LatLng, location2: LatLng): Double {
         val earthRadius = 6371000.0 // 지구의 반지름 (미터)
 
@@ -48,6 +57,13 @@ class RoomViewFragment : Fragment() {
 
         return earthRadius * c
     }
+
+    //center의 위치와 point 위치 사이의 거리가 radius(m)보다 작다면 true
+    fun isWithinRadius(center: LatLng, point: LatLng, radius: Double): Boolean {
+        val distance = calculateDistanceInMeters(center, point)
+        return distance <= radius
+    }
+
     private fun getChatRoomNames() {
         val chatRoomsRef = database.child("chatRooms")
 
@@ -61,7 +77,21 @@ class RoomViewFragment : Fragment() {
                     val roomName = roomSnapshot.child("roomname").getValue(String::class.java)
                     val chatRoomId = roomSnapshot.key
                     if (roomName != null) {
-                        createButtonForChatRoom(containerLayout, roomName, chatRoomId.toString())
+                        fbstartLatitude = roomSnapshot.child("startLatLng").child("latitude").getValue(Double::class.java)
+                        fbstartLongitude = roomSnapshot.child("startLatLng").child("longitude").getValue(Double::class.java)
+                        fbendLatitude = roomSnapshot.child("endLatlng").child("latitude").getValue(Double::class.java)
+                        fbendLongitude = roomSnapshot.child("endLatlng").child("longitude").getValue(Double::class.java)
+                        if(fbstartLatitude != null && fbstartLongitude != null &&
+                                fbendLatitude != null && fbendLongitude != null){
+                            fbstartLatLng = LatLng(fbstartLatitude!!, fbstartLongitude!!)
+                            fbendLatLng = LatLng(fbendLatitude!!, fbendLongitude!!)
+                            val radius = 1000.0
+
+                            if(isWithinRadius(startLatLng,fbstartLatLng,radius)&&isWithinRadius(endLatLng,fbendLatLng,radius))
+                            {
+                                createButtonForChatRoom(containerLayout, roomName, chatRoomId.toString())
+                            }
+                        }
                     }
                 }
 
@@ -116,8 +146,6 @@ class RoomViewFragment : Fragment() {
         //경위도값 저장
         startLatLng = LatLng(startLatitude, startLongitude)
         endLatLng = LatLng(endLatitude, endLongitude)
-
-        val distance = calculateDistanceInMeters(startLatLng, endLatLng)
 
         getChatRoomNames()
         return view
