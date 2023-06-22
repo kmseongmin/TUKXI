@@ -154,10 +154,9 @@ class RoomInFragment() : Fragment(), Parcelable {
 
         chatRoomRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(mode==1) {
                     binding.textViewContainer.removeAllViews()
                     textViews.clear()
-                }
+
                 for (messageSnapshot in dataSnapshot.children) {
                     val chatMessage = messageSnapshot.getValue(RoomInFragment.ChatMessage::class.java)
                     val senderId = chatMessage?.senderId
