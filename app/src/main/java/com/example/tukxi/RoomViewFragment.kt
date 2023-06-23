@@ -123,7 +123,7 @@ class RoomViewFragment : Fragment() {
             val button = Button(requireActivity())
             button.text = "방이름 : " + roomName +
                     "\n 현재 인원 수 : $peoplecount / 4" +
-                    "\n 출발 시각 : $hour:$min "
+                    "\n 출발 시각 : $hour 시 $min 분 "
             val bundle = Bundle()
             button.setOnClickListener {
                 bundle.putString("chatRoomClickId", chatRoomId)
