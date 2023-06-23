@@ -150,7 +150,6 @@ class RoomViewFragment : Fragment() {
             if(peoplecount!!.toInt() <= 0){
                peoplecount = 0
             }
-            button.text = roomName + "\n 현재 인원 수 : $peoplecount / 4"
             button.text = "방 이름 : " + roomName +
                     "\n 현재 인원 수 : $peoplecount / 4" +
                     "\n 출발 시간 : $ampm $hour 시 $min 분"
