@@ -51,6 +51,7 @@ class CurrentRoomFragment : Fragment() {
     private var startname : String? = null
     private var endname : String? = null
     private var peoplecount : Int? = 0
+    private var count : Int? =0
     private fun getpeoplecount(chatRoomId: String) {
         val chatRoomId = chatRoomId // 가져올 특정 chatroom의 ID
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
@@ -60,7 +61,7 @@ class CurrentRoomFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val peopleCount = dataSnapshot.getValue(Int::class.java)
                 if (peopleCount != null) {
-                    val count = if (peopleCount < 0) 0 else peopleCount
+                    count = if (peopleCount < 0) 0 else peopleCount
                     binding.participantsTextView.text = "참여중인 사람 : $count / 4"
                 }
             }
@@ -131,7 +132,7 @@ class CurrentRoomFragment : Fragment() {
 
         val navController = findNavController()
         binding.returnbutton.setOnClickListener{
-            var nowpeoplecount : Int = peoplecount!!
+            var nowpeoplecount : Int = count!!
             bundle.apply {
                 putInt("peoplecount",nowpeoplecount)
             }
