@@ -398,12 +398,10 @@ class RoomInFragment() : Fragment(), Parcelable {
     }
     override fun onPause() {
         super.onPause()
-        updateFirebaseValue(chatRoomId.toString())
         _binding = null
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        updateFirebaseValue(chatRoomId.toString())
         _binding = null
     }
 

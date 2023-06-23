@@ -202,6 +202,12 @@ class RoomCreateFragment : Fragment(){
                return@setOnClickListener
             }
             val chatnames = roomname
+            if(peoplecount!!.toInt() <= 0){
+                peoplecount = 0
+            }
+            if(peoplecount!!.toInt()>=4){
+                peoplecount=4
+            }
             createChatRoom(chatnames,myhour!!.toInt(),mymin!!.toInt(), startLatLng, endLatLng, peoplecount,ampm!!) // 방생성
 
            val bundle = Bundle().apply {

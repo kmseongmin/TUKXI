@@ -106,7 +106,12 @@ class CurrentRoomFragment : Fragment() {
             startname = sharedViewModel.startname.value
             endname = sharedViewModel.endname.value
         }
-
+        if(peoplecount!!.toInt() <= 0){
+            peoplecount = 0
+        }
+        if(peoplecount!!.toInt()>=4){
+            peoplecount=4
+        }
         if(mode==0){
             chatRoomClickId?.let { getpeoplecount(it) }
         }
@@ -181,8 +186,12 @@ class CurrentRoomFragment : Fragment() {
 
 
         binding.exit.setOnClickListener{
-            chatRoomClickId?.let { it1 -> updateFirebaseValue(it1) }
-            chatRoomId?.let { it1 -> updateFirebaseValue(it1) }
+            if(mode==0) {
+                chatRoomClickId?.let { it1 -> updateFirebaseValue(it1) }
+            }
+            else if(mode==1) {
+                chatRoomId?.let { it1 -> updateFirebaseValue(it1) }
+            }
             navController.popBackStack()
             navController.navigate(R.id.mapActivity)
         }
