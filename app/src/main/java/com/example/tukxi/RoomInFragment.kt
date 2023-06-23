@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import com.example.tukxi.databinding.FragmentRoominBinding
 import com.google.android.gms.tasks.Tasks
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -327,6 +328,12 @@ class RoomInFragment() : Fragment(), Parcelable {
             }
             else if(mode ==1){
                 updateFirebaseValue(chatroomid)
+            }
+            val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav)
+            val menu = bottomNavigationView.menu
+            val currentRoomMenuItem = menu.findItem(R.id.currentRoomFragment_item)
+            if(currentRoomMenuItem.isEnabled){
+                currentRoomMenuItem.isEnabled = false
             }
             navController.navigate(R.id.mapActivity)
         }

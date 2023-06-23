@@ -194,6 +194,12 @@ class CurrentRoomFragment : Fragment() {
                     chatRoomId?.let { it1 -> updateFirebaseValue(it1) }
                 }
             }
+            val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav)
+            val menu = bottomNavigationView.menu
+            val currentRoomMenuItem = menu.findItem(R.id.currentRoomFragment_item)
+            if(currentRoomMenuItem.isEnabled){
+                currentRoomMenuItem.isEnabled = false
+            }
             navController.popBackStack()
             navController.navigate(R.id.mapActivity)
         }
