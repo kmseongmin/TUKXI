@@ -62,6 +62,9 @@ class CurrentRoomFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 peoplecount = dataSnapshot.getValue(Int::class.java)
                 if (peoplecount != null) {
+                    if(peoplecount!!.toInt() < 0){
+                        peoplecount = 0
+                    }
                     binding.participantsTextView.text = "참여중인 사람 : $peoplecount / 4"
                 }
             }
@@ -106,12 +109,7 @@ class CurrentRoomFragment : Fragment() {
             startname = sharedViewModel.startname.value
             endname = sharedViewModel.endname.value
         }
-        if(peoplecount!!.toInt() <= 0){
-            peoplecount = 0
-        }
-        if(peoplecount!!.toInt()>=4){
-            peoplecount=4
-        }
+
         if(mode==0){
             chatRoomClickId?.let { getpeoplecount(it) }
         }
@@ -186,11 +184,15 @@ class CurrentRoomFragment : Fragment() {
 
 
         binding.exit.setOnClickListener{
-            if(mode==0) {
-                chatRoomClickId?.let { it1 -> updateFirebaseValue(it1) }
+            if(peoplecount!!.toInt() < 0){
+                peoplecount = 0
             }
-            else if(mode==1) {
-                chatRoomId?.let { it1 -> updateFirebaseValue(it1) }
+            else {
+                if (mode == 0) {
+                    chatRoomClickId?.let { it1 -> updateFirebaseValue(it1) }
+                } else if (mode == 1) {
+                    chatRoomId?.let { it1 -> updateFirebaseValue(it1) }
+                }
             }
             navController.popBackStack()
             navController.navigate(R.id.mapActivity)
@@ -215,7 +217,6 @@ class CurrentRoomFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 }

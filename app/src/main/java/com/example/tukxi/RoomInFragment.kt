@@ -53,6 +53,7 @@ class RoomInFragment() : Fragment(), Parcelable {
     private lateinit var firestore: FirebaseFirestore
     private var bank:String? = ""
     private var accountNum:String? = ""
+    private lateinit var chatRoomClickId : String
     fun getUserNickname(uid: String): String? {
         val db = FirebaseFirestore.getInstance()
         val usersCollection = db.collection("users")
@@ -148,7 +149,7 @@ class RoomInFragment() : Fragment(), Parcelable {
                 binding.scrollvw.scrollTo(0, lastChild!!.bottom)
             }
         }
-        val margin = resources.getDimensionPixelSize(R.dimen.text_view_margin)
+        val margin = fragmentContext.resources.getDimensionPixelSize(R.dimen.text_view_margin)
         layoutParams.setMargins(margin, margin, margin, margin)
 
         newTextView.textSize = 25f
@@ -177,7 +178,7 @@ class RoomInFragment() : Fragment(), Parcelable {
                     val senderId = chatMessage?.senderId
                     message = chatMessage?.message
 
-                    if (senderId != null && message != null) {
+                    if (senderId != null) {
                         addTextView(message, senderId, fragmentContext)
                     }
                 }
@@ -223,7 +224,6 @@ class RoomInFragment() : Fragment(), Parcelable {
         _binding = FragmentRoominBinding.inflate(inflater, container, false)
 
         val view = binding.root
-        var chatRoomClickId : String? = null
         val auth = Firebase.auth
         val currentUser = auth.currentUser
         firebaseAuth = FirebaseAuth.getInstance()
@@ -263,9 +263,15 @@ class RoomInFragment() : Fragment(), Parcelable {
             myhour = bundle.getInt("hour")
             mymin = bundle.getInt("min")
             chatRoomId= bundle.getString("chatRoomId")
-            chatRoomClickId = bundle.getString("chatRoomClickId") // 방 조회에서 받은 id
+            chatRoomClickId = bundle.getString("chatRoomClickId").toString() // 방 조회에서 받은 id
             mode = bundle.getInt("mode")
             nowpeoplecount = bundle.getInt("peoplecount")
+        }
+        if(mode==0){
+            chatRoomId = ""
+        }
+        else if(mode==1){
+            chatRoomClickId=""
         }
         val navController = findNavController()
 
@@ -303,7 +309,6 @@ class RoomInFragment() : Fragment(), Parcelable {
                     sendMessage(chatRoomClickId.toString(), senderId, message)
                     receiveMessage(chatRoomClickId.toString())
                 } else if (mode == 1) {
-                    peoplecount = 1
                     getChatRoomMessages(chatroomid)
                     sendMessage(chatroomid, senderId, message)
                     receiveMessage(chatroomid)
@@ -398,11 +403,9 @@ class RoomInFragment() : Fragment(), Parcelable {
     }
     override fun onPause() {
         super.onPause()
-        _binding = null
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
