@@ -45,6 +45,8 @@ class RoomViewFragment : Fragment() {
     private lateinit var fbstartLatLng: LatLng
     private lateinit var fbendLatLng: LatLng
     private var peoplecount : Int? = 0
+    private var hour : Int? = 0
+    private var min : Int? = 0
     //출발지 도착지 설정 edt텍스트
     private lateinit var endedt: EditText
     private lateinit var startedt: EditText
@@ -87,6 +89,8 @@ class RoomViewFragment : Fragment() {
                     val chatRoomId = roomSnapshot.key
                     if (roomName != null) {
                         peoplecount = roomSnapshot.child("peoplecount").getValue(Int::class.java)
+                        hour = roomSnapshot.child("hour").getValue(Int::class.java)
+                        min = roomSnapshot.child("min").getValue(Int::class.java)
                         fbstartLatitude = roomSnapshot.child("startLatLng").child("latitude").getValue(Double::class.java)
                         fbstartLongitude = roomSnapshot.child("startLatLng").child("longitude").getValue(Double::class.java)
                         fbendLatitude = roomSnapshot.child("endLatlng").child("latitude").getValue(Double::class.java)
@@ -117,7 +121,9 @@ class RoomViewFragment : Fragment() {
     private fun createButtonForChatRoom(containerLayout: LinearLayout?, roomName: String, chatRoomId : String) {
         if(isAdded) {
             val button = Button(requireActivity())
-            button.text = roomName + "\n 현재 인원 수 : $peoplecount / 4"
+            button.text = "방이름 : " + roomName +
+                    "\n 현재 인원 수 : $peoplecount / 4" +
+                    "\n 출발 시각 : $hour:$min "
             val bundle = Bundle()
             button.setOnClickListener {
                 bundle.putString("chatRoomClickId", chatRoomId)
