@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp">
 
     <EditText
         android:id="@+id/startedt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:fontFamily="@font/bold"
         android:hint="출발지 설정"
+        android:minHeight="48dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/arrow1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,6 +28,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="->"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/startedt"
         app:layout_constraintEnd_toStartOf="@+id/endedt"
         app:layout_constraintStart_toEndOf="@+id/startedt"
@@ -31,8 +38,10 @@
         android:id="@+id/endedt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:hint="도착지 설정"
+        android:minHeight="48dp"
+        android:fontFamily="@font/bold"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/arrow1"
         app:layout_constraintTop_toTopOf="@+id/startedt" />
@@ -62,6 +71,7 @@
         android:id="@+id/searchbtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bin_blue"
         android:text="조회"
         app:layout_constraintTop_toBottomOf="@+id/startedt"
         tools:layout_editor_absoluteX="131dp" />
