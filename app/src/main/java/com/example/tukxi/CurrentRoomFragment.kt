@@ -134,7 +134,7 @@ class CurrentRoomFragment : Fragment() {
 
         val navController = findNavController()
         binding.returnbutton.setOnClickListener{
-            var nowpeoplecount : Int = count!!
+            var nowpeoplecount : Int = peoplecount!!
             bundle.apply {
                 putInt("peoplecount",nowpeoplecount)
             }
