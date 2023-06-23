@@ -113,8 +113,6 @@ class RoomViewFragment : Fragment() {
                     val chatRoomId = roomSnapshot.key
                     if (roomName != null) {
                         peoplecount = roomSnapshot.child("peoplecount").getValue(Int::class.java)
-                        hour = roomSnapshot.child("hour").getValue(Int::class.java)
-                        min = roomSnapshot.child("min").getValue(Int::class.java)
                         fbstartLatitude = roomSnapshot.child("startLatLng").child("latitude").getValue(Double::class.java)
                         fbstartLongitude = roomSnapshot.child("startLatLng").child("longitude").getValue(Double::class.java)
                         fbendLatitude = roomSnapshot.child("endLatlng").child("latitude").getValue(Double::class.java)
@@ -145,12 +143,15 @@ class RoomViewFragment : Fragment() {
     private fun createButtonForChatRoom(containerLayout: LinearLayout?, roomName: String, chatRoomId : String) {
         if(isAdded) {
             val button = Button(requireActivity())
+            if(peoplecount!!.toInt() <= 0){
+               peoplecount = 0
+            }
             button.text = roomName + "\n 현재 인원 수 : $peoplecount / 4"
             val bundle = Bundle()
             button.setOnClickListener {
                 bundle.putString("chatRoomClickId", chatRoomId)
                 bundle.putInt("mode", mode)
-
+                updateFirebaseValue(chatRoomId)
                 // 버튼 클릭 시 방에 접속하는 동작을 구현하세요
                 val navController = findNavController()
                 navController.navigate(R.id.roomInFragment, bundle)
@@ -158,6 +159,7 @@ class RoomViewFragment : Fragment() {
             containerLayout?.addView(button)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
 
@@ -171,8 +173,8 @@ class RoomViewFragment : Fragment() {
         val view = binding.root
         database = FirebaseDatabase.getInstance().reference
         // 방 이름들을 가져와서 버튼 생성
-        Toast.makeText(requireContext(), "방 목록을 불러오는 중입니다...\n" +
-                "잠시만 기다려주십시오.." , Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(), "방 목록을 불러오는 중입니다...\n" +
+          //      "잠시만 기다려주십시오.." , Toast.LENGTH_SHORT).show()
 
         arguments?.let { bundle ->
             // MapActivity로부터 출발지 도착지의 정보를 받음
