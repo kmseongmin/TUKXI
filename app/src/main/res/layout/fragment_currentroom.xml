@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="채팅방 이름"
-        android:textSize="24sp"
+        android:fontFamily="@font/bold"
+        android:textSize="28sp"
         android:textColor="#333333"
         android:textStyle="bold"
         android:paddingBottom="8dp" />
@@ -22,8 +23,9 @@
         android:id="@+id/participantsTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/bold"
         android:text="참여 중인 사람들:"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textColor="#666666"
         android:paddingBottom="8dp" />
     <LinearLayout
@@ -37,6 +39,7 @@
             android:id="@+id/participantsListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bin_blue2"
             android:divider="#CCCCCC"
             android:dividerHeight="1dp" />
 

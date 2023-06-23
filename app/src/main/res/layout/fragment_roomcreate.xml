@@ -95,7 +95,7 @@
             android:layout_gravity="right|bottom"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/bold"
-            android:background="@drawable/bin_yellow"
+            android:background="@drawable/bin_blue2"
             android:text="출발시간"
             android:textSize="15sp"
             android:textColor="@color/black"/>
