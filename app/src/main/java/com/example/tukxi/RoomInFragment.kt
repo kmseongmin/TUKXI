@@ -312,10 +312,6 @@ class RoomInFragment() : Fragment(), Parcelable {
             }
             // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
 
-        binding.currentButton.setOnClickListener{
-            navController.popBackStack()
-            navController.navigate(R.id.currentRoomFragment, bundle)
-        }
 
         return view
     }
@@ -361,11 +357,11 @@ class RoomInFragment() : Fragment(), Parcelable {
     override fun onPause() {
         super.onPause()
         updateFirebaseValue()
-
         _binding = null
     }
     override fun onDestroyView() {
         super.onDestroyView()
+        updateFirebaseValue()
         _binding = null
     }
 

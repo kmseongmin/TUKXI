@@ -151,10 +151,13 @@ class RoomViewFragment : Fragment() {
             button.setOnClickListener {
                 bundle.putString("chatRoomClickId", chatRoomId)
                 bundle.putInt("mode", mode)
+                bundle.putString("roomname",roomName)
+                bundle.putString("startname",startedt.text.toString())
+                bundle.putString("endname",endedt.text.toString())
                 updateFirebaseValue(chatRoomId)
                 // 버튼 클릭 시 방에 접속하는 동작을 구현하세요
                 val navController = findNavController()
-                navController.navigate(R.id.roomInFragment, bundle)
+                navController.navigate(R.id.currentRoomFragment, bundle)
             }
             containerLayout?.addView(button)
         }
@@ -237,7 +240,7 @@ class RoomViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // 프래그먼트가 실행 된 이후에 보일 화면
         super.onViewCreated(view, savedInstanceState)
-
+        getChatRoomNames()
     }
 
     override fun onDestroyView() {
