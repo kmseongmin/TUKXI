@@ -199,6 +199,8 @@ class MapActivity : Fragment(), OnMapReadyCallback {
                 }
                 val navController = findNavController()
                 navController.navigate(R.id.roomCreateFragment,bundle)
+
+
             }
         }
 

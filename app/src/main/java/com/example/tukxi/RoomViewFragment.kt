@@ -45,8 +45,6 @@ class RoomViewFragment : Fragment() {
     private lateinit var fbstartLatLng: LatLng
     private lateinit var fbendLatLng: LatLng
     private var peoplecount : Int? = 0
-    private var hour : Int? = 0
-    private var min : Int? = 0
     //출발지 도착지 설정 edt텍스트
     private lateinit var endedt: EditText
     private lateinit var startedt: EditText
@@ -74,7 +72,31 @@ class RoomViewFragment : Fragment() {
         val distance = calculateDistanceInMeters(center, point)
         return distance <= radius
     }
+    private fun updateFirebaseValue(chatRoomId: String) {
+        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+        val setval = database.child("chatRooms").child(chatRoomId.toString()).child("peoplecount")
 
+        // 변경하고자 하는 데이터의 참조 경로를 지정합니다.
+        setval.runTransaction(object : Transaction.Handler {
+            override fun doTransaction(currentData: MutableData): Transaction.Result {
+                val value = currentData.getValue(Int::class.java) ?: 0
+                currentData.value = value + 1
+                return Transaction.success(currentData)
+            }
+
+            override fun onComplete(
+                error: DatabaseError?,
+                committed: Boolean,
+                currentData: DataSnapshot?
+            ) {
+                if (error != null) {
+                    // 업데이트 중에 오류가 발생한 경우 처리할 코드를 작성합니다.
+                } else {
+                    // 업데이트가 성공적으로 완료된 경우 처리할 코드를 작성합니다.
+                }
+            }
+        })
+    }
     private fun getChatRoomNames() {
         val chatRoomsRef = database.child("chatRooms")
 
@@ -121,9 +143,7 @@ class RoomViewFragment : Fragment() {
     private fun createButtonForChatRoom(containerLayout: LinearLayout?, roomName: String, chatRoomId : String) {
         if(isAdded) {
             val button = Button(requireActivity())
-            button.text = "방이름 : " + roomName +
-                    "\n 현재 인원 수 : $peoplecount / 4" +
-                    "\n 출발 시각 : $hour 시 $min 분 "
+            button.text = roomName + "\n 현재 인원 수 : $peoplecount / 4"
             val bundle = Bundle()
             button.setOnClickListener {
                 bundle.putString("chatRoomClickId", chatRoomId)

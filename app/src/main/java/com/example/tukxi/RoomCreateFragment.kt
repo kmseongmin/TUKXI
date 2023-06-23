@@ -229,6 +229,9 @@ class RoomCreateFragment : Fragment(){
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

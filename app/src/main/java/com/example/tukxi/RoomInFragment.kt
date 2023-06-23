@@ -1,31 +1,27 @@
 package com.example.tukxi
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import android.provider.ContactsContract
+import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.util.Log
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import com.example.tukxi.databinding.FragmentRoominBinding
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
@@ -33,10 +29,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-
-import org.checkerframework.checker.units.qual.min
 import java.util.Calendar
-import java.util.concurrent.Semaphore
+import kotlin.concurrent.thread
 
 
 class RoomInFragment() : Fragment(), Parcelable {
@@ -51,7 +45,7 @@ class RoomInFragment() : Fragment(), Parcelable {
     private var uid = user.uid
     private lateinit var senderId : String
     private var Nickname : String? = null
-    private var mode : Int? = null
+    private var mode : Int? = 2
     private var peoplecount : Int? = 0
     fun getUserNickname(uid: String): String? {
         val db = FirebaseFirestore.getInstance()
@@ -123,10 +117,10 @@ class RoomInFragment() : Fragment(), Parcelable {
     }
     private fun addTextView(name : String?, senderId: String) {
         val newTextView = AppCompatTextView(fragmentContext)
+
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY) // 24시간 형식의 시간 (0 ~ 23)
         val minute = calendar.get(Calendar.MINUTE) // 분 (0 ~ 59)
-
         val layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -175,8 +169,9 @@ class RoomInFragment() : Fragment(), Parcelable {
 
         chatRoomRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    binding.textViewContainer.removeAllViews()
-                    textViews.clear()
+
+                binding.textViewContainer.removeAllViews()
+                textViews.clear()
 
                 for (messageSnapshot in dataSnapshot.children) {
                     val chatMessage = messageSnapshot.getValue(RoomInFragment.ChatMessage::class.java)
@@ -225,7 +220,6 @@ class RoomInFragment() : Fragment(), Parcelable {
         super.onCreate(savedInstanceState)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -264,20 +258,34 @@ class RoomInFragment() : Fragment(), Parcelable {
             chatRoomClickId = bundle.getString("chatRoomClickId") // 방 조회에서 받은 id
             mode = bundle.getInt("mode")
         }
+        val navController = findNavController()
+
+        val bundle = Bundle().apply {
+            putString("roomname", roomname) // roomname 값을 Bundle에 담기
+            putInt("hour", myhour!!.toInt())
+            putInt("min", mymin!!.toInt())
+            putString("chatRoomId", chatRoomId)
+            putString("chatRoomClickId", chatRoomClickId)
+            putInt("mode", mode!!.toInt())
+        }
         //if(mode==0){
             //receiveMessage(chatRoomClickId.toString())
         //}
         val chatroomid = chatRoomId.toString() // 방생성에서 넘어온 Id
 
         binding.messages.hint = "채팅을 입력하세요"
-
-            Toast.makeText(requireContext(), "채팅 내역을 불러오는 중입니다..." , Toast.LENGTH_LONG).show()
-            getChatRoomMessages(chatRoomClickId.toString())
-
+        if(mode==0 || mode ==1) {
+            Toast.makeText(requireContext(), "채팅 내역을 불러오는 중입니다...", Toast.LENGTH_SHORT).show()
+        }
+        var flag = 1
             binding.button3.setOnClickListener { // 메시지 전송
                 if (binding.messages.text.length == 0) {
                     Toast.makeText(requireContext(), "채팅을 입력하세요!", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
+                }
+                if(flag==1) {
+                    Toast.makeText(requireContext(), "채팅방을 정렬중입니다..", Toast.LENGTH_SHORT).show()
+                    flag = 0
                 }
                 val chatname = "$chatRoomId"
                 val message = binding.messages.text.toString()
@@ -300,8 +308,14 @@ class RoomInFragment() : Fragment(), Parcelable {
             }
             // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
 
+        binding.currentButton.setOnClickListener{
+            navController.popBackStack()
+            navController.navigate(R.id.currentRoomFragment, bundle)
+        }
+
         return view
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // 프래그먼트가 실행 된 이후에 보일 화면
         super.onViewCreated(view, savedInstanceState)
         val chatRoomClickId = arguments?.getString("chatRoomClickId")
@@ -343,9 +357,12 @@ class RoomInFragment() : Fragment(), Parcelable {
     override fun onPause() {
         super.onPause()
         updateFirebaseValue()
+
+        _binding = null
     }
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

@@ -14,8 +14,8 @@
             android:id="@+id/action_mapActivity_to_roomCreateFragment"
             app:destination="@id/roomCreateFragment" />
         <action
-            android:id="@+id/action_mapActivity_to_roomViewFragment"
-            app:destination="@id/roomViewFragment" />
+            android:id="@+id/action_mapActivity_to_currentRoomFragment"
+            app:destination="@id/currentRoomFragment" />
     </fragment>
     <fragment
         android:id="@+id/roomInFragment"
@@ -26,14 +26,11 @@
             android:name="myhour"
             app:argType="string"/>
         <action
+            android:id="@+id/action_roomInFragment_to_currentRoomFragment2"
+            app:destination="@id/currentRoomFragment" />
+        <action
             android:id="@+id/action_roomInFragment_to_roomViewFragment"
             app:destination="@id/roomViewFragment" />
-        <action
-            android:id="@+id/action_roomInFragment_to_roomCreateFragment2"
-            app:destination="@id/roomCreateFragment" />
-        <action
-            android:id="@+id/action_roomInFragment_to_mapActivity"
-            app:destination="@id/mapActivity" />
     </fragment>
     <fragment
         android:id="@+id/roomViewFragment"
@@ -42,18 +39,19 @@
         tools:layout="@layout/fragment_roomview"
         >
         <action
-            android:id="@+id/action_roomViewFragment_to_roomInFragment"
+            android:id="@+id/action_roomViewFragment_to_roomInFragment2"
             app:destination="@id/roomInFragment" />
-        <action
-            android:id="@+id/action_roomViewFragment_to_mapActivity"
-            app:destination="@id/mapActivity" />
     </fragment>
     <fragment
         android:id="@+id/myFragment"
         android:name="com.example.tukxi.MyFragment"
         android:label="MyFragment"
         tools:layout="@layout/fragment_my"
-        />
+        >
+        <action
+            android:id="@+id/action_myFragment_to_roomInFragment"
+            app:destination="@id/roomInFragment" />
+    </fragment>
     <fragment
         android:id="@+id/roomCreateFragment"
         android:name="com.example.tukxi.RoomCreateFragment"
@@ -62,14 +60,11 @@
             android:name="myhours"
             app:argType="string" />
         <action
-            android:id="@+id/action_roomCreateFragment_to_clockFragment"
-            app:destination="@id/clockFragment" />
-        <action
             android:id="@+id/action_roomCreateFragment_to_roomInFragment"
             app:destination="@id/roomInFragment" />
         <action
-            android:id="@+id/action_roomCreateFragment_to_mapActivity"
-            app:destination="@id/mapActivity" />
+            android:id="@+id/action_roomCreateFragment_to_clockFragment"
+            app:destination="@id/clockFragment" />
     </fragment>
     <fragment
         android:id="@+id/clockFragment"
@@ -89,13 +84,20 @@
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
     <fragment
-        android:id="@+id/loginActivity2"
-        android:name="com.example.tukxi.LoginActivity"
-        android:label="LoginActivity" >
+        android:id="@+id/currentRoomFragment"
+        android:name="com.example.tukxi.CurrentRoomFragment"
+        android:label="CurrentRoomFragment" >
         <action
-            android:id="@+id/action_loginActivity2_to_mapActivity"
+            android:id="@+id/action_currentRoomFragment_to_roomViewFragment"
+            app:destination="@id/roomViewFragment" />
+        <action
+            android:id="@+id/action_currentRoomFragment_to_mapActivity"
             app:destination="@id/mapActivity" />
     </fragment>
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.tukxi.LoginActivity"
+        android:label="LoginActivity" />
 
 
 </navigation>
