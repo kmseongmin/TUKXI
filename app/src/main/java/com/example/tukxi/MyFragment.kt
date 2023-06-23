@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.tukxi.databinding.FragmentMyBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlin.math.log
 
@@ -22,10 +23,14 @@ class MyFragment : Fragment() {
     private var _binding: FragmentMyBinding? = null
     private val binding get() = _binding!!
     private lateinit var nicknameTextview: TextView
+    private lateinit var bankTextView: TextView
     private lateinit var myInfoButton :Button
     private lateinit var logoutButton : Button
     private lateinit var autoLoginCheckBox: CheckBox
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var firebaseAuth: FirebaseAuth
+
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -39,15 +44,28 @@ class MyFragment : Fragment() {
         _binding = FragmentMyBinding.inflate(inflater, container, false)
         val view = binding.root
         nicknameTextview= view.findViewById(R.id.tv_UserNickname)
+        bankTextView = view.findViewById(R.id.tv_bank)
         myInfoButton = view.findViewById(R.id.btn_myInfo)
         logoutButton = view.findViewById(R.id.btn_Logout)
+        firebaseAuth = FirebaseAuth.getInstance()
+        firestore  = FirebaseFirestore.getInstance()
 
         val sharedPreferences = requireContext().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        val currentUser= FirebaseAuth.getInstance().currentUser
-        val nickname = currentUser?.displayName
+        val userEmail = firebaseAuth.currentUser?.email
 
-        nicknameTextview.text = nickname
+        if(userEmail!=null){
+            firestore.collection("UserInformation")
+                .whereEqualTo("Email",userEmail)
+                .get()
+                .addOnSuccessListener { querySnapshot->
+                    if(!querySnapshot.isEmpty){
+                        val document = querySnapshot.documents[0]
+                        nicknameTextview.text = document.getString("Nickname")
+                        bankTextView.text=document.getString("Bank")+"  "+document.getString("AccountNum")
+                    }
+                }
+        }
 
         myInfoButton.setOnClickListener{
             startActivity(Intent(activity,MyInfoActivity::class.java))

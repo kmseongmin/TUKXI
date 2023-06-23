@@ -366,6 +366,7 @@ class RoomInFragment() : Fragment(), Parcelable {
     }
     override fun onDestroyView() {
         super.onDestroyView()
+        updateFirebaseValue()
         _binding = null
     }
 
