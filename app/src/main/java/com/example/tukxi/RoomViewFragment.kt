@@ -51,6 +51,7 @@ class RoomViewFragment : Fragment() {
     private lateinit var endedt: EditText
     private lateinit var startedt: EditText
     private lateinit var searchbtn: Button
+    private var ampm : String? = ""
 
     data class LatLng(val latitude: Double, val longitude: Double)
 
@@ -115,6 +116,7 @@ class RoomViewFragment : Fragment() {
                         peoplecount = roomSnapshot.child("peoplecount").getValue(Int::class.java)
                         hour = roomSnapshot.child("hour").getValue(Int::class.java)
                         min = roomSnapshot.child("min").getValue(Int::class.java)
+                        ampm = roomSnapshot.child("ampm").getValue(String::class.java)
                         fbstartLatitude = roomSnapshot.child("startLatLng").child("latitude").getValue(Double::class.java)
                         fbstartLongitude = roomSnapshot.child("startLatLng").child("longitude").getValue(Double::class.java)
                         fbendLatitude = roomSnapshot.child("endLatlng").child("latitude").getValue(Double::class.java)
@@ -145,7 +147,9 @@ class RoomViewFragment : Fragment() {
     private fun createButtonForChatRoom(containerLayout: LinearLayout?, roomName: String, chatRoomId : String) {
         if(isAdded) {
             val button = Button(requireActivity())
-            button.text = roomName + "\n 현재 인원 수 : $peoplecount / 4"
+            button.text = "방 이름 : " + roomName +
+                    "\n 현재 인원 수 : $peoplecount / 4" +
+                    "\n 출발 시간 : $ampm $hour 시 $min 분"
             val bundle = Bundle()
             button.setOnClickListener {
                 bundle.putString("chatRoomClickId", chatRoomId)

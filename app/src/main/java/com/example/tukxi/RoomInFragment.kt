@@ -41,6 +41,7 @@ class RoomInFragment() : Fragment(), Parcelable {
     private var mymin : Int? = null
     private var roomname : String? = null
     private var roomid : String? = null
+    private var ampm : String? = null
     private var user = FirebaseAuth.getInstance()
     private var uid = user.uid
     private lateinit var senderId : String
