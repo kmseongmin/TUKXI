@@ -47,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
         email = findViewById(R.id.et_regi_email)
         password = findViewById(R.id.et_regi_pwd)
         password_Confirm = findViewById(R.id.et_regi_pwdConfirm)
-        name = findViewById(R.id.et_AccountNum)
+        name = findViewById(R.id.et_Name)
         nickname = findViewById(R.id.et_Nickname)
         accountNum = findViewById(R.id.et_AccountNum)
         birth = findViewById(R.id.et_Birth)
@@ -125,10 +125,10 @@ class RegisterActivity : AppCompatActivity() {
         radiogroup_gender.setOnCheckedChangeListener{group,checkedGender->
             when(checkedGender){
                 R.id.btnGenderMale->{
-                    Gender = "Male"
+                    Gender = "남자"
                 }
                 R.id.btnGenderFemale->{
-                    Gender = "Female"
+                    Gender = "여자"
                 }
             }
         }
@@ -143,7 +143,6 @@ class RegisterActivity : AppCompatActivity() {
             val accountNum = accountNum.text.toString()
             val birth = birth.text.toString()
             val phoneNum = phoneNum.text.toString()
-
                 if(!idCheck){
                 Toast.makeText(this,"중복된 이메일.",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

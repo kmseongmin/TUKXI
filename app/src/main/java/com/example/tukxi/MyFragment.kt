@@ -50,7 +50,7 @@ class MyFragment : Fragment() {
         nicknameTextview.text = nickname
 
         myInfoButton.setOnClickListener{
-            //startActivity(Intent(activity,myInfoActivity::class.java))
+            startActivity(Intent(activity,MyInfoActivity::class.java))
         }
         logoutButton.setOnClickListener{
             FirebaseAuth.getInstance().signOut()
