@@ -27,6 +27,36 @@ class MainRoomActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener{ _, destination, _ ->
         }
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
+
+        binding.bottomNav.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.mapActivity_item -> {
+                    // 프레그먼트1로 이동
+                    navController.popBackStack(R.id.mapActivity, false)
+                    navController.navigate(R.id.mapActivity)
+                    true
+                }
+                R.id.roomViewFragment_item -> {
+                    // 프레그먼트2로 이동
+                    navController.popBackStack(R.id.roomViewFragment, false)
+                    navController.navigate(R.id.roomViewFragment)
+                    true
+                }
+                R.id.currentRoomFragment_item -> {
+                    // 프레그먼트3로 이동
+                    navController.popBackStack(R.id.currentRoomFragment, false)
+                    navController.navigate(R.id.currentRoomFragment)
+                    true
+                }
+                R.id.myFragment_item -> {
+                    // 프레그먼트4로 이동
+                    navController.popBackStack(R.id.myFragment, false)
+                    navController.navigate(R.id.myFragment)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }
 

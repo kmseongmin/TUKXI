@@ -45,6 +45,8 @@ class RoomViewFragment : Fragment() {
     private lateinit var fbstartLatLng: LatLng
     private lateinit var fbendLatLng: LatLng
     private var peoplecount : Int? = 0
+    private var hour : Int? = 0
+    private var min : Int? = 0
     //출발지 도착지 설정 edt텍스트
     private lateinit var endedt: EditText
     private lateinit var startedt: EditText
