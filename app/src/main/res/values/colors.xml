@@ -14,5 +14,5 @@
     <color name="gray">#828282</color>
     <color name="darkgray">#aaaaaa</color>
     <color name="unabletetxt">#D2D1D4</color>
- 
+    <color name="chatroom">#FAFAD2</color>
 </resources>
