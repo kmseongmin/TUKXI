@@ -132,6 +132,10 @@ class CurrentRoomFragment : Fragment() {
 
         val navController = findNavController()
         binding.returnbutton.setOnClickListener{
+            var nowpeoplecount : Int = peoplecount!!
+            bundle.apply {
+                putInt("peoplecount",nowpeoplecount)
+            }
             navController.navigate(R.id.roomInFragment,bundle)
         }
         binding.chatRoomNameTextView.text = "채팅방 이름 : $roomname"

@@ -48,6 +48,11 @@ class RoomInFragment() : Fragment(), Parcelable {
     private var Nickname : String? = null
     private var mode : Int? = 2
     private var peoplecount : Int? = 0
+    private var nowpeoplecount : Int? = 0
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+    private var bank:String? = ""
+    private var accountNum:String? = ""
     fun getUserNickname(uid: String): String? {
         val db = FirebaseFirestore.getInstance()
         val usersCollection = db.collection("users")
@@ -232,6 +237,18 @@ class RoomInFragment() : Fragment(), Parcelable {
         var chatRoomClickId : String? = null
         val auth = Firebase.auth
         val currentUser = auth.currentUser
+        firebaseAuth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+        val userEmail = firebaseAuth.currentUser?.email
+        val usersCollection = firestore.collection("UserInformation")
+        val query = usersCollection.whereEqualTo("Email", userEmail)
+        query.get().addOnSuccessListener { querySnapshot ->
+            if (!querySnapshot.isEmpty) {
+                val userDocument = querySnapshot.documents[0]
+                bank = userDocument.getString("Bank")
+                accountNum = userDocument.getString("AccountNum")
+            }
+        }
 
         if(currentUser != null) {
             val Email = currentUser.email
@@ -259,6 +276,7 @@ class RoomInFragment() : Fragment(), Parcelable {
             chatRoomId= bundle.getString("chatRoomId")
             chatRoomClickId = bundle.getString("chatRoomClickId") // 방 조회에서 받은 id
             mode = bundle.getInt("mode")
+            nowpeoplecount = bundle.getInt("peoplecount")
         }
         val navController = findNavController()
 
@@ -329,9 +347,12 @@ class RoomInFragment() : Fragment(), Parcelable {
                 }
                 val chatname = "$chatRoomId"
                 var totalmoney = binding.moneyedt.text.toString().toInt()
-                var money = totalmoney/4//여기서 4는 현재참여중인 인원수로 바꿔야함
+                if(nowpeoplecount==0){
+                    nowpeoplecount=100
+                }
+                var money = totalmoney/ nowpeoplecount!!//여기서 4는 현재참여중인 인원수로 바꿔야함
                 val message = "총요금 : $totalmoney\n" + "보낼금액 : $money\n" +
-                        "로 보내주세요"//계좌번호가 들어가야함
+                        "$bank $accountNum 로 보내주세요"//계좌번호가 들어가야함
                 if (mode == 0) {
                     getChatRoomMessages(chatRoomClickId.toString())
                     sendMessage(chatRoomClickId.toString(), senderId, message)
@@ -342,11 +363,6 @@ class RoomInFragment() : Fragment(), Parcelable {
                     sendMessage(chatroomid, senderId, message)
                     receiveMessage(chatroomid)
                 }
-                //val senderId = uid?.let { it1 -> getUserNickname(it1) }
-                //if (senderId != null) {
-                // sendMessage(chatname, senderId, message)
-                //}
-                //receiveMessage("$chatRoomId")
                 binding.messages.text.clear()
             }
         }
