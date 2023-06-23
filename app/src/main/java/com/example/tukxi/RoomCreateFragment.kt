@@ -217,7 +217,7 @@ class RoomCreateFragment : Fragment(){
            }
 
            val navController = findNavController()
-            navController.navigate(R.id.roomInFragment,bundle)
+            navController.navigate(R.id.currentRoomFragment,bundle)
         }
 
         return view

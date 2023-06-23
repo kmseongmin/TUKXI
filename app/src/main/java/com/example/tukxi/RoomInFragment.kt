@@ -116,7 +116,7 @@ class RoomInFragment() : Fragment(), Parcelable {
         super.onAttach(context)
         fragmentContext = context
     }
-    private fun addTextView(name : String?, senderId: String) {
+    private fun addTextView(name : String?, senderId: String, fragmentContext: Context) {
         val newTextView = AppCompatTextView(fragmentContext)
 
         val calendar = Calendar.getInstance()
@@ -150,7 +150,7 @@ class RoomInFragment() : Fragment(), Parcelable {
             val lastChildIndex = binding.textViewContainer.childCount - 1
             if (lastChildIndex >= 0) {
                 val lastChild = binding.textViewContainer.getChildAt(lastChildIndex)
-                binding.scrollvw.scrollTo(0, lastChild.bottom)
+                binding.scrollvw.scrollTo(0, lastChild!!.bottom)
             }
         }
         val margin = resources.getDimensionPixelSize(R.dimen.text_view_margin)
@@ -161,6 +161,7 @@ class RoomInFragment() : Fragment(), Parcelable {
 
         newTextView.layoutParams = layoutParams
         newTextView.setBackgroundResource(R.drawable.bin_yellowsend)
+
         binding.textViewContainer.addView(newTextView)
     }
     // 채팅 메시지 수신
@@ -171,8 +172,10 @@ class RoomInFragment() : Fragment(), Parcelable {
         chatRoomRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                binding.textViewContainer.removeAllViews()
-                textViews.clear()
+                _binding?.let { binding ->
+                    binding.textViewContainer.removeAllViews()
+                    textViews.clear()
+                }
 
                 for (messageSnapshot in dataSnapshot.children) {
                     val chatMessage = messageSnapshot.getValue(RoomInFragment.ChatMessage::class.java)
@@ -182,7 +185,7 @@ class RoomInFragment() : Fragment(), Parcelable {
                     if (senderId != null && message != null) {
                         println("발신자 ID: $senderId")
                         println("메시지 내용: $message")
-                        addTextView(message, senderId)
+                        addTextView(message, senderId, fragmentContext)
                     }
                 }
             }
@@ -227,6 +230,7 @@ class RoomInFragment() : Fragment(), Parcelable {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRoominBinding.inflate(inflater, container, false)
+
         val view = binding.root
         var chatRoomClickId : String? = null
         val auth = Firebase.auth
@@ -309,10 +313,6 @@ class RoomInFragment() : Fragment(), Parcelable {
             }
             // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
 
-        binding.currentButton.setOnClickListener{
-            navController.popBackStack()
-            navController.navigate(R.id.currentRoomFragment, bundle)
-        }
 
         return view
     }
@@ -358,11 +358,11 @@ class RoomInFragment() : Fragment(), Parcelable {
     override fun onPause() {
         super.onPause()
         updateFirebaseValue()
-
         _binding = null
     }
     override fun onDestroyView() {
         super.onDestroyView()
+        updateFirebaseValue()
         _binding = null
     }
 

@@ -147,6 +147,10 @@ class RoomViewFragment : Fragment() {
     private fun createButtonForChatRoom(containerLayout: LinearLayout?, roomName: String, chatRoomId : String) {
         if(isAdded) {
             val button = Button(requireActivity())
+            if(peoplecount!!.toInt() <= 0){
+               peoplecount = 0
+            }
+            button.text = roomName + "\n 현재 인원 수 : $peoplecount / 4"
             button.text = "방 이름 : " + roomName +
                     "\n 현재 인원 수 : $peoplecount / 4" +
                     "\n 출발 시간 : $ampm $hour 시 $min 분"
@@ -154,14 +158,18 @@ class RoomViewFragment : Fragment() {
             button.setOnClickListener {
                 bundle.putString("chatRoomClickId", chatRoomId)
                 bundle.putInt("mode", mode)
-
+                bundle.putString("roomname",roomName)
+                bundle.putString("startname",startedt.text.toString())
+                bundle.putString("endname",endedt.text.toString())
+                updateFirebaseValue(chatRoomId)
                 // 버튼 클릭 시 방에 접속하는 동작을 구현하세요
                 val navController = findNavController()
-                navController.navigate(R.id.roomInFragment, bundle)
+                navController.navigate(R.id.currentRoomFragment, bundle)
             }
             containerLayout?.addView(button)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
 
@@ -175,8 +183,8 @@ class RoomViewFragment : Fragment() {
         val view = binding.root
         database = FirebaseDatabase.getInstance().reference
         // 방 이름들을 가져와서 버튼 생성
-        Toast.makeText(requireContext(), "방 목록을 불러오는 중입니다...\n" +
-                "잠시만 기다려주십시오.." , Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(), "방 목록을 불러오는 중입니다...\n" +
+          //      "잠시만 기다려주십시오.." , Toast.LENGTH_SHORT).show()
 
         arguments?.let { bundle ->
             // MapActivity로부터 출발지 도착지의 정보를 받음
@@ -239,7 +247,7 @@ class RoomViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // 프래그먼트가 실행 된 이후에 보일 화면
         super.onViewCreated(view, savedInstanceState)
-
+        getChatRoomNames()
     }
 
     override fun onDestroyView() {
