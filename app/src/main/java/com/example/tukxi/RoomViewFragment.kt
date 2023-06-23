@@ -196,6 +196,12 @@ class RoomViewFragment : Fragment() {
         }
         startedt = binding.startedt
         endedt = binding.endedt
+        if(startedt.text.toString().isEmpty()&&startname != null){
+            startedt.setText(startname)
+        }
+        if(endedt.text.toString().isEmpty()&&endname != null){
+            endedt.setText(endname)
+        }
         searchbtn = binding.searchbtn
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), "AIzaSyAdHvlLbQv5ykMeeoCph3ZFAK11X-bIKDA")
