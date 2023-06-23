@@ -60,13 +60,12 @@
             android:fontFamily="@font/bold"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
-            android:text="은행"
-            android:textStyle="bold"
+            android:text="이메일"
             android:textSize="20sp"
-            />
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_bank"
+            android:id="@+id/tv_userEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="140dp"
@@ -76,19 +75,6 @@
             android:paddingRight="6dp"
             android:textSize="18dp"
             android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/tv_mannerIndex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="120dp"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:text="매너지수 : "
-            android:textStyle="bold"
-            android:textSize="19dp"
-            android:fontFamily="@font/bold"/>
 
     </FrameLayout>
 
@@ -100,33 +86,6 @@
         android:fontFamily="@font/bold"
         android:gravity="left"
         android:text="내정보"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_usageRecord" />
-
-    <Button
-        android:id="@+id/btn_setNotification"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:fontFamily="@font/bold"
-        android:gravity="left"
-        android:text="알림"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_myInfo" />
-
-    <Button
-        android:id="@+id/btn_usageRecord"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:fontFamily="@font/bold"
-        android:gravity="left"
-        android:text="이용기록"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -143,6 +102,6 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_setNotification" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_myInfo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

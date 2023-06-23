@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +14,13 @@ import androidx.fragment.app.Fragment
 import com.example.tukxi.databinding.FragmentMyBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
-import kotlin.math.log
 
 
 class MyFragment : Fragment() {
     private var _binding: FragmentMyBinding? = null
     private val binding get() = _binding!!
     private lateinit var nicknameTextview: TextView
-    private lateinit var bankTextView: TextView
+    private lateinit var emailTextView: TextView
     private lateinit var myInfoButton :Button
     private lateinit var logoutButton : Button
     private lateinit var autoLoginCheckBox: CheckBox
@@ -44,7 +41,7 @@ class MyFragment : Fragment() {
         _binding = FragmentMyBinding.inflate(inflater, container, false)
         val view = binding.root
         nicknameTextview= view.findViewById(R.id.tv_UserNickname)
-        bankTextView = view.findViewById(R.id.tv_bank)
+        emailTextView = view.findViewById(R.id.tv_userEmail)
         myInfoButton = view.findViewById(R.id.btn_myInfo)
         logoutButton = view.findViewById(R.id.btn_Logout)
         firebaseAuth = FirebaseAuth.getInstance()
@@ -53,7 +50,7 @@ class MyFragment : Fragment() {
         val sharedPreferences = requireContext().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         val userEmail = firebaseAuth.currentUser?.email
-
+        emailTextView.text = userEmail
         if(userEmail!=null){
             firestore.collection("UserInformation")
                 .whereEqualTo("Email",userEmail)
@@ -62,7 +59,6 @@ class MyFragment : Fragment() {
                     if(!querySnapshot.isEmpty){
                         val document = querySnapshot.documents[0]
                         nicknameTextview.text = document.getString("Nickname")
-                        bankTextView.text=document.getString("Bank")+"  "+document.getString("AccountNum")
                     }
                 }
         }
