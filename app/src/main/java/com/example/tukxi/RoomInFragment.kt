@@ -78,14 +78,11 @@ class RoomInFragment() : Fragment(), Parcelable {
                 val chatRoomName = chatRoom?.roomname
 
                 if (chatRoomName != null) {
-                    println("채팅방 이름: $chatRoomName")
                 } else {
-                    println("채팅방 이름을 가져오지 못했습니다.")
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                println("채팅방 이름을 가져오는데 실패했습니다: ${error.message}")
             }
         })
     }
@@ -101,12 +98,8 @@ class RoomInFragment() : Fragment(), Parcelable {
         val chatMessage = ChatMessage(senderId, message)
         messageRef.setValue(chatMessage)
             .addOnSuccessListener {
-                println("메시지가 전송되었습니다.")
-                println("발신자 ID: $senderId")
-                println("메시지 내용: $message")
             }
-            .addOnFailureListener { e ->
-                println("메시지 전송에 실패했습니다: ${e.message}")
+            .addOnFailureListener {
             }
     }
     private val textViews = mutableListOf<TextView>()
@@ -185,15 +178,12 @@ class RoomInFragment() : Fragment(), Parcelable {
                     message = chatMessage?.message
 
                     if (senderId != null && message != null) {
-                        println("발신자 ID: $senderId")
-                        println("메시지 내용: $message")
                         addTextView(message, senderId, fragmentContext)
                     }
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                println("채팅 메시지 수신에 실패했습니다: ${error.message}")
             }
         })
     }
@@ -218,7 +208,6 @@ class RoomInFragment() : Fragment(), Parcelable {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("ChatRoomFragment", "채팅 내역 가져오기 실패: ${error.message}")
             }
         })
     }
