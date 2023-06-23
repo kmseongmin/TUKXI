@@ -106,7 +106,6 @@ class RoomViewFragment : Fragment() {
         chatRoomsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val containerLayout = view?.findViewById<LinearLayout>(R.id.roomNamescontainer)
-
                 containerLayout?.removeAllViews()
 
                 for (roomSnapshot in dataSnapshot.children) {
@@ -134,7 +133,6 @@ class RoomViewFragment : Fragment() {
                         }
                     }
                 }
-
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -150,20 +148,25 @@ class RoomViewFragment : Fragment() {
             if(peoplecount!!.toInt() <= 0){
                peoplecount = 0
             }
+            if(peoplecount!!.toInt()>=4){
+                peoplecount=4
+            }
             button.text = "방 이름 : " + roomName +
                     "\n 현재 인원 수 : $peoplecount / 4" +
                     "\n 출발 시간 : $ampm $hour 시 $min 분"
             val bundle = Bundle()
-            button.setOnClickListener {
-                bundle.putString("chatRoomClickId", chatRoomId)
-                bundle.putInt("mode", mode)
-                bundle.putString("roomname",roomName)
-                bundle.putString("startname",startedt.text.toString())
-                bundle.putString("endname",endedt.text.toString())
-                updateFirebaseValue(chatRoomId)
-                // 버튼 클릭 시 방에 접속하는 동작을 구현하세요
-                val navController = findNavController()
-                navController.navigate(R.id.currentRoomFragment, bundle)
+            if(peoplecount!!.toInt() < 4) {
+                button.setOnClickListener {
+                    bundle.putString("chatRoomClickId", chatRoomId)
+                    bundle.putInt("mode", mode)
+                    bundle.putString("roomname", roomName)
+                    bundle.putString("startname", startedt.text.toString())
+                    bundle.putString("endname", endedt.text.toString())
+                    updateFirebaseValue(chatRoomId)
+                    // 버튼 클릭 시 방에 접속하는 동작을 구현하세요
+                    val navController = findNavController()
+                    navController.navigate(R.id.currentRoomFragment, bundle)
+                }
             }
             containerLayout?.addView(button)
         }
@@ -196,6 +199,12 @@ class RoomViewFragment : Fragment() {
         }
         startedt = binding.startedt
         endedt = binding.endedt
+        if(startedt.text.toString().isEmpty()&&startname != null){
+            startedt.setText(startname)
+        }
+        if(endedt.text.toString().isEmpty()&&endname != null){
+            endedt.setText(endname)
+        }
         searchbtn = binding.searchbtn
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), "AIzaSyAdHvlLbQv5ykMeeoCph3ZFAK11X-bIKDA")

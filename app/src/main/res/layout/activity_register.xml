@@ -143,9 +143,10 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0"
-            android:background="@drawable/bin_lightorange2"
+            android:gravity="center"
+            android:background="#FAFAD2"
             android:fontFamily="@font/bold"
             android:text="계좌번호"
             android:textSize="18sp"
@@ -183,10 +184,11 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0"
-            android:background="@color/lightorange"
+            android:background="#FAFAD2"
             android:fontFamily="@font/bold"
+            android:gravity="center"
             android:text="생년월일"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -207,7 +209,7 @@
             android:layout_width="14dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/lightorange"
+            android:background="@drawable/bin_lightorange"
             android:fontFamily="@font/bold"
             android:gravity="center"
             android:text="성별"
@@ -250,9 +252,10 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bin_lightorange2"
+            android:layout_height="match_parent"
+            android:background="#FAFAD2"
             android:fontFamily="@font/bold"
+            android:gravity="center"
             android:text="전화번호"
             android:textSize="18dp"
             android:textStyle="bold">
@@ -310,6 +313,8 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 </LinearLayout>

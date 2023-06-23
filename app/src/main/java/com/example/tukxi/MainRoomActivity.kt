@@ -44,7 +44,6 @@ class MainRoomActivity : AppCompatActivity() {
                 }
                 R.id.currentRoomFragment_item -> {
                     // 프레그먼트3로 이동
-                    navController.popBackStack(R.id.currentRoomFragment, false)
                     navController.navigate(R.id.currentRoomFragment)
                     true
                 }
