@@ -1,6 +1,7 @@
 package com.example.tukxi
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -17,6 +18,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.tukxi.databinding.ActivityMainroomBinding
 import com.example.tukxi.databinding.FragmentCurrentroomBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
+import com.google.firebase.database.ValueEventListener
+
 class SharedViewModel : ViewModel() {
     var roomname: MutableLiveData<String> = MutableLiveData()
     var myhour: MutableLiveData<Int> = MutableLiveData()
@@ -41,14 +50,6 @@ class CurrentRoomFragment : Fragment() {
     private var mode: Int? = 2
     private var startname : String? = null
     private var endname : String? = null
-    private lateinit var roomname: String
-    private var myhour: Int = 0
-    private var mymin: Int = 0
-    private lateinit var chatRoomId: String
-    private lateinit var chatRoomClickId: String
-    private var mode: Int = 2
-    private lateinit var startname : String
-    private lateinit var endname : String
     private var peoplecount : Int? = 0
 
     private fun getpeoplecount(chatRoomId : String) {
@@ -56,7 +57,8 @@ class CurrentRoomFragment : Fragment() {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val chatRoomRef = database.child("chatRooms").child(chatRoomId)
 
-        chatRoomRef.child("peoplecount").addListenerForSingleValueEvent(object : ValueEventListener {
+        chatRoomRef.child("peoplecount").addListenerForSingleValueEvent(object :
+            ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 peoplecount = dataSnapshot.getValue(Int::class.java)
                 if (peoplecount != null) {
@@ -106,10 +108,10 @@ class CurrentRoomFragment : Fragment() {
         }
 
         if(mode==0){
-            getpeoplecount(chatRoomClickId)
+            chatRoomClickId?.let { getpeoplecount(it) }
         }
         else if(mode==1){
-            getpeoplecount(chatRoomId)
+            chatRoomId?.let { getpeoplecount(it) }
         }
         val bundle = Bundle().apply {
             putString("roomname", roomname) // roomname 값을 Bundle에 담기
@@ -175,8 +177,8 @@ class CurrentRoomFragment : Fragment() {
 
 
         binding.exit.setOnClickListener{
-            updateFirebaseValue(chatRoomClickId)
-            updateFirebaseValue(chatRoomId)
+            chatRoomClickId?.let { it1 -> updateFirebaseValue(it1) }
+            chatRoomId?.let { it1 -> updateFirebaseValue(it1) }
             navController.popBackStack()
             navController.navigate(R.id.mapActivity)
         }
