@@ -4,14 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <Button
-        android:id="@+id/exit"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:background="@drawable/red_white"
-        android:text = "나가기"
-        />
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/moneyedt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:hint="정산금액(원)"/>
+        <Button
+            android:id="@+id/moneybtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="end"
+            android:background="@drawable/red_white"
+            android:text="정산하기" />
+        <Button
+            android:id="@+id/exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="end"
+            android:background="@drawable/red_white"
+            android:text="운행종료" />
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/scrollvw"
         android:layout_width="match_parent"

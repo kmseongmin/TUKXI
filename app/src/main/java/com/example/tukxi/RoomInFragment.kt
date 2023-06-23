@@ -318,6 +318,38 @@ class RoomInFragment() : Fragment(), Parcelable {
             }
             navController.navigate(R.id.mapActivity)
         }
+        binding.moneybtn.setOnClickListener {
+            if(binding.moneyedt.text.length == 0){
+                Toast.makeText(requireContext(), "정산금액을 입력하세요", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                if(flag==1) {
+                    Toast.makeText(requireContext(), "채팅방을 정렬중입니다..", Toast.LENGTH_SHORT).show()
+                    flag = 0
+                }
+                val chatname = "$chatRoomId"
+                var totalmoney = binding.moneyedt.text.toString().toInt()
+                var money = totalmoney/4//여기서 4는 현재참여중인 인원수로 바꿔야함
+                val message = "총요금 : $totalmoney\n" + "보낼금액 : $money\n" +
+                        "로 보내주세요"//계좌번호가 들어가야함
+                if (mode == 0) {
+                    getChatRoomMessages(chatRoomClickId.toString())
+                    sendMessage(chatRoomClickId.toString(), senderId, message)
+                    receiveMessage(chatRoomClickId.toString())
+                } else if (mode == 1) {
+                    peoplecount = 1
+                    getChatRoomMessages(chatroomid)
+                    sendMessage(chatroomid, senderId, message)
+                    receiveMessage(chatroomid)
+                }
+                //val senderId = uid?.let { it1 -> getUserNickname(it1) }
+                //if (senderId != null) {
+                // sendMessage(chatname, senderId, message)
+                //}
+                //receiveMessage("$chatRoomId")
+                binding.messages.text.clear()
+            }
+        }
         return view
     }
 
