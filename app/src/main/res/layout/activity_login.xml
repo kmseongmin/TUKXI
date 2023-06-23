@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/bin_orange"
+        android:background="@drawable/bin_blue"
         android:drawableLeft="@drawable/face"
         >
 
@@ -96,12 +96,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/bin_lightorange"
+        android:background="@drawable/bin_blue"
         android:drawableLeft="@drawable/register"
+        android:fontFamily="@font/bold"
         android:text="회원가입         "
-        android:textStyle="bold"
         android:textSize="18dp"
-        android:fontFamily="@font/bold">
+        android:textStyle="bold">
 
     </Button>
 
@@ -112,29 +112,16 @@
         android:weightSum="10">
 
         <TextView
-            android:id="@+id/findId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:gravity="center"
-            android:text="아이디 찾기"
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:fontFamily="@font/bold">
-
-        </TextView>
-
-        <TextView
             android:id="@+id/findPassword"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="5"
+            android:fontFamily="@font/bold"
             android:gravity="center"
             android:text="비밀번호 찾기"
-            android:textSize="18dp"
             android:textColor="@android:color/holo_blue_dark"
-            android:textStyle="bold"
-            android:fontFamily="@font/bold">
+            android:textSize="18dp"
+            android:textStyle="bold">
 
         </TextView>
 

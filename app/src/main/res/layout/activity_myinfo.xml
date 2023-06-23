@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:backgroundTint="#2F91B8"
+    >
 
 
 
@@ -13,9 +15,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="아이디(E-mail)"
-        android:textSize="25sp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
+        android:textSize="17sp"
         android:fontFamily="@font/bold"
-        android:backgroundTint="@color/white"
+        android:background="@drawable/bin_line"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <TextView
@@ -26,12 +30,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv1"/>
     <TextView
         android:id="@+id/tv8"
         android:text="이름"
-        android:textSize="25sp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
+        android:textSize="17sp"
         android:fontFamily="@font/bold"
         android:layout_marginTop="6dp"
         android:layout_width="match_parent"
@@ -47,6 +54,8 @@
         android:layout_marginTop="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv8"
         />
@@ -55,7 +64,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="닉네임"
-        android:textSize="25sp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
+        android:textSize="17sp"
         android:fontFamily="@font/bold"
         android:backgroundTint="@color/white"
         android:layout_marginTop="6dp"
@@ -66,66 +77,81 @@
         android:textSize="22sp"
         android:fontFamily="@font/bold"
         android:textColor="@color/black"
-        android:layout_width="wrap_content"
+        android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv2"
         />
     <TextView
         android:id="@+id/tv3"
-        android:textSize="25sp"
+        android:textSize="17sp"
         android:fontFamily="@font/bold"
         android:backgroundTint="@color/white"
-        android:layout_width="180dp"
+        android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="은행"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 
     <TextView
         android:id="@+id/tv_AccountNum"
-        android:textSize="22sp"
-        android:fontFamily="@font/bold"
-        android:textColor="@color/black"
-        android:layout_width="160dp"
+        android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        app:layout_constraintStart_toEndOf="@+id/btn_ChangeBank"
+        android:fontFamily="@font/bold"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Button
         android:id="@+id/btn_ChangeAccountNum"
-        android:layout_width="70dp"
-        android:layout_height="35dp"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bin_blue"
         android:fontFamily="@font/bold"
         android:text="변경"
+        android:textColor="#2F91B8"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toTopOf="@+id/tv_AccountNum" />
     <TextView
         android:id="@+id/tv_bankname"
         android:textSize="22sp"
         android:fontFamily="@font/bold"
         android:textColor="@color/black"
-        android:layout_width="100dp"
+        android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv3"
         />
+
     <TextView
         android:id="@+id/tv4"
-        android:textSize="25sp"
-        android:fontFamily="@font/bold"
-        android:backgroundTint="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="생년월일"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/bold"
+        android:text="생년월일 (YYMMDD)"
+        android:textSize="17sp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_bankname" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_AccountNum" />
     <TextView
         android:id="@+id/tv_birth"
         android:textSize="22sp"
@@ -134,18 +160,22 @@
         android:layout_marginTop="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv4"
         />
 
     <TextView
         android:id="@+id/tv5"
-        android:textSize="25sp"
+        android:textSize="17sp"
         android:fontFamily="@font/bold"
         android:backgroundTint="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
         android:text="성별"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_birth" />
@@ -157,6 +187,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv5"
         />
@@ -164,90 +196,108 @@
 
     <TextView
         android:id="@+id/tv6"
-        android:textSize="25sp"
+        android:textSize="17sp"
         android:fontFamily="@font/bold"
         android:backgroundTint="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
         android:text="전화번호"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_gender" />
+
     <TextView
         android:id="@+id/tv_phonenum"
-        android:textSize="22sp"
-        android:fontFamily="@font/bold"
-        android:textColor="@color/black"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:fontFamily="@font/bold"
+        android:textColor="@color/black"
+        android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv6"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tv6" />
 
     <Button
         android:id="@+id/btn_changePW"
-        android:textSize="20sp"
+        android:layout_width="120sp"
+        android:layout_height="30sp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bin_blue"
         android:fontFamily="@font/bold"
-        android:backgroundTint="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="비밀번호 변경"
+        android:text="비밀번호 재설정"
+        android:textColor="#2F91B8"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_phonenum" />
 
     <Button
         android:id="@+id/btn_withdrawal"
-        android:textSize="20sp"
+        android:layout_width="100sp"
+        android:layout_height="30sp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bin_blue"
         android:fontFamily="@font/bold"
-        android:backgroundTint="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
         android:text="회원탈퇴"
+        android:textColor="#2F91B8"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_changePW" />
 
     <Button
         android:id="@+id/btn_ChangeNick"
-        android:layout_width="80dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="10dp"
-        android:text="변경"
-        android:textSize="15sp"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/bold"
-        app:layout_constraintStart_toEndOf="@+id/tv_nickname"
+        android:text="변경"
+        android:textColor="#2F91B8"
+        android:background="@drawable/bin_blue"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv2" />
 
     <Button
         android:id="@+id/btn_ChangeBank"
-        android:layout_width="80dp"
-        android:layout_height="35dp"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bin_blue"
         android:fontFamily="@font/bold"
         android:text="변경"
+        android:textColor="#2F91B8"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/tv_bankname"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv3" />
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="225dp"
+        android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/bold"
         android:text="계좌번호"
-        android:textSize="25sp"
-
-        app:layout_constraintStart_toEndOf="@+id/tv3"
-        app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bankname" />
 
     <Button
         android:id="@+id/btn_ChangePhoneNum"
-        android:layout_width="100dp"
-        android:layout_height="35dp"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bin_blue"
         android:fontFamily="@font/bold"
         android:text="변경"
+        android:textColor="#2F91B8"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv6" />
