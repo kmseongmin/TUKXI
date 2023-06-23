@@ -100,6 +100,12 @@
             android:id="@+id/returnbutton"
             android:text="채팅방으로 돌아가기"
             />
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/exit"
+            android:text="나가기"
+            />
     ></LinearLayout>
 </LinearLayout>
 

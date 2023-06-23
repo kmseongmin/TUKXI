@@ -68,7 +68,7 @@ class MyFragment : Fragment() {
         }
 
         myInfoButton.setOnClickListener{
-            startActivity(Intent(activity,MyInfoActivity::class.java))
+            //startActivity(Intent(activity,MyInfoActivity::class.java))
         }
         logoutButton.setOnClickListener{
             FirebaseAuth.getInstance().signOut()

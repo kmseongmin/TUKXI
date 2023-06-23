@@ -51,6 +51,7 @@ class RoomViewFragment : Fragment() {
     private lateinit var endedt: EditText
     private lateinit var startedt: EditText
     private lateinit var searchbtn: Button
+    private var ampm : String? = ""
 
     data class LatLng(val latitude: Double, val longitude: Double)
 
@@ -113,6 +114,9 @@ class RoomViewFragment : Fragment() {
                     val chatRoomId = roomSnapshot.key
                     if (roomName != null) {
                         peoplecount = roomSnapshot.child("peoplecount").getValue(Int::class.java)
+                        hour = roomSnapshot.child("hour").getValue(Int::class.java)
+                        min = roomSnapshot.child("min").getValue(Int::class.java)
+                        ampm = roomSnapshot.child("ampm").getValue(String::class.java)
                         fbstartLatitude = roomSnapshot.child("startLatLng").child("latitude").getValue(Double::class.java)
                         fbstartLongitude = roomSnapshot.child("startLatLng").child("longitude").getValue(Double::class.java)
                         fbendLatitude = roomSnapshot.child("endLatlng").child("latitude").getValue(Double::class.java)
@@ -146,15 +150,20 @@ class RoomViewFragment : Fragment() {
             if(peoplecount!!.toInt() <= 0){
                peoplecount = 0
             }
-            button.text = roomName + "\n 현재 인원 수 : $peoplecount / 4"
+            button.text = "방 이름 : " + roomName +
+                    "\n 현재 인원 수 : $peoplecount / 4" +
+                    "\n 출발 시간 : $ampm $hour 시 $min 분"
             val bundle = Bundle()
             button.setOnClickListener {
                 bundle.putString("chatRoomClickId", chatRoomId)
                 bundle.putInt("mode", mode)
+                bundle.putString("roomname",roomName)
+                bundle.putString("startname",startedt.text.toString())
+                bundle.putString("endname",endedt.text.toString())
                 updateFirebaseValue(chatRoomId)
                 // 버튼 클릭 시 방에 접속하는 동작을 구현하세요
                 val navController = findNavController()
-                navController.navigate(R.id.roomInFragment, bundle)
+                navController.navigate(R.id.currentRoomFragment, bundle)
             }
             containerLayout?.addView(button)
         }
@@ -237,6 +246,7 @@ class RoomViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // 프래그먼트가 실행 된 이후에 보일 화면
         super.onViewCreated(view, savedInstanceState)
+        getChatRoomNames()
 
     }
 

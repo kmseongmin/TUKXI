@@ -41,12 +41,14 @@ class RoomCreateFragment : Fragment(){
     private val binding get() = _binding!!
     private var chatRoomId: String? = null
     private var roomname : String? = null
+    private var ampm : String? = null
     private var myhour : Int? = null
     private var mymin : Int? = null
     private var startLatitude : Double? = null
     private var startLongitude : Double? = null
     private var endLatitude : Double? = null
     private var endLongitude : Double? = null
+    private lateinit var starttime: TextView
     private lateinit var startLatLng : LatLng
     private lateinit var endLatLng : LatLng
     private lateinit var startnameTextview : TextView
@@ -62,11 +64,11 @@ class RoomCreateFragment : Fragment(){
         super.onCreate(savedInstanceState)
 
     }
-    fun createChatRoom(roomname: String, hour:Int, min:Int, startLatlng: LatLng, endLatlng : LatLng, peoplecount : Int) {
+    fun createChatRoom(roomname: String, hour:Int, min:Int, startLatlng: LatLng, endLatlng : LatLng, peoplecount : Int, ampm : String) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val chatRoomsRef = database.child("chatRooms") // 채팅방 이름
         val distance = calculateDistanceInMeters(startLatlng, endLatlng)
-        val chatRoom = ChatRoom(roomname,hour,min,distance,startLatlng,endLatlng, peoplecount)
+        val chatRoom = ChatRoom(roomname,hour,min,distance,startLatlng,endLatlng, peoplecount,ampm)
         val chatRoomRef = chatRoomsRef.push()
 
         chatRoomRef.setValue(chatRoom)
@@ -98,7 +100,7 @@ class RoomCreateFragment : Fragment(){
         return earthRadius * c
     }
 
-    class ChatRoom(val roomname: String, val hour: Int, val min: Int, val distance : Double, val startLatLng : LatLng, val endLatlng : LatLng, var peoplecount: Int)
+    class ChatRoom(val roomname: String, val hour: Int, val min: Int, val distance : Double, val startLatLng : LatLng, val endLatlng : LatLng, var peoplecount: Int, val ampm : String)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -135,6 +137,7 @@ class RoomCreateFragment : Fragment(){
         arguments?.let { bundle ->
             myhour = bundle.getInt("hour")
             mymin = bundle.getInt("min")
+            ampm = bundle.getString("ampm")
             // MapActivity로부터 출발지 도착지의 정보를 받음
             startLatitude = bundle.getDouble("startLatitude")
             startLongitude = bundle.getDouble("startLongitude")
@@ -150,6 +153,8 @@ class RoomCreateFragment : Fragment(){
         //출발지 도착지 이름 입력
         startnameTextview = binding.startnametextView
         endnameTextview = binding.endnametextView
+        starttime = binding.starttime
+        starttime.setText("$ampm $myhour 시 $mymin 분")
 
         if(typemode == 1) {
             startname = sharedviewModel.startnames.value.toString()
@@ -194,12 +199,13 @@ class RoomCreateFragment : Fragment(){
                return@setOnClickListener
             }
             val chatnames = roomname
-            createChatRoom(chatnames,myhour!!.toInt(),mymin!!.toInt(), startLatLng, endLatLng, peoplecount) // 방생성
+            createChatRoom(chatnames,myhour!!.toInt(),mymin!!.toInt(), startLatLng, endLatLng, peoplecount,ampm!!) // 방생성
 
            val bundle = Bundle().apply {
                putString("roomname", roomname) // roomname 값을 Bundle에 담기
                putInt("hour",myhour!!.toInt())
                putInt("min",mymin!!.toInt())
+               putString("ampm",ampm)
                putString("chatRoomId",chatRoomId.toString())
                putInt("mode", mode)
                putDouble("startLatitude", startLatitude!!.toDouble())
@@ -211,7 +217,7 @@ class RoomCreateFragment : Fragment(){
            }
 
            val navController = findNavController()
-            navController.navigate(R.id.roomInFragment,bundle)
+            navController.navigate(R.id.currentRoomFragment,bundle)
         }
 
         return view

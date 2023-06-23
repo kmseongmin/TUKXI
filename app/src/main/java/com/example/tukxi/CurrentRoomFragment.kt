@@ -22,7 +22,10 @@ class CurrentRoomFragment : Fragment() {
     private lateinit var chatRoomId: String
     private lateinit var chatRoomClickId: String
     private var mode: Int = 2
-
+    private lateinit var startedt : String
+    private lateinit var endedt : String
+    private lateinit var startname : String
+    private lateinit var endname : String
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
@@ -33,23 +36,28 @@ class CurrentRoomFragment : Fragment() {
             chatRoomId = bundle.getString("chatRoomId").toString()
             chatRoomClickId = bundle.getString("chatRoomClickId").toString() // 방 조회에서 받은 id
             mode = bundle.getInt("mode")
+            startname = bundle.getString("startname").toString()
+            endname = bundle.getString("endname").toString()
         }
+        val bundle = Bundle().apply {
+            putString("roomname", roomname) // roomname 값을 Bundle에 담기
+            putInt("hour", myhour!!.toInt())
+            putInt("min", mymin!!.toInt())
+            putString("chatRoomId", chatRoomId)
+            putString("chatRoomClickId", chatRoomClickId)
+            putInt("mode", mode!!.toInt())
+        }
+
         val navController = findNavController()
+        binding.returnbutton.setOnClickListener{
+            navController.navigate(R.id.roomInFragment,bundle)
+        }
+        binding.chatRoomNameTextView.text = "채팅방 이름 : $roomname"
+        binding.departureTextView.text = "출발지: $startname"
+        binding.destinationTextView.text = "목적지: $endname"
 
-        if (mode == 0) { // 방 조회를 통해서 Roomin 이후에 넘어온 경우
-            binding.chatRoomNameTextView.text = "채팅방 이름 : $roomname"
-            binding.returnbutton.setOnClickListener {
-                navController.navigateUp()
-            }
-        } else if (mode == 1) {
+        binding.exit.setOnClickListener{
 
-        } else if (mode == 2) { // 현재 참여중인 방이 없는 경우
-
-            Toast.makeText(
-                requireContext(),
-                "현재 참여중인 방이 없습니다. \n 먼저 방 조회 또는 방 생성을 통해 방에 참가해주세요.",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 

@@ -40,13 +40,18 @@ class ClockFragment: Fragment() {
         typemode = 1
         time_picker!!.setOnTimeChangedListener { timePicker, hour, min -> //오전 오후 확인하기 위한 if문
             var hour = hour
+            var ampm = ""
             if (hour > 12) {
+                ampm = "오후"
                 hour -= 12
                 tv_time!!.text = "PM" + hour + "시" + min + "분 선택"
             } else {
+                ampm = "오전"
                 tv_time!!.text = "AM" + hour + "시" + min + "분 선택"
             }
             val myhour = hour
+            val myampm = ampm
+            bundle.putString("ampm",myampm)
             bundle.putInt("hour",myhour)
             bundle.putInt("min",min)
             bundle.putInt("typemode",typemode)

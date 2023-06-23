@@ -4,26 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        >
-        <Button
-            android:id="@+id/currentButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text = "참여중인 방의 정보"
-            android:textSize="18sp"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/red_white"
-            android:layout_gravity="center"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            />
-    </LinearLayout>
+        android:layout_gravity="end"
+        android:background="@drawable/red_white"
+        android:text = "나가기"
+        />
     <ScrollView
         android:id="@+id/scrollvw"
         android:layout_width="match_parent"
