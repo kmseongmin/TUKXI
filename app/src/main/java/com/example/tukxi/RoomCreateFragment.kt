@@ -154,6 +154,9 @@ class RoomCreateFragment : Fragment(){
         startnameTextview = binding.startnametextView
         endnameTextview = binding.endnametextView
         starttime = binding.starttime
+        if(ampm == null){
+            ampm = "오전/오후"
+        }
         starttime.setText("$ampm $myhour 시 $mymin 분")
 
         if(typemode == 1) {
