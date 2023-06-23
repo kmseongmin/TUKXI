@@ -119,9 +119,6 @@ class RoomInFragment() : Fragment(), Parcelable {
     private fun addTextView(name : String?, senderId: String, fragmentContext: Context) {
         val newTextView = AppCompatTextView(fragmentContext)
 
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY) // 24시간 형식의 시간 (0 ~ 23)
-        val minute = calendar.get(Calendar.MINUTE) // 분 (0 ~ 59)
         val layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -312,8 +309,15 @@ class RoomInFragment() : Fragment(), Parcelable {
                 binding.messages.text.clear()
             }
             // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
-
-
+        binding.exit.setOnClickListener{
+            if(mode==0) {
+                updateFirebaseValue(chatRoomClickId.toString())
+            }
+            else if(mode ==1){
+                updateFirebaseValue(chatroomid)
+            }
+            navController.navigate(R.id.mapActivity)
+        }
         return view
     }
 
@@ -330,7 +334,7 @@ class RoomInFragment() : Fragment(), Parcelable {
             receiveMessage(chatRoomId.toString())
         }
     }
-    private fun updateFirebaseValue() {
+    private fun updateFirebaseValue(chatRoomId: String) {
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val setval = database.child("chatRooms").child(chatRoomId.toString()).child("peoplecount")
 
@@ -357,12 +361,12 @@ class RoomInFragment() : Fragment(), Parcelable {
     }
     override fun onPause() {
         super.onPause()
-        updateFirebaseValue()
+        updateFirebaseValue(chatRoomId.toString())
         _binding = null
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        updateFirebaseValue()
+        updateFirebaseValue(chatRoomId.toString())
         _binding = null
     }
 

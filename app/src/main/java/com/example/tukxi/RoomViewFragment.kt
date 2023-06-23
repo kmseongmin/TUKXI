@@ -247,6 +247,7 @@ class RoomViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // 프래그먼트가 실행 된 이후에 보일 화면
         super.onViewCreated(view, savedInstanceState)
         getChatRoomNames()
+
     }
 
     override fun onDestroyView() {

@@ -56,7 +56,9 @@ class CurrentRoomFragment : Fragment() {
         binding.departureTextView.text = "출발지: $startname"
         binding.destinationTextView.text = "목적지: $endname"
 
+        binding.exit.setOnClickListener{
 
+        }
     }
 
     override fun onCreateView(
