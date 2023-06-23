@@ -324,7 +324,7 @@ class RoomInFragment() : Fragment(), Parcelable {
             // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
         binding.exit.setOnClickListener{
             if(mode==0) {
-                updateFirebaseValue(chatRoomClickId.toString())
+                updateFirebaseValue(chatRoomClickId)
             }
             else if(mode ==1){
                 updateFirebaseValue(chatroomid)

@@ -52,20 +52,22 @@ class CurrentRoomFragment : Fragment() {
     private var endname : String? = null
     private var peoplecount : Int? = 0
     private var count : Int? =0
-    private fun getpeoplecount(chatRoomId: String) {
+    private fun getpeoplecount(chatRoomId : String) {
         val chatRoomId = chatRoomId // 가져올 특정 chatroom의 ID
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
         val chatRoomRef = database.child("chatRooms").child(chatRoomId)
 
-        chatRoomRef.child("peoplecount").addValueEventListener(object : ValueEventListener {
+        chatRoomRef.child("peoplecount").addValueEventListener(object :
+            ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val peopleCount = dataSnapshot.getValue(Int::class.java)
-                if (peopleCount != null) {
-                    count = if (peopleCount < 0) 0 else peopleCount
-                    binding.participantsTextView.text = "참여중인 사람 : $count / 4"
+                peoplecount = dataSnapshot.getValue(Int::class.java)
+                if (peoplecount != null) {
+                    if (peoplecount!!.toInt() < 0) {
+                        peoplecount = 0
+                    }
+                    binding.participantsTextView.text = "참여중인 사람 : $peoplecount / 4"
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 // 데이터 가져오기가 실패한 경우 처리할 로직을 여기에 구현합니다.
                 Log.e("Firebase", "Failed to retrieve peoplecount: ${error.message}")
@@ -220,6 +222,5 @@ class CurrentRoomFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 }
