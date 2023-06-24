@@ -26,14 +26,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/bin_lightorange2"
+        android:background="@color/white"
         android:fontFamily="@font/bold"
         android:textSize="15sp"
         android:textStyle="bold"
+        app:itemIconSize="33dp"
         app:itemIconTint="@color/selector_btm_nav"
+        app:itemTextColor="@drawable/menu_select_color"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconSize="33dp"/>
+        app:menu="@menu/bottom_nav_menu" />
 
 </RelativeLayout>
 

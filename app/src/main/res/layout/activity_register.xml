@@ -32,8 +32,9 @@
 
         <EditText
             android:id="@+id/et_regi_email"
-            android:layout_width="264dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_weight="1"
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/bold"
             android:inputType="textEmailAddress"
@@ -45,8 +46,9 @@
         <Button
             android:id="@+id/btn_checkEmail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bin_lightorange"
+            android:layout_height="25dp"
+            android:layout_weight="4"
+            android:background="@drawable/bin_blue"
             android:text="중복확인"
             android:fontFamily="@font/bold"
             android:textSize="15sp"
@@ -105,32 +107,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/et_regi_pwd"
             app:layout_constraintTop_toBottomOf="@+id/et_regi_pwdConfirm" />
-
-        <EditText
-            android:id="@+id/et_Nickname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/bold"
-            android:hint="닉네임"
-            android:inputType="text"
-            android:minHeight="48dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/et_Name"
-            app:layout_constraintTop_toBottomOf="@+id/et_Name" />
-
-        <Button
-            android:id="@+id/btn_NicknameCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="중복확인"
-            android:textStyle="bold"
-            android:background="@drawable/bin_lightorange"
-            android:fontFamily="@font/bold"
-            android:textSize="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -138,19 +114,45 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
+        android:paddingTop="16dp"
         android:paddingRight="16dp">
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:gravity="center"
-            android:background="#FAFAD2"
+        <EditText
+            android:id="@+id/et_Nickname"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/bold"
-            android:text="계좌번호"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:inputType="textEmailAddress"
+            android:hint="닉네임"
+            >
+
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_NicknameCheck"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_weight="4"
+            android:background="@drawable/bin_blue"
+            android:text="중복확인"
+            android:fontFamily="@font/bold"
+            android:textSize="15sp"
+            android:textStyle="bold">
+
+
+        </Button>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <Button
             android:id="@+id/btn_Bank"
@@ -167,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:fontFamily="@font/bold"
-            android:hint="계좌번호를 입력하세요."
+            android:hint="계좌번호"
             android:inputType="number"
             android:minHeight="48dp" />
 
@@ -181,26 +183,13 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:background="#FAFAD2"
-            android:fontFamily="@font/bold"
-            android:gravity="center"
-            android:text="생년월일"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
         <EditText
             android:id="@+id/et_Birth"
             android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:fontFamily="@font/bold"
-            android:gravity="center"
-            android:hint="YYMMDD"
+            android:hint="생년월일"
             android:inputType="number"
             android:maxLength="6"
             android:minHeight="48dp" />
@@ -209,7 +198,7 @@
             android:layout_width="14dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/bin_lightorange"
+            android:background="@drawable/bin_blue"
             android:fontFamily="@font/bold"
             android:gravity="center"
             android:text="성별"
@@ -250,24 +239,12 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="#FAFAD2"
-            android:fontFamily="@font/bold"
-            android:gravity="center"
-            android:text="전화번호"
-            android:textSize="18dp"
-            android:textStyle="bold">
-
-        </TextView>
-
         <EditText
             android:id="@+id/et_PhoneNum"
             android:layout_width="285dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bold"
-            android:hint="전화번호를 입력하세요."
+            android:hint="전화번호"
             android:inputType="phone"
             android:minHeight="48dp">
 

@@ -33,17 +33,17 @@
         android:id="@+id/exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="나가기"
-        android:textSize="18sp"
-        android:textColor="#FFFFFF"
-        android:background="#FF4081"
         android:layout_gravity="center"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:background="#00B8D4"
+        android:paddingStart="24dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="8dp"
+        android:text="나가기"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 
     <!-- 출발지와 목적지 -->
     <LinearLayout
@@ -82,8 +82,9 @@
         >
         <Button
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:id="@+id/returnbutton"
+            android:background="@drawable/bin_blue2"
             android:text="채팅방 입장"
             />
     ></LinearLayout>

@@ -19,7 +19,6 @@
         android:paddingTop="6dp"
         android:textSize="17sp"
         android:fontFamily="@font/bold"
-        android:background="@drawable/bin_line"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <TextView
