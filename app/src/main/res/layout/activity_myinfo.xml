@@ -8,36 +8,37 @@
     >
 
 
-
     <TextView
         android:id="@+id/tv1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="아이디(E-mail)"
+        android:textColor="@color/black"
         android:paddingLeft="6dp"
         android:paddingTop="6dp"
-        android:textSize="17sp"
+        android:textSize="20sp"
         android:fontFamily="@font/bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/tv_id"
-        android:textSize="22sp"
+        android:textSize="20dp"
         android:fontFamily="@font/bold"
-        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv1"/>
     <TextView
         android:id="@+id/tv8"
         android:text="이름"
+        android:textColor="@color/black"
         android:paddingLeft="6dp"
         android:paddingTop="6dp"
-        android:textSize="17sp"
+        android:textSize="20sp"
         android:fontFamily="@font/bold"
         android:layout_marginTop="6dp"
         android:layout_width="match_parent"
@@ -47,9 +48,8 @@
         />
     <TextView
         android:id="@+id/tv_myname"
-        android:textSize="22sp"
+        android:textSize="20dp"
         android:fontFamily="@font/bold"
-        android:textColor="@color/black"
         android:layout_marginTop="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,9 +63,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="닉네임"
+        android:textColor="@color/black"
         android:paddingLeft="6dp"
         android:paddingTop="6dp"
-        android:textSize="17sp"
+        android:textSize="20sp"
         android:fontFamily="@font/bold"
         android:backgroundTint="@color/white"
         android:layout_marginTop="6dp"
@@ -73,9 +74,8 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_myname" />
     <TextView
         android:id="@+id/tv_nickname"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:fontFamily="@font/bold"
-        android:textColor="@color/black"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -86,13 +86,14 @@
         />
     <TextView
         android:id="@+id/tv3"
-        android:textSize="17sp"
+        android:textSize="20sp"
         android:fontFamily="@font/bold"
         android:backgroundTint="@color/white"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="은행"
+        android:textColor="@color/black"
         android:paddingLeft="6dp"
         android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,31 +105,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/bold"
-        android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="20dp"
         android:paddingLeft="6dp"
         android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <Button
-        android:id="@+id/btn_ChangeAccountNum"
-        android:layout_width="60dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/bin_blue"
-        android:fontFamily="@font/bold"
-        android:text="변경"
-        android:textColor="#2F91B8"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_AccountNum" />
     <TextView
         android:id="@+id/tv_bankname"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:fontFamily="@font/bold"
-        android:textColor="@color/black"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -146,16 +132,16 @@
         android:backgroundTint="@color/white"
         android:fontFamily="@font/bold"
         android:text="생년월일 (YYMMDD)"
-        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         android:paddingLeft="6dp"
         android:paddingTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_AccountNum" />
     <TextView
         android:id="@+id/tv_birth"
-        android:textSize="22sp"
+        android:textSize="20dp"
         android:fontFamily="@font/bold"
-        android:textColor="@color/black"
         android:layout_marginTop="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -167,7 +153,7 @@
 
     <TextView
         android:id="@+id/tv5"
-        android:textSize="17sp"
+        android:textSize="20sp"
         android:fontFamily="@font/bold"
         android:backgroundTint="@color/white"
         android:layout_width="match_parent"
@@ -176,13 +162,13 @@
         android:paddingLeft="6dp"
         android:paddingTop="6dp"
         android:text="성별"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_birth" />
     <TextView
         android:id="@+id/tv_gender"
-        android:textSize="25sp"
+        android:textSize="20dp"
         android:fontFamily="@font/bold"
-        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -195,7 +181,7 @@
 
     <TextView
         android:id="@+id/tv6"
-        android:textSize="17sp"
+        android:textSize="20sp"
         android:fontFamily="@font/bold"
         android:backgroundTint="@color/white"
         android:layout_width="match_parent"
@@ -204,6 +190,7 @@
         android:paddingLeft="6dp"
         android:paddingTop="6dp"
         android:text="전화번호"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_gender" />
 
@@ -213,10 +200,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/bold"
-        android:textColor="@color/black"
-        android:textSize="22sp"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv6" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/bold"
+        android:text="계좌번호"
+        android:textColor="@color/black"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bankname" />
+
 
     <Button
         android:id="@+id/btn_changePW"
@@ -231,6 +234,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_phonenum" />
+
+    <Button
+        android:id="@+id/btn_ChangeAccountNum"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bin_blue"
+        android:fontFamily="@font/bold"
+        android:text="변경"
+        android:textColor="#2F91B8"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Button
         android:id="@+id/btn_withdrawal"
@@ -251,11 +268,12 @@
         android:id="@+id/btn_ChangeNick"
         android:layout_width="60dp"
         android:layout_height="25dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/bin_blue"
         android:fontFamily="@font/bold"
         android:text="변경"
         android:textColor="#2F91B8"
-        android:background="@drawable/bin_blue"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv2" />
@@ -274,18 +292,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv3" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="300sp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:fontFamily="@font/bold"
-        android:text="계좌번호"
-        android:paddingLeft="6dp"
-        android:paddingTop="6dp"
-        android:textSize="17sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_bankname" />
+
 
     <Button
         android:id="@+id/btn_ChangePhoneNum"
