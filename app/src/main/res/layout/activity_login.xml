@@ -97,9 +97,8 @@
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/bin_blue"
-        android:drawableLeft="@drawable/register"
         android:fontFamily="@font/bold"
-        android:text="회원가입         "
+        android:text="회원가입"
         android:textSize="18dp"
         android:textStyle="bold">
 
@@ -120,8 +119,8 @@
             android:gravity="center"
             android:text="비밀번호 찾기"
             android:textColor="@android:color/holo_blue_dark"
-            android:textSize="18dp"
-            android:textStyle="bold">
+            android:textSize="17dp"
+            >
 
         </TextView>
 
