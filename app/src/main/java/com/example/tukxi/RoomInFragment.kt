@@ -139,7 +139,17 @@ class RoomInFragment() : Fragment(), Parcelable {
             newTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
         }
         else {
-            newTextView.text = "$senderId :  $name"
+            val message = "$senderId\n$name"
+            val spannable = SpannableString(message)
+
+            // senderId 부분에 대한 스타일 적용
+            val startIndex = 0
+            val endIndex = senderId.length
+            val span = ForegroundColorSpan(Color.BLUE)
+            val relativeSizeSpan = RelativeSizeSpan(0.7f)
+            spannable.setSpan(span, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannable.setSpan(relativeSizeSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            newTextView.text = spannable
             layoutParams.gravity = Gravity.START
         }
         newTextView.setBackgroundColor(Color.TRANSPARENT)
@@ -153,7 +163,7 @@ class RoomInFragment() : Fragment(), Parcelable {
         val margin = fragmentContext.resources.getDimensionPixelSize(R.dimen.text_view_margin)
         layoutParams.setMargins(margin, margin, margin, margin)
 
-        newTextView.textSize = 25f
+        newTextView.textSize = 18f
         newTextView.setTextColor(Color.BLACK)
 
         newTextView.layoutParams = layoutParams
@@ -294,33 +304,33 @@ class RoomInFragment() : Fragment(), Parcelable {
             Toast.makeText(requireContext(), "채팅 내역을 불러오는 중입니다...", Toast.LENGTH_SHORT).show()
         }
         var flag = 1
-            binding.button3.setOnClickListener { // 메시지 전송
-                if (binding.messages.text.length == 0) {
-                    Toast.makeText(requireContext(), "채팅을 입력하세요!", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-                if(flag==1) {
-                    Toast.makeText(requireContext(), "채팅방을 정렬중입니다..", Toast.LENGTH_SHORT).show()
-                    flag = 0
-                }
-                val chatname = "$chatRoomId"
-                val message = binding.messages.text.toString()
-                if (mode == 0) {
-                    getChatRoomMessages(chatRoomClickId.toString())
-                    sendMessage(chatRoomClickId.toString(), senderId, message)
-                    receiveMessage(chatRoomClickId.toString())
-                } else if (mode == 1) {
-                    getChatRoomMessages(chatroomid)
-                    sendMessage(chatroomid, senderId, message)
-                    receiveMessage(chatroomid)
-                }
+        binding.button3.setOnClickListener { // 메시지 전송
+            if (binding.messages.text.length == 0) {
+                Toast.makeText(requireContext(), "채팅을 입력하세요!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(flag==1) {
+                Toast.makeText(requireContext(), "채팅방을 정렬중입니다..", Toast.LENGTH_SHORT).show()
+                flag = 0
+            }
+            val chatname = "$chatRoomId"
+            val message = binding.messages.text.toString()
+            if (mode == 0) {
+                getChatRoomMessages(chatRoomClickId.toString())
+                sendMessage(chatRoomClickId.toString(), senderId, message)
+                receiveMessage(chatRoomClickId.toString())
+            } else if (mode == 1) {
+                getChatRoomMessages(chatroomid)
+                sendMessage(chatroomid, senderId, message)
+                receiveMessage(chatroomid)
+            }
                 //val senderId = uid?.let { it1 -> getUserNickname(it1) }
                 //if (senderId != null) {
                 // sendMessage(chatname, senderId, message)
                 //}
                 //receiveMessage("$chatRoomId")
                 binding.messages.text.clear()
-            }
+        }
             // 채팅방Id를 통해 보내는 사람과 메시지를 전달한다
         binding.exit.setOnClickListener{
             if(mode==0) {

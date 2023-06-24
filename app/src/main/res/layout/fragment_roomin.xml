@@ -8,28 +8,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="1">
         <EditText
             android:id="@+id/moneyedt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:hint="정산금액(원)"/>
+
         <Button
             android:id="@+id/moneybtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="end"
-            android:background="#00B8D4"
+            android:layout_weight="1"
+            android:background="#8000B8D4"
             android:text="정산하기" />
+
         <Button
             android:id="@+id/exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="end"
-            android:background="#00B8D4"
+            android:layout_weight="1"
+            android:background="#8000B8D4"
             android:text="운행종료" />
     </LinearLayout>
 
@@ -37,7 +40,8 @@
         android:id="@+id/scrollvw"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_weight="1"
+        android:layout_weight="50"
+        android:background="@drawable/blueblue"
         >
         <LinearLayout
             android:id="@+id/textViewContainer"
@@ -51,6 +55,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         >
         <EditText
             android:id="@+id/messages"
