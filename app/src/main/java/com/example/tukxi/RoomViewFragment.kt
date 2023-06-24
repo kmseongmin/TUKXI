@@ -154,6 +154,7 @@ class RoomViewFragment : Fragment() {
             button.text = "방 이름 : " + roomName +
                     "\n 현재 인원 수 : $peoplecount / 4" +
                     "\n 출발 시간 : $ampm $hour 시 $min 분"
+            button.setBackgroundResource(R.drawable.bin_gray)
             val bundle = Bundle()
             if(peoplecount!!.toInt() < 4) {
                 button.setOnClickListener {
